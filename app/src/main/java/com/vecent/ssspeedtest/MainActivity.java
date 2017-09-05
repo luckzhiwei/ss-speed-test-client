@@ -2,11 +2,13 @@ package com.vecent.ssspeedtest;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import com.vecent.ssspeedtest.model.INetImpl;
 import com.vecent.ssspeedtest.model.SpeedTest;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -19,7 +21,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         initView();
         initModel();
-
     }
 
     private void initView() {
@@ -27,29 +28,12 @@ public class MainActivity extends AppCompatActivity {
         this.testSpeedBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                mSpeedTest.startTest();
-                Thread a = new Thread("thread-a") {
-                    @Override
-                    public void run() {
-                        int a = 2;
-                        Log.v("thread", "thread-a");
-                    }
-                };
-
-                Thread b = new Thread("thread-b") {
-                    @Override
-                    public void run() {
-                        int b = 3;
-                        Log.v("thread", "thread-b");
-                    }
-                };
-                a.start();
-                b.start();
+                mSpeedTest.startTest(new INetImpl());
             }
         });
     }
 
     private void initModel() {
-        this.mSpeedTest = new SpeedTest();
+        this.mSpeedTest = new SpeedTest(new ArrayList<String>());
     }
 }

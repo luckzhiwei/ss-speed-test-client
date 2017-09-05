@@ -1,17 +1,8 @@
 package com.vecent.ssspeedtest.model;
 
-import android.util.Log;
+import com.vecent.ssspeedtest.model.bean.PingResult;
 
-import com.vecent.ssspeedtest.util.Constant;
-import com.vecent.ssspeedtest.util.LogUtil;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.util.ArrayList;
 
 /**
  * Created by zhiwei on 2017/9/4.
@@ -19,35 +10,29 @@ import java.net.URL;
 
 public class SpeedTest {
 
-    private boolean ping(String server) {
-        Process p;
-        try {
-            p = Runtime.getRuntime().exec("/system/bin/ping -c 4" + server);
-            int status = p.waitFor();
-            LogUtil.logDebug(getClass().getName(), status + "");
-            StringBuilder strBuilder = new StringBuilder();
-            InputStream in = p.getInputStream();
-            BufferedReader bReader = new BufferedReader(new InputStreamReader(in));
-            String line = "";
-            while ((line = bReader.readLine()) != null) {
-                strBuilder.append(line);
-            }
-            bReader.close();
-            in.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+    private ArrayList<String> mServersForTest;
+
+
+    public SpeedTest(ArrayList<String> serversForTest) {
+        this.mServersForTest = serversForTest;
+    }
+
+    public boolean ping(INet net) {
         return false;
     }
 
-    public void startTest() {
+    public void startTest(final INet net) {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                ping("www.baidu.com");
+                ping(net);
             }
         }).start();
     }
+
+    public ArrayList<PingResult> getPingResult() {
+        return null;
+    }
+
+
 }
