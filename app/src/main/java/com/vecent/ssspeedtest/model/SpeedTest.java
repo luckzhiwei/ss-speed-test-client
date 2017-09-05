@@ -3,6 +3,7 @@ package com.vecent.ssspeedtest.model;
 import android.util.Log;
 
 import com.vecent.ssspeedtest.util.Constant;
+import com.vecent.ssspeedtest.util.LogUtil;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -23,7 +24,7 @@ public class SpeedTest {
         try {
             p = Runtime.getRuntime().exec("/system/bin/ping -c 4" + server);
             int status = p.waitFor();
-            Log.i(Constant.LOG_TAG + getClass().getSimpleName(), status + "");
+            LogUtil.logDebug(getClass().getName(), status + "");
             StringBuilder strBuilder = new StringBuilder();
             InputStream in = p.getInputStream();
             BufferedReader bReader = new BufferedReader(new InputStreamReader(in));
