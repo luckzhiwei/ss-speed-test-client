@@ -12,6 +12,15 @@ public class PingResult {
     private float timeMin;
     private float lossRate;
     private float timeAvg;
+    private int totalPackets;
+
+    public int getTotalPackets() {
+        return totalPackets;
+    }
+
+    public void setTotalPackets(int totalPackets) {
+        this.totalPackets = totalPackets;
+    }
 
     public float getTimeMax() {
         return timeMax;
