@@ -29,7 +29,7 @@ public class INetImpl implements INet {
                 StringBuilder tmp = new StringBuilder();
                 while ((line = reader.readLine()) != null) {
                     i++;
-                    if (i > 4) {
+                    if (i > 7) {
                         tmp.append(line);
                     }
                 }
