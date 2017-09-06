@@ -27,24 +27,7 @@ public class MainActivity extends AppCompatActivity {
         this.testSpeedBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                mSpeedTest.startTest();
-                Thread a = new Thread("thread-a") {
-                    @Override
-                    public void run() {
-                        int a = 2;
-                        Log.v("thread", "thread-a");
-                    }
-                };
-
-                Thread b = new Thread("thread-b") {
-                    @Override
-                    public void run() {
-                        int b = 3;
-                        Log.v("thread", "thread-b");
-                    }
-                };
-                a.start();
-                b.start();
+                mSpeedTest.startTest();
             }
         });
     }
