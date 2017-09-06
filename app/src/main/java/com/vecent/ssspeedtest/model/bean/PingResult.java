@@ -10,9 +10,28 @@ public class PingResult {
     private String pingRet;
     private float timeMax;
     private float timeMin;
-    private float lossRate;
     private float timeAvg;
+    private String lossRate;
+
+    public String getLossRate() {
+        return lossRate;
+    }
+
+    public void setLossRate(String lossRate) {
+        this.lossRate = lossRate;
+    }
+
     private int totalPackets;
+
+    public int getReceivedPackets() {
+        return receivedPackets;
+    }
+
+    public void setReceivedPackets(int receivedPackets) {
+        this.receivedPackets = receivedPackets;
+    }
+
+    private int receivedPackets;
 
     public int getTotalPackets() {
         return totalPackets;
@@ -26,7 +45,7 @@ public class PingResult {
         return timeMax;
     }
 
-    public void setTimeMax(int timeMax) {
+    public void setTimeMax(float timeMax) {
         this.timeMax = timeMax;
     }
 
@@ -34,23 +53,15 @@ public class PingResult {
         return timeMin;
     }
 
-    public void setTimeMin(int timeMin) {
+    public void setTimeMin(float timeMin) {
         this.timeMin = timeMin;
-    }
-
-    public float getLossRate() {
-        return lossRate;
-    }
-
-    public void setLossRate(float lossRate) {
-        this.lossRate = lossRate;
     }
 
     public float getTimeAvg() {
         return timeAvg;
     }
 
-    public void setTimeAvg(int timeAvg) {
+    public void setTimeAvg(float timeAvg) {
         this.timeAvg = timeAvg;
     }
 

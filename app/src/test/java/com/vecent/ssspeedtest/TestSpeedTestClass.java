@@ -23,27 +23,44 @@ public class TestSpeedTestClass {
     @Mock
     INet netMock;
 
-
     @Before
     public void beforeTest() {
-        PingResult pingResultMock = new PingResult();
-        pingResultMock.setExecRet(0);
-        pingResultMock.setPingRet("4 packets transmitted, 4 received, 0% packet loss, time 3005ms\n" +
+        PingResult pingResultMockTaobao = new PingResult();
+        pingResultMockTaobao.setExecRet(0);
+        pingResultMockTaobao.setPingRet("4 packets transmitted, 4 received, 0% packet loss, time 3005ms\n" +
                 "rtt min/avg/max/mdev = 42.885/48.727/55.846/4.635 ms\n");
-        Mockito.when(netMock.ping("taobao.com")).thenReturn(pingResultMock);
+        PingResult pingResultGoogle = new PingResult();
+        pingResultGoogle.setExecRet(1);
+        Mockito.when(netMock.ping("taobao.com")).thenReturn(pingResultMockTaobao);
+        Mockito.when(netMock.ping("www.google.com.hk")).thenReturn(pingResultGoogle);
     }
 
     @Test
-    public void testSpeedTestPing() {
+    public void testSpeedTestPingWhiteAddress() {
         ArrayList<String> serversForTest = new ArrayList<>();
         serversForTest.add("taobao.com");
         SpeedTest st = new SpeedTest(serversForTest);
         ArrayList<PingResult> ret = st.ping(netMock);
+
         Assert.assertEquals(1, ret.size());
         Assert.assertEquals(0, ret.get(0).getExecRet());
+        Assert.assertEquals(4, ret.get(0).getTotalPackets());
+        Assert.assertEquals(4, ret.get(0).getReceivedPackets());
         Assert.assertEquals(42.885f, ret.get(0).getTimeMin(), 0.002f);
         Assert.assertEquals(55.846f, ret.get(0).getTimeMax(), 0.002f);
         Assert.assertEquals(48.727f, ret.get(0).getTimeAvg(), 0.002f);
+    }
+
+    @Test
+    public void testSpeedTestPingBlockedAddr() {
+        ArrayList<String> serversForTest = new ArrayList<>();
+        serversForTest.add("www.google.com.hk");
+        SpeedTest st = new SpeedTest(serversForTest);
+        ArrayList<PingResult> ret = st.ping(netMock);
+
+        Assert.assertEquals(1, ret.size());
+        Assert.assertEquals(1, ret.get(0).getExecRet());
+
     }
 
 }
