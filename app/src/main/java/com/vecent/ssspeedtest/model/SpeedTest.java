@@ -1,12 +1,6 @@
 package com.vecent.ssspeedtest.model;
 
 import com.vecent.ssspeedtest.model.bean.PingResult;
-import com.vecent.ssspeedtest.util.LogUtil;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 /**
@@ -26,10 +20,12 @@ public class SpeedTest {
         ArrayList<PingResult> ret = new ArrayList<>(this.mServersForTest.size());
         for (String server : mServersForTest) {
             PingResult pingRet = net.ping(server);
-            if (pingRet.getExecRet() == 0) {
-                this.parsePingRetStr(pingRet);
+            if (pingRet != null) {
+                if (pingRet.getExecRet() == 0) {
+                    this.parsePingRetStr(pingRet);
+                }
+                ret.add(pingRet);
             }
-            ret.add(pingRet);
         }
         return ret;
     }
@@ -41,13 +37,24 @@ public class SpeedTest {
             String[] sentences = line.split(",");
             for (String sentence : sentences) {
                 if (sentence.endsWith("packets transmitted")) {
-                    pingResult
+                    int totalPackets = sentence.charAt(0) - 0x30;
+                    pingResult.setTotalPackets(totalPackets);
                 } else if (sentence.endsWith("received")) {
-
+                    int recevied = sentence.charAt(1) - 0x30;
+                    pingResult.setReceivedPackets(recevied);
                 } else if (sentence.endsWith("packet loss")) {
-
+                    pingResult.setLossRate(sentence.substring(0, 6));
                 } else if (sentence.startsWith("rtt")) {
-
+                    String[] datas = sentence.split("=")[1].trim().split("/");
+                    for (int i = 0; i < datas.length - 1; i++) {
+                        if (i == 0) {
+                            pingResult.setTimeMin(Float.parseFloat(datas[i]));
+                        } else if (i == 1) {
+                            pingResult.setTimeAvg(Float.parseFloat(datas[i]));
+                        } else if (i == 2) {
+                            pingResult.setTimeMax(Float.parseFloat(datas[i]));
+                        }
+                    }
                 }
             }
         }
@@ -61,10 +68,5 @@ public class SpeedTest {
             }
         }).start();
     }
-
-    public ArrayList<PingResult> getPingResult() {
-        return null;
-    }
-
 
 }
