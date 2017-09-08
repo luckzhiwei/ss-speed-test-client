@@ -7,8 +7,11 @@ import android.widget.Button;
 
 import com.vecent.ssspeedtest.model.INetImpl;
 import com.vecent.ssspeedtest.model.SpeedTest;
+import com.vecent.ssspeedtest.util.Constant;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -34,6 +37,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initModel() {
-        this.mSpeedTest = new SpeedTest(new ArrayList<String>());
+        ArrayList<String> servers = new ArrayList<>();
+        servers.add("taobao.com");
+        servers.add("baidu.com");
+        servers.add("www.google.com.hk");
+        this.mSpeedTest = new SpeedTest(servers);
     }
 }
