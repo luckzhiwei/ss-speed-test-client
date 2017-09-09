@@ -57,10 +57,8 @@ public class TestSpeedTestClass {
         serversForTest.add("www.google.com.hk");
         SpeedTest st = new SpeedTest(serversForTest);
         ArrayList<PingResult> ret = st.ping(netMock);
-
         Assert.assertEquals(1, ret.size());
         Assert.assertEquals(1, ret.get(0).getExecRet());
-
     }
 
 }

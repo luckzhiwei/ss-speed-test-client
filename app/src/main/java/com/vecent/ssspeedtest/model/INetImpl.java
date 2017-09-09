@@ -30,7 +30,7 @@ public class INetImpl implements INet {
                 while ((line = reader.readLine()) != null) {
                     i++;
                     if (i > 7) {
-                        tmp.append(line);
+                        tmp.append(line + "\n");
                     }
                 }
                 ret.setPingRet(tmp.toString());

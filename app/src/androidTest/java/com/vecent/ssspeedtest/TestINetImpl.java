@@ -19,6 +19,7 @@ public class TestINetImpl {
         PingResult result = iNetForTest.ping("taobao.com");
         Assert.assertEquals(0, result.getExecRet());
         Assert.assertNotNull(result.getPingRet());
+        Assert.assertEquals(2, result.getPingRet().split("\n").length);
     }
 
     @Test

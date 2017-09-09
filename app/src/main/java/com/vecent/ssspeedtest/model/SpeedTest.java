@@ -1,6 +1,7 @@
 package com.vecent.ssspeedtest.model;
 
 import com.vecent.ssspeedtest.model.bean.PingResult;
+
 import java.util.ArrayList;
 
 /**
@@ -64,7 +65,8 @@ public class SpeedTest {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                ping(net);
+                ArrayList<PingResult> ret = ping(net);
+
             }
         }).start();
     }
