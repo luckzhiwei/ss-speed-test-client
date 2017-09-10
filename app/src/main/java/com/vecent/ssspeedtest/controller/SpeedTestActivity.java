@@ -2,10 +2,12 @@ package com.vecent.ssspeedtest.controller;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.vecent.ssspeedtest.R;
 import com.vecent.ssspeedtest.model.INetImpl;
 import com.vecent.ssspeedtest.model.SpeedTest;
+import com.vecent.ssspeedtest.model.bean.PingResult;
 
 import java.util.ArrayList;
 
@@ -26,7 +28,15 @@ public class SpeedTestActivity extends Activity {
         servers.add("baidu.com");
         servers.add("www.google.com.hk");
         this.mSpeedTest = new SpeedTest(servers);
+        this.mSpeedTest.setPingCallBack(new SpeedTest.OnPingCallBack() {
+            @Override
+            public void onPingRetListener(PingResult result) {
+                Toast.makeText(getApplicationContext(), result.getServerToTest(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), result.getExecRet(), Toast.LENGTH_SHORT).show();
+            }
+        });
         this.mSpeedTest.startTest(new INetImpl());
+
     }
 
 

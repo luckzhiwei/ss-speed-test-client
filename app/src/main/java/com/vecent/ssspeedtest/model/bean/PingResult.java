@@ -12,6 +12,15 @@ public class PingResult {
     private float timeMin;
     private float timeAvg;
     private String lossRate;
+    private String serverToTest;
+
+    public String getServerToTest() {
+        return serverToTest;
+    }
+
+    public void setServerToTest(String serverToTest) {
+        this.serverToTest = serverToTest;
+    }
 
     public String getLossRate() {
         return lossRate;

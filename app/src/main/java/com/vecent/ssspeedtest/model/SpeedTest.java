@@ -1,9 +1,10 @@
 package com.vecent.ssspeedtest.model;
 
 import com.vecent.ssspeedtest.model.bean.PingResult;
-import com.vecent.ssspeedtest.util.LogUtil;
 
 import java.util.ArrayList;
+
+import android.os.Handler;
 
 /**
  * Created by zhiwei on 2017/9/4.
@@ -14,9 +15,17 @@ public class SpeedTest {
     private ArrayList<String> mServersForTest;
     private ThreadPool mThreadPool;
 
+    private Handler mHandler;
+    private OnPingCallBack mPingCallBack;
+
+    public static interface OnPingCallBack {
+        public void onPingRetListener(PingResult result);
+    }
+
     public SpeedTest(ArrayList<String> serversForTest) {
         this.mServersForTest = serversForTest;
         mThreadPool = ThreadPool.getInstance();
+        mHandler = new Handler();
     }
 
     public PingResult ping(INet net, String serverToPing) {
@@ -64,11 +73,20 @@ public class SpeedTest {
             mThreadPool.execTask(new Runnable() {
                 @Override
                 public void run() {
-                    PingResult pingResult = ping(net, servers);
-                    LogUtil.logDebug(getClass().getName(), pingResult.getExecRet()+"");
+                    final PingResult pingResult = ping(net, servers);
+                    mHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            mPingCallBack.onPingRetListener(pingResult);
+                        }
+                    });
                 }
             });
         }
+    }
+
+    public void setPingCallBack(OnPingCallBack fun) {
+        this.mPingCallBack = fun;
     }
 
 }

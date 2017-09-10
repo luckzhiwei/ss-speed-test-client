@@ -22,6 +22,7 @@ public class INetImpl implements INet {
             int status = p.waitFor();
             PingResult ret = new PingResult();
             ret.setExecRet(status);
+            ret.setServerToTest(server);
             if (status == 0) {
                 BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
                 String line = "";
