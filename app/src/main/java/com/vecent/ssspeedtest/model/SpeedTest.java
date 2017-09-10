@@ -1,6 +1,7 @@
 package com.vecent.ssspeedtest.model;
 
 import com.vecent.ssspeedtest.model.bean.PingResult;
+import com.vecent.ssspeedtest.util.LogUtil;
 
 import java.util.ArrayList;
 
@@ -11,24 +12,21 @@ import java.util.ArrayList;
 public class SpeedTest {
 
     private ArrayList<String> mServersForTest;
-
+    private ThreadPool mThreadPool;
 
     public SpeedTest(ArrayList<String> serversForTest) {
         this.mServersForTest = serversForTest;
+        mThreadPool = ThreadPool.getInstance();
     }
 
-    public ArrayList<PingResult> ping(INet net) {
-        ArrayList<PingResult> ret = new ArrayList<>(this.mServersForTest.size());
-        for (String server : mServersForTest) {
-            PingResult pingRet = net.ping(server);
-            if (pingRet != null) {
-                if (pingRet.getExecRet() == 0) {
-                    this.parsePingRetStr(pingRet);
-                }
-                ret.add(pingRet);
+    public PingResult ping(INet net, String serverToPing) {
+        PingResult pingRet = net.ping(serverToPing);
+        if (pingRet != null) {
+            if (pingRet.getExecRet() == 0) {
+                this.parsePingRetStr(pingRet);
             }
         }
-        return ret;
+        return pingRet;
     }
 
     private void parsePingRetStr(PingResult pingResult) {
@@ -62,13 +60,15 @@ public class SpeedTest {
     }
 
     public void startTest(final INet net) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                ArrayList<PingResult> ret = ping(net);
-
-            }
-        }).start();
+        for (final String servers : mServersForTest) {
+            mThreadPool.execTask(new Runnable() {
+                @Override
+                public void run() {
+                    PingResult pingResult = ping(net, servers);
+                    LogUtil.logDebug(getClass().getName(), pingResult.getExecRet()+"");
+                }
+            });
+        }
     }
 
 }

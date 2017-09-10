@@ -40,15 +40,13 @@ public class TestSpeedTestClass {
         ArrayList<String> serversForTest = new ArrayList<>();
         serversForTest.add("taobao.com");
         SpeedTest st = new SpeedTest(serversForTest);
-        ArrayList<PingResult> ret = st.ping(netMock);
-
-        Assert.assertEquals(1, ret.size());
-        Assert.assertEquals(0, ret.get(0).getExecRet());
-        Assert.assertEquals(4, ret.get(0).getTotalPackets());
-        Assert.assertEquals(4, ret.get(0).getReceivedPackets());
-        Assert.assertEquals(42.885f, ret.get(0).getTimeMin(), 0.002f);
-        Assert.assertEquals(55.846f, ret.get(0).getTimeMax(), 0.002f);
-        Assert.assertEquals(48.727f, ret.get(0).getTimeAvg(), 0.002f);
+        PingResult ret = st.ping(netMock, serversForTest.get(0));
+        Assert.assertEquals(0, ret.getExecRet());
+        Assert.assertEquals(4, ret.getTotalPackets());
+        Assert.assertEquals(4, ret.getReceivedPackets());
+        Assert.assertEquals(42.885f, ret.getTimeMin(), 0.002f);
+        Assert.assertEquals(55.846f, ret.getTimeMax(), 0.002f);
+        Assert.assertEquals(48.727f, ret.getTimeAvg(), 0.002f);
     }
 
     @Test
@@ -56,9 +54,8 @@ public class TestSpeedTestClass {
         ArrayList<String> serversForTest = new ArrayList<>();
         serversForTest.add("www.google.com.hk");
         SpeedTest st = new SpeedTest(serversForTest);
-        ArrayList<PingResult> ret = st.ping(netMock);
-        Assert.assertEquals(1, ret.size());
-        Assert.assertEquals(1, ret.get(0).getExecRet());
+        PingResult ret = st.ping(netMock, serversForTest.get(0));
+        Assert.assertEquals(1, ret.getExecRet());
     }
 
 }
