@@ -19,7 +19,7 @@ public class SpeedTest {
     private OnPingCallBack mPingCallBack;
 
     public static interface OnPingCallBack {
-        public void onPingRetListener(PingResult result);
+         void onPingRetListener(PingResult result);
     }
 
     public SpeedTest(ArrayList<String> serversForTest) {

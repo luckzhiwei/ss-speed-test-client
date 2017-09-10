@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">ssspeedtest</string>
     <string name="test_speed">测速</string>
+    <string name="status">ping状态</string>
+    <string name="server_test">测试服务器</string>
+    <string name="time_min_of_ping">最小用时</string>
+    <string name="time_max_of_ping">最大用时</string>
+    <string name="time_avg_of_ping">平均平时</string>
 </resources>
