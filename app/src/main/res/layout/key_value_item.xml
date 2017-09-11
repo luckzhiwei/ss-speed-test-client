@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/item_key_value_key_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_margin="8dp"
+        android:layout_marginLeft="16dp"
+        android:text="@string/server_test"
+        android:textColor="@color/colorBlack" />
+
+    <TextView
+        android:id="@+id/item_key_value_value_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/item_key_value_key_content"
+        android:layout_marginLeft="8dp"
+        android:layout_toRightOf="@id/item_key_value_key_content"
+        android:text="@string/server_name_test"
+        android:textColor="@color/colorBlack" />
+
+    <!--<ViewStub-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_alignParentRight="true"-->
+    <!--android:layout_alignParentTop="true"-->
+    <!--android:layout_margin="8dp">-->
+
+    <!--<ImageView-->
+    <!--android:id="@+id/server_test_status"-->
+    <!--android:layout_width="8dp"-->
+    <!--android:layout_height="8dp"-->
+    <!--android:layout_margin="8dp"-->
+    <!--android:background="@color/colorGreen" />-->
+    <!--</ViewStub>-->
+</RelativeLayout>

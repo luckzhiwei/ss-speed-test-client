@@ -17,7 +17,7 @@ public class TestINetImpl {
     public void testINetImplPingWhiteListAddr() {
         INet iNetForTest = new INetImpl();
         PingResult result = iNetForTest.ping("taobao.com");
-        Assert.assertEquals(0, result.getExecRet());
+        Assert.assertEquals(0, result.getExecRetCode());
         Assert.assertNotNull(result.getPingRet());
         Assert.assertEquals(2, result.getPingRet().split("\n").length);
     }
@@ -26,7 +26,7 @@ public class TestINetImpl {
     public void testINetImplPingBlackListAddr() {
         INet iNetForTest = new INetImpl();
         PingResult result = iNetForTest.ping("www.google.com.hk");
-        Assert.assertEquals(1, result.getExecRet());
+        Assert.assertEquals(1, result.getExecRetCode());
         Assert.assertNull(result.getPingRet());
     }
 }
