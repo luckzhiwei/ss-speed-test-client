@@ -6,88 +6,40 @@ package com.vecent.ssspeedtest.model.bean;
 
 public class SpeedTestResult {
 
-    private int execRetCode;
-    private String pingRet;
-    private float timeMax;
-    private float timeMin;
-    private float timeAvg;
-    private String lossRate;
-    private String serverToTest;
+    private String requestServer;
+    private int totalSize;
+    private int statusCode;
+    private long timeUsed;
 
-    public String getServerToTest() {
-        return serverToTest;
+    public String getRequestServer() {
+        return requestServer;
     }
 
-    public void setServerToTest(String serverToTest) {
-        this.serverToTest = serverToTest;
+    public void setRequestServer(String requestServer) {
+        this.requestServer = requestServer;
     }
 
-    public String getLossRate() {
-        return lossRate;
+    public int getTotalSize() {
+        return totalSize;
     }
 
-    public void setLossRate(String lossRate) {
-        this.lossRate = lossRate;
+    public void setTotalSize(int totalSize) {
+        this.totalSize = totalSize;
     }
 
-    private int totalPackets;
-
-    public int getReceivedPackets() {
-        return receivedPackets;
+    public int getStatusCode() {
+        return statusCode;
     }
 
-    public void setReceivedPackets(int receivedPackets) {
-        this.receivedPackets = receivedPackets;
+    public void setStatusCode(int statusCode) {
+        this.statusCode = statusCode;
     }
 
-    private int receivedPackets;
-
-    public int getTotalPackets() {
-        return totalPackets;
+    public long getTimeUsed() {
+        return timeUsed;
     }
 
-    public void setTotalPackets(int totalPackets) {
-        this.totalPackets = totalPackets;
+    public void setTimeUsed(long timeUsed) {
+        this.timeUsed = timeUsed;
     }
-
-    public float getTimeMax() {
-        return timeMax;
-    }
-
-    public void setTimeMax(float timeMax) {
-        this.timeMax = timeMax;
-    }
-
-    public float getTimeMin() {
-        return timeMin;
-    }
-
-    public void setTimeMin(float timeMin) {
-        this.timeMin = timeMin;
-    }
-
-    public float getTimeAvg() {
-        return timeAvg;
-    }
-
-    public void setTimeAvg(float timeAvg) {
-        this.timeAvg = timeAvg;
-    }
-
-    public void setExecRetCode(int execRetCode) {
-        this.execRetCode = execRetCode;
-    }
-
-    public int getExecRetCode() {
-        return this.execRetCode;
-    }
-
-    public void setPingRet(String pingRet) {
-        this.pingRet = pingRet;
-    }
-
-    public String getPingRet() {
-        return this.pingRet;
-    }
-
 }

@@ -32,15 +32,7 @@ public class SpeedTestAdapter extends CommonAdapter<SpeedTestResult> {
         if (container.getChildCount() == 0) {
             this.initView(container, mContext.getResources());
         } else {
-            this.setServerNameItem(container, ret.getServerToTest());
-            if (ret.getExecRetCode() == 0) {
-                this.setStatus(container, res.getString(R.string.ping_avaliable));
-                this.setRetContent(container, ret);
-                this.show(container);
-            } else {
-                this.setStatus(container, res.getString(R.string.ping_unavaliable));
-                this.hiden(container);
-            }
+
         }
     }
 
@@ -76,11 +68,6 @@ public class SpeedTestAdapter extends CommonAdapter<SpeedTestResult> {
     }
 
     private void setRetContent(ViewGroup container, SpeedTestResult result) {
-        ((KeyValueView) container.getChildAt(2)).setValue(result.getTotalPackets() + "");
-        ((KeyValueView) container.getChildAt(3)).setValue(result.getLossRate() + "");
-        ((KeyValueView) container.getChildAt(4)).setValue(result.getTimeMin() + "");
-        ((KeyValueView) container.getChildAt(5)).setValue(result.getTimeMax() + "");
-        ((KeyValueView) container.getChildAt(6)).setValue(result.getTimeAvg() + "");
     }
 
     private void setStatus(ViewGroup container, String pingRet) {

@@ -27,7 +27,6 @@ public class SpeedTestActivity extends Activity {
         setContentView(R.layout.speed_test_layout);
         this.initView();
         this.initData();
-//        this.startSpeedTest();
     }
 
     private void initView() {
@@ -36,29 +35,9 @@ public class SpeedTestActivity extends Activity {
 
     private void initData() {
         ArrayList<String> servers = new ArrayList<>();
-        servers.add("taobao.com");
-        servers.add("baidu.com");
-        servers.add("www.google.com.hk");
+        servers.add("http://www.baidu.com/");
         this.mSpeedTest = new SpeedTest(servers);
-        ArrayList<SpeedTestResult> mock = new ArrayList<>();
-        for (int i = 0; i < 6; i++) {
-            SpeedTestResult pingResult = new SpeedTestResult();
-            pingResult.setExecRetCode(0);
-            pingResult.setServerToTest("www.taobao.com" + i);
-            pingResult.setLossRate("0%");
-            pingResult.setTimeAvg(45);
-            pingResult.setTimeMin(42);
-            pingResult.setTimeMax(48);
-            pingResult.setTotalPackets(4);
-            mock.add(pingResult);
-        }
-        SpeedTestResult pingResult = new SpeedTestResult();
-        pingResult.setExecRetCode(1);
-        pingResult.setServerToTest("google.com");
-        mock.add(pingResult);
-        this.mContentListView.setAdapter(new SpeedTestAdapter(getApplicationContext(),
-                R.layout.speed_test_item_layout, mock));
-
+        this.startSpeedTest();
     }
 
     private void startSpeedTest() {

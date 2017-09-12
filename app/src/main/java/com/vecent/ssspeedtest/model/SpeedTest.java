@@ -1,6 +1,7 @@
 package com.vecent.ssspeedtest.model;
 
 import com.vecent.ssspeedtest.model.bean.SpeedTestResult;
+import com.vecent.ssspeedtest.util.LogUtil;
 
 import java.util.ArrayList;
 
@@ -19,7 +20,7 @@ public class SpeedTest {
     private OnPingCallBack mPingCallBack;
 
     public static interface OnPingCallBack {
-         void onPingRetListener(SpeedTestResult result);
+        void onPingRetListener(SpeedTestResult result);
     }
 
     public SpeedTest(ArrayList<String> serversForTest) {
@@ -29,44 +30,10 @@ public class SpeedTest {
     }
 
     public SpeedTestResult ping(INet net, String serverToPing) {
-        SpeedTestResult pingRet = net.ping(serverToPing);
-        if (pingRet != null) {
-            if (pingRet.getExecRetCode() == 0) {
-                this.parsePingRetStr(pingRet);
-            }
-        }
+        SpeedTestResult pingRet = net.httpRequest(serverToPing);
         return pingRet;
     }
 
-    private void parsePingRetStr(SpeedTestResult pingResult) {
-        String strRet = pingResult.getPingRet();
-        String[] arr = strRet.split("\n");
-        for (String line : arr) {
-            String[] sentences = line.split(",");
-            for (String sentence : sentences) {
-                if (sentence.endsWith("packets transmitted")) {
-                    int totalPackets = sentence.charAt(0) - 0x30;
-                    pingResult.setTotalPackets(totalPackets);
-                } else if (sentence.endsWith("received")) {
-                    int recevied = sentence.charAt(1) - 0x30;
-                    pingResult.setReceivedPackets(recevied);
-                } else if (sentence.endsWith("packet loss")) {
-                    pingResult.setLossRate(sentence.substring(0, 6));
-                } else if (sentence.startsWith("rtt")) {
-                    String[] datas = sentence.split("=")[1].trim().split("/");
-                    for (int i = 0; i < datas.length - 1; i++) {
-                        if (i == 0) {
-                            pingResult.setTimeMin(Float.parseFloat(datas[i]));
-                        } else if (i == 1) {
-                            pingResult.setTimeAvg(Float.parseFloat(datas[i]));
-                        } else if (i == 2) {
-                            pingResult.setTimeMax(Float.parseFloat(datas[i]));
-                        }
-                    }
-                }
-            }
-        }
-    }
 
     public void startTest(final INet net) {
         for (final String servers : mServersForTest) {
@@ -74,6 +41,10 @@ public class SpeedTest {
                 @Override
                 public void run() {
                     final SpeedTestResult pingResult = ping(net, servers);
+                    LogUtil.logDebug(getClass().getName(), pingResult.getRequestServer());
+                    LogUtil.logDebug(getClass().getName(), pingResult.getTotalSize() + "");
+                    LogUtil.logDebug(getClass().getName(), pingResult.getStatusCode() + "");
+                    LogUtil.logDebug(getClass().getName(), pingResult.getTimeUsed() + "");
                     mHandler.post(new Runnable() {
                         @Override
                         public void run() {

@@ -7,5 +7,5 @@ import com.vecent.ssspeedtest.model.bean.SpeedTestResult;
  */
 
 public interface INet {
-    public SpeedTestResult ping(String server);
+    public SpeedTestResult httpRequest(String server);
 }

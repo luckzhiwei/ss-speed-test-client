@@ -16,17 +16,12 @@ public class TestINetImpl {
     @Test
     public void testINetImplPingWhiteListAddr() {
         INet iNetForTest = new INetImpl();
-        SpeedTestResult result = iNetForTest.ping("taobao.com");
-        Assert.assertEquals(0, result.getExecRetCode());
-        Assert.assertNotNull(result.getPingRet());
-        Assert.assertEquals(2, result.getPingRet().split("\n").length);
+        SpeedTestResult result = iNetForTest.httpRequest("taobao.com");
     }
 
     @Test
     public void testINetImplPingBlackListAddr() {
         INet iNetForTest = new INetImpl();
-        SpeedTestResult result = iNetForTest.ping("www.google.com.hk");
-        Assert.assertEquals(1, result.getExecRetCode());
-        Assert.assertNull(result.getPingRet());
+        SpeedTestResult result = iNetForTest.httpRequest("www.google.com.hk");
     }
 }
