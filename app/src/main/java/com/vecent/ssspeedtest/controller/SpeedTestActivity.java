@@ -48,7 +48,7 @@ public class SpeedTestActivity extends Activity {
         for (int i = 0; i < 6; i++) {
             PingResult pingResult = new PingResult();
             pingResult.setExecRetCode(0);
-            pingResult.setServerToTest("www.taobao.com");
+            pingResult.setServerToTest("www.taobao.com"+i);
             pingResult.setLossRate("0%");
             pingResult.setTimeAvg(45);
             pingResult.setTimeMin(42);

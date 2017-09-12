@@ -39,4 +39,14 @@ public class KeyValueView {
         return this.mLayout;
     }
 
+    public void hidden() {
+        this.textViewKey.setVisibility(View.GONE);
+        this.textViewValue.setVisibility(View.GONE);
+    }
+
+    public void show() {
+        this.textViewKey.setVisibility(View.VISIBLE);
+        this.textViewValue.setVisibility(View.VISIBLE);
+    }
+
 }
