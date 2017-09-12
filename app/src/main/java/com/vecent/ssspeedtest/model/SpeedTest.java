@@ -1,6 +1,6 @@
 package com.vecent.ssspeedtest.model;
 
-import com.vecent.ssspeedtest.model.bean.PingResult;
+import com.vecent.ssspeedtest.model.bean.SpeedTestResult;
 
 import java.util.ArrayList;
 
@@ -19,7 +19,7 @@ public class SpeedTest {
     private OnPingCallBack mPingCallBack;
 
     public static interface OnPingCallBack {
-         void onPingRetListener(PingResult result);
+         void onPingRetListener(SpeedTestResult result);
     }
 
     public SpeedTest(ArrayList<String> serversForTest) {
@@ -28,8 +28,8 @@ public class SpeedTest {
         mHandler = new Handler();
     }
 
-    public PingResult ping(INet net, String serverToPing) {
-        PingResult pingRet = net.ping(serverToPing);
+    public SpeedTestResult ping(INet net, String serverToPing) {
+        SpeedTestResult pingRet = net.ping(serverToPing);
         if (pingRet != null) {
             if (pingRet.getExecRetCode() == 0) {
                 this.parsePingRetStr(pingRet);
@@ -38,7 +38,7 @@ public class SpeedTest {
         return pingRet;
     }
 
-    private void parsePingRetStr(PingResult pingResult) {
+    private void parsePingRetStr(SpeedTestResult pingResult) {
         String strRet = pingResult.getPingRet();
         String[] arr = strRet.split("\n");
         for (String line : arr) {
@@ -73,7 +73,7 @@ public class SpeedTest {
             mThreadPool.execTask(new Runnable() {
                 @Override
                 public void run() {
-                    final PingResult pingResult = ping(net, servers);
+                    final SpeedTestResult pingResult = ping(net, servers);
                     mHandler.post(new Runnable() {
                         @Override
                         public void run() {

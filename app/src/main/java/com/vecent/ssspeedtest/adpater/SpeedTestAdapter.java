@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.vecent.ssspeedtest.R;
-import com.vecent.ssspeedtest.model.bean.PingResult;
+import com.vecent.ssspeedtest.model.bean.SpeedTestResult;
 import com.vecent.ssspeedtest.view.KeyValueView;
 import com.zhy.adapter.abslistview.CommonAdapter;
 import com.zhy.adapter.abslistview.ViewHolder;
@@ -17,17 +17,17 @@ import java.util.List;
  * Created by lzw on 17-9-11.
  */
 
-public class SpeedTestAdapter extends CommonAdapter<PingResult> {
+public class SpeedTestAdapter extends CommonAdapter<SpeedTestResult> {
 
     private Resources res;
 
-    public SpeedTestAdapter(Context context, final int layoutId, List<PingResult> datas) {
+    public SpeedTestAdapter(Context context, final int layoutId, List<SpeedTestResult> datas) {
         super(context, layoutId, datas);
         res = context.getResources();
     }
 
     @Override
-    public void convert(ViewHolder holder, PingResult ret, int post) {
+    public void convert(ViewHolder holder, SpeedTestResult ret, int post) {
         LinearLayout container = holder.getView(R.id.speed_test_layout_container);
         if (container.getChildCount() == 0) {
             this.initView(container, mContext.getResources());
@@ -75,7 +75,7 @@ public class SpeedTestAdapter extends CommonAdapter<PingResult> {
         }
     }
 
-    private void setRetContent(ViewGroup container, PingResult result) {
+    private void setRetContent(ViewGroup container, SpeedTestResult result) {
         ((KeyValueView) container.getChildAt(2)).setValue(result.getTotalPackets() + "");
         ((KeyValueView) container.getChildAt(3)).setValue(result.getLossRate() + "");
         ((KeyValueView) container.getChildAt(4)).setValue(result.getTimeMin() + "");

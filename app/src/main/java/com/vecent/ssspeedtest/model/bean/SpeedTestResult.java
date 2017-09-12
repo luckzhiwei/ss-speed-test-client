@@ -4,7 +4,7 @@ package com.vecent.ssspeedtest.model.bean;
  * Created by lzw on 17-9-5.
  */
 
-public class PingResult {
+public class SpeedTestResult {
 
     private int execRetCode;
     private String pingRet;

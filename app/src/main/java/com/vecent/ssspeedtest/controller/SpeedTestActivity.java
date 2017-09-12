@@ -8,7 +8,7 @@ import com.vecent.ssspeedtest.adpater.SpeedTestAdapter;
 import com.vecent.ssspeedtest.R;
 import com.vecent.ssspeedtest.model.INetImpl;
 import com.vecent.ssspeedtest.model.SpeedTest;
-import com.vecent.ssspeedtest.model.bean.PingResult;
+import com.vecent.ssspeedtest.model.bean.SpeedTestResult;
 
 import java.util.ArrayList;
 
@@ -40,9 +40,9 @@ public class SpeedTestActivity extends Activity {
         servers.add("baidu.com");
         servers.add("www.google.com.hk");
         this.mSpeedTest = new SpeedTest(servers);
-        ArrayList<PingResult> mock = new ArrayList<>();
+        ArrayList<SpeedTestResult> mock = new ArrayList<>();
         for (int i = 0; i < 6; i++) {
-            PingResult pingResult = new PingResult();
+            SpeedTestResult pingResult = new SpeedTestResult();
             pingResult.setExecRetCode(0);
             pingResult.setServerToTest("www.taobao.com" + i);
             pingResult.setLossRate("0%");
@@ -52,7 +52,7 @@ public class SpeedTestActivity extends Activity {
             pingResult.setTotalPackets(4);
             mock.add(pingResult);
         }
-        PingResult pingResult = new PingResult();
+        SpeedTestResult pingResult = new SpeedTestResult();
         pingResult.setExecRetCode(1);
         pingResult.setServerToTest("google.com");
         mock.add(pingResult);
@@ -64,7 +64,7 @@ public class SpeedTestActivity extends Activity {
     private void startSpeedTest() {
         this.mSpeedTest.setPingCallBack(new SpeedTest.OnPingCallBack() {
             @Override
-            public void onPingRetListener(PingResult result) {
+            public void onPingRetListener(SpeedTestResult result) {
 
             }
         });

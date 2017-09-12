@@ -1,10 +1,12 @@
 package com.vecent.ssspeedtest.model;
 
-import com.vecent.ssspeedtest.model.bean.PingResult;
+import com.vecent.ssspeedtest.model.bean.SpeedTestResult;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 /**
  * Created by lzw on 17-9-5.
@@ -12,31 +14,16 @@ import java.io.InputStreamReader;
 
 public class INetImpl implements INet {
 
-    public PingResult ping(String server) {
+    public SpeedTestResult ping(String server) {
         try {
-            String cmd = "/system/bin/ping -c 4 -W 5 ";
-            Process p = Runtime.getRuntime().exec(cmd + server);
-            int status = p.waitFor();
-            PingResult ret = new PingResult();
-            ret.setExecRetCode(status);
-            ret.setServerToTest(server);
-            if (status == 0) {
-                BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
-                String line = "";
-                int i = 0;
-                StringBuilder tmp = new StringBuilder();
-                while ((line = reader.readLine()) != null) {
-                    i++;
-                    if (i > 7) {
-                        tmp.append(line + "\n");
-                    }
-                }
-                ret.setPingRet(tmp.toString());
-            }
-            return ret;
+            SpeedTestResult result = new SpeedTestResult();
+            URL url = new URL(server);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+            conn.setDoInput(true);
+
+            return result;
         } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
             e.printStackTrace();
         }
         return null;
