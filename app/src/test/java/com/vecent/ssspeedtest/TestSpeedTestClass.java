@@ -26,12 +26,12 @@ public class TestSpeedTestClass {
     @Before
     public void beforeTest() {
         PingResult pingResultMockTaobao = new PingResult();
-        pingResultMockTaobao.setExecRet(0);
+        pingResultMockTaobao.setExecRetCode(0);
         pingResultMockTaobao.setServerToTest("taobao.com");
         pingResultMockTaobao.setPingRet("4 packets transmitted, 4 received, 0% packet loss, time 3005ms\n" +
                 "rtt min/avg/max/mdev = 42.885/48.727/55.846/4.635 ms\n");
         PingResult pingResultGoogle = new PingResult();
-        pingResultGoogle.setExecRet(1);
+        pingResultGoogle.setExecRetCode(1);
         pingResultGoogle.setServerToTest("www.google.com.hk");
         Mockito.when(netMock.ping("taobao.com")).thenReturn(pingResultMockTaobao);
         Mockito.when(netMock.ping("www.google.com.hk")).thenReturn(pingResultGoogle);
@@ -43,7 +43,7 @@ public class TestSpeedTestClass {
         serversForTest.add("taobao.com");
         SpeedTest st = new SpeedTest(serversForTest);
         PingResult ret = st.ping(netMock, serversForTest.get(0));
-        Assert.assertEquals(0, ret.getExecRet());
+        Assert.assertEquals(0, ret.getExecRetCode());
         Assert.assertEquals(4, ret.getTotalPackets());
         Assert.assertEquals(4, ret.getReceivedPackets());
         Assert.assertEquals(42.885f, ret.getTimeMin(), 0.002f);
@@ -58,7 +58,7 @@ public class TestSpeedTestClass {
         serversForTest.add("www.google.com.hk");
         SpeedTest st = new SpeedTest(serversForTest);
         PingResult ret = st.ping(netMock, serversForTest.get(0));
-        Assert.assertEquals(1, ret.getExecRet());
+        Assert.assertEquals(1, ret.getExecRetCode());
         Assert.assertEquals("www.google.com.hk", ret.getServerToTest());
     }
 

@@ -18,7 +18,7 @@ public class INetImpl implements INet {
             Process p = Runtime.getRuntime().exec(cmd + server);
             int status = p.waitFor();
             PingResult ret = new PingResult();
-            ret.setExecRet(status);
+            ret.setExecRetCode(status);
             ret.setServerToTest(server);
             if (status == 0) {
                 BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));

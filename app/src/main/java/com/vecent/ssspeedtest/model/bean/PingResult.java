@@ -6,7 +6,7 @@ package com.vecent.ssspeedtest.model.bean;
 
 public class PingResult {
 
-    private int execRet;
+    private int execRetCode;
     private String pingRet;
     private float timeMax;
     private float timeMin;
@@ -74,12 +74,12 @@ public class PingResult {
         this.timeAvg = timeAvg;
     }
 
-    public void setExecRet(int execRet) {
-        this.execRet = execRet;
+    public void setExecRetCode(int execRetCode) {
+        this.execRetCode = execRetCode;
     }
 
-    public int getExecRet() {
-        return this.execRet;
+    public int getExecRetCode() {
+        return this.execRetCode;
     }
 
     public void setPingRet(String pingRet) {

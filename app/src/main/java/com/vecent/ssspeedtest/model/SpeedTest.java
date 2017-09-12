@@ -31,7 +31,7 @@ public class SpeedTest {
     public PingResult ping(INet net, String serverToPing) {
         PingResult pingRet = net.ping(serverToPing);
         if (pingRet != null) {
-            if (pingRet.getExecRet() == 0) {
+            if (pingRet.getExecRetCode() == 0) {
                 this.parsePingRetStr(pingRet);
             }
         }
