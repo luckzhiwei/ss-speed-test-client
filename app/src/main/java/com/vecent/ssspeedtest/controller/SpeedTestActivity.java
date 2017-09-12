@@ -2,17 +2,13 @@ package com.vecent.ssspeedtest.controller;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.vecent.ssspeedtest.Adpater.SpeedTestAdapter;
+import com.vecent.ssspeedtest.adpater.SpeedTestAdapter;
 import com.vecent.ssspeedtest.R;
 import com.vecent.ssspeedtest.model.INetImpl;
 import com.vecent.ssspeedtest.model.SpeedTest;
 import com.vecent.ssspeedtest.model.bean.PingResult;
-import com.vecent.ssspeedtest.util.LogUtil;
 
 import java.util.ArrayList;
 
@@ -48,7 +44,7 @@ public class SpeedTestActivity extends Activity {
         for (int i = 0; i < 6; i++) {
             PingResult pingResult = new PingResult();
             pingResult.setExecRetCode(0);
-            pingResult.setServerToTest("www.taobao.com"+i);
+            pingResult.setServerToTest("www.taobao.com" + i);
             pingResult.setLossRate("0%");
             pingResult.setTimeAvg(45);
             pingResult.setTimeMin(42);
@@ -56,6 +52,10 @@ public class SpeedTestActivity extends Activity {
             pingResult.setTotalPackets(4);
             mock.add(pingResult);
         }
+        PingResult pingResult = new PingResult();
+        pingResult.setExecRetCode(1);
+        pingResult.setServerToTest("google.com");
+        mock.add(pingResult);
         this.mContentListView.setAdapter(new SpeedTestAdapter(getApplicationContext(),
                 R.layout.speed_test_item_layout, mock));
 
