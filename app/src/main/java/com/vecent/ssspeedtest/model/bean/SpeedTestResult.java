@@ -10,6 +10,15 @@ public class SpeedTestResult {
     private int totalSize;
     private int statusCode;
     private long timeUsed;
+    private String exceptionMsg;
+
+    public String getExceptionMsg() {
+        return exceptionMsg;
+    }
+
+    public void setExceptionMsg(String exceptionMsg) {
+        this.exceptionMsg = exceptionMsg;
+    }
 
     public String getRequestServer() {
         return requestServer;

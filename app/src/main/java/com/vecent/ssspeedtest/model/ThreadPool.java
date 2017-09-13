@@ -38,5 +38,13 @@ public class ThreadPool {
         }
     }
 
+    public void stopAddTask(){
+        this.mExecutor.shutdown();
+    }
+
+    public void waitAllTaskComplete() throws InterruptedException {
+        mExecutor.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
+    }
+
 
 }

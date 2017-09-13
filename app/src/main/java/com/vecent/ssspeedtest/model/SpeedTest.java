@@ -6,6 +6,7 @@ import com.vecent.ssspeedtest.util.LogUtil;
 import java.util.ArrayList;
 
 import android.os.Handler;
+import android.util.Log;
 
 /**
  * Created by zhiwei on 2017/9/4.
@@ -36,15 +37,21 @@ public class SpeedTest {
 
 
     public void startTest(final INet net) {
+
         for (final String servers : mServersForTest) {
             mThreadPool.execTask(new Runnable() {
                 @Override
                 public void run() {
                     final SpeedTestResult pingResult = ping(net, servers);
-                    LogUtil.logDebug(getClass().getName(), pingResult.getRequestServer());
-                    LogUtil.logDebug(getClass().getName(), pingResult.getTotalSize() + "");
-                    LogUtil.logDebug(getClass().getName(), pingResult.getStatusCode() + "");
-                    LogUtil.logDebug(getClass().getName(), pingResult.getTimeUsed() + "");
+                    if (pingResult != null) {
+                        if (pingResult.getExceptionMsg() != null) {
+                            LogUtil.logDebug(getClass().getName(),pingResult.getExceptionMsg()+"excepiton");
+                        }
+                        LogUtil.logDebug(getClass().getName(), pingResult.getRequestServer());
+                        LogUtil.logDebug(getClass().getName(), pingResult.getTotalSize() + "size");
+                        LogUtil.logDebug(getClass().getName(), pingResult.getStatusCode() + "code");
+                        LogUtil.logDebug(getClass().getName(), pingResult.getTimeUsed() + "time");
+                    }
                     mHandler.post(new Runnable() {
                         @Override
                         public void run() {
@@ -54,6 +61,14 @@ public class SpeedTest {
                 }
             });
         }
+        mThreadPool.stopAddTask();
+        try{
+            mThreadPool.waitAllTaskComplete();
+        }
+        catch(InterruptedException e){
+            LogUtil.logInfo("Wait all task complete error"," InterruptedException");
+        }
+        LogUtil.logInfo("","All task complete");
     }
 
     public void setPingCallBack(OnPingCallBack fun) {
