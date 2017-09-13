@@ -4,12 +4,10 @@ import com.vecent.ssspeedtest.model.INet;
 import com.vecent.ssspeedtest.model.SpeedTest;
 import com.vecent.ssspeedtest.model.bean.SpeedTestResult;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.ArrayList;
@@ -40,7 +38,7 @@ public class TestSpeedTestClass {
         ArrayList<String> serversForTest = new ArrayList<>();
         serversForTest.add("www.google.com.hk");
         SpeedTest st = new SpeedTest(serversForTest);
-        SpeedTestResult ret = st.ping(netMock, serversForTest.get(0));
+        SpeedTestResult ret = st.httpSpeedTest(netMock, serversForTest.get(0));
     }
 
 }

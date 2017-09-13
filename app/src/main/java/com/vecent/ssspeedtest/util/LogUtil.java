@@ -15,25 +15,33 @@ public class LogUtil {
 
     public static void logError(String tagPostfix, String msg) {
         if (LOG_ERROR_TAG != 0) {
+            tagPostfix = preProcessTag(tagPostfix);
             Log.e(Constant.LOG_TAG + tagPostfix, msg);
         }
     }
 
     public static void logInfo(String tagPostfix, String msg) {
         if (LOG_INFO_TAG != 0) {
+            tagPostfix = preProcessTag(tagPostfix);
             Log.i(Constant.LOG_TAG + tagPostfix, msg);
         }
     }
 
     public static void logVerbase(String tagPostfix, String msg) {
         if (LOG_VERBASE_TAG != 0) {
+            tagPostfix = preProcessTag(tagPostfix);
             Log.v(Constant.LOG_TAG + tagPostfix, msg);
         }
     }
 
     public static void logDebug(String tagPostfix, String msg) {
         if (LOG_DEBUG_TAG != 0) {
+            tagPostfix = preProcessTag(tagPostfix);
             Log.i(Constant.LOG_TAG + tagPostfix, msg);
         }
+    }
+
+    public static String preProcessTag(String tag) {
+        return tag == null ? "" : tag;
     }
 }
