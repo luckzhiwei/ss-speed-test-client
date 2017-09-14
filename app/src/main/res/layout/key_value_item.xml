@@ -11,7 +11,7 @@
         android:layout_alignParentTop="true"
         android:layout_margin="8dp"
         android:layout_marginLeft="16dp"
-        android:text="@string/server_test"
+        android:text="@string/server_address"
         android:textColor="@color/colorBlack" />
 
     <TextView
@@ -21,7 +21,7 @@
         android:layout_alignTop="@id/item_key_value_key_content"
         android:layout_marginLeft="8dp"
         android:layout_toRightOf="@id/item_key_value_key_content"
-        android:text="@string/server_name_test"
+        android:text="@string/server_address_test"
         android:textColor="@color/colorBlack" />
 
     <!--<ViewStub-->

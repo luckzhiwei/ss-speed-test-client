@@ -16,6 +16,15 @@ public class SpeedTestResult {
     private boolean isTimedOut = false;
     private String redirectServer;
     private boolean isExceptionOccured = false;
+    private float downLoadSpeed;
+
+    public float getDownLoadSpeed() {
+        return downLoadSpeed;
+    }
+
+    public void setDownLoadSpeed(float downLoadSpeed) {
+        this.downLoadSpeed = downLoadSpeed;
+    }
 
     public boolean isUrlWrong() {
         return isUrlWrong;
