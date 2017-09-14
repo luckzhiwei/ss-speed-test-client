@@ -27,23 +27,32 @@ public class SpeedTestAdapter extends CommonAdapter<SpeedTestResult> {
     }
 
     @Override
-    public void convert(ViewHolder holder, SpeedTestResult ret, int post) {
+    public void convert(ViewHolder holder, SpeedTestResult result, int post) {
         LinearLayout container = holder.getView(R.id.speed_test_layout_container);
         if (container.getChildCount() == 0) {
             this.initView(container, mContext.getResources());
         } else {
-
+            this.setCommonInfo(container, result, res);
+            if (result.isExceptionOccured()) {
+                this.setExceptionInfo(container, result, res);
+            } else {
+                this.setNormalInfo(container, result, res);
+            }
         }
     }
 
     private void initView(ViewGroup container, Resources res) {
-        this.addKVView(container, res.getString(R.string.server_test), "");
-        this.addKVView(container, res.getString(R.string.status), "");
-        this.addKVView(container, res.getString(R.string.icmp_total_packets), "");
-        this.addKVView(container, res.getString(R.string.loss_packets_rate), "");
-        this.addKVView(container, res.getString(R.string.time_min_of_ping), "");
-        this.addKVView(container, res.getString(R.string.time_max_of_ping), "");
-        this.addKVView(container, res.getString(R.string.time_avg_of_ping), "");
+        this.addKVView(container, res.getString(R.string.server_address), "");
+        this.addKVView(container, res.getString(R.string.redirect_address), "");
+        this.addKVView(container, res.getString(R.string.request_result), "");
+
+        this.addKVView(container, res.getString(R.string.exception_msg), "");
+        this.addKVView(container, res.getString(R.string.is_url_wrong), "");
+        this.addKVView(container, res.getString(R.string.is_timed_out), "");
+
+        this.addKVView(container, res.getString(R.string.response_byte_size), "");
+        this.addKVView(container, res.getString(R.string.time_used), "");
+        this.addKVView(container, res.getString(R.string.dowload_speed), "");
     }
 
     private void addKVView(ViewGroup view, String key, String value) {
@@ -51,27 +60,56 @@ public class SpeedTestAdapter extends CommonAdapter<SpeedTestResult> {
                 .setValue(value));
     }
 
-    private void setServerNameItem(ViewGroup view, String serverName) {
-        ((KeyValueView) view.getChildAt(0)).setValue(serverName);
+
+    private void setCommonInfo(ViewGroup view, SpeedTestResult result, Resources res) {
+        ((KeyValueView) view.getChildAt(0)).setValue(result.getRequestServer());
+        String redirectServer = result.isRedirect() ? result.getRedirectServer() : res.getString(R.string.empty);
+        ((KeyValueView) view.getChildAt(1)).setValue(redirectServer);
+        String requestResult = result.isExceptionOccured() ? res.getString(R.string.result_ok) : res.getString(R.string.execption_occured);
+        ((KeyValueView) view.getChildAt(2)).setValue(requestResult);
     }
 
-    private void hiden(ViewGroup container) {
-        for (int i = 2; i < container.getChildCount(); i++) {
+    private void setExceptionInfo(ViewGroup view, SpeedTestResult result, Resources res) {
+        ((KeyValueView) view.getChildAt(3)).setValue(result.getExceptionMsg());
+        String isUrlWrong = result.isUrlWrong() ? res.getString(R.string.yes) : res.getString(R.string.no);
+        ((KeyValueView) view.getChildAt(4)).setValue(isUrlWrong);
+        String isTimedOut = result.isTimedOut() ? res.getString(R.string.yes) : res.getString(R.string.no);
+        ((KeyValueView) view.getChildAt(5)).setValue(isTimedOut);
+        this.hidenNormalInfo(view);
+        this.showExceptionInfo(view);
+    }
+
+    private void setNormalInfo(ViewGroup view, SpeedTestResult result, Resources res) {
+        ((KeyValueView) view.getChildAt(6)).setValue(result.getTotalSize() + "");
+        ((KeyValueView) view.getChildAt(7)).setValue(result.getTimeUsed() + "");
+        ((KeyValueView) view.getChildAt(8)).setValue(result.getDownLoadSpeed() + "");
+        this.hidenExceptionInfo(view);
+        this.showNormalInfo(view);
+    }
+
+
+    private void hidenExceptionInfo(ViewGroup container) {
+        for (int i = 3; i <= 5; i++) {
             ((KeyValueView) container.getChildAt(i)).hidden();
         }
     }
 
-    private void show(ViewGroup container) {
-        for (int i = 2; i < container.getChildCount(); i++) {
+    private void hidenNormalInfo(ViewGroup container) {
+        for (int i = 6; i <= 8; i++) {
+            ((KeyValueView) container.getChildAt(i)).hidden();
+        }
+    }
+
+    private void showNormalInfo(ViewGroup container) {
+        for (int i = 6; i <= 8; i++) {
             ((KeyValueView) container.getChildAt(i)).show();
         }
     }
 
-    private void setRetContent(ViewGroup container, SpeedTestResult result) {
-    }
-
-    private void setStatus(ViewGroup container, String pingRet) {
-        ((KeyValueView) container.getChildAt(1)).setValue(pingRet);
+    private void showExceptionInfo(ViewGroup container) {
+        for (int i = 3; i <= 5; i++) {
+            ((KeyValueView) container.getChildAt(i)).show();
+        }
     }
 
 }

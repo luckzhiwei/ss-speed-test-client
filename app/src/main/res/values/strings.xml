@@ -2,13 +2,21 @@
     <string name="app_name">ssspeedtest</string>
     <string name="test_speed">测速</string>
     <string name="status">ping状态</string>
-    <string name="server_test">测试服务器</string>
-    <string name="server_name_test">www.baidu.com</string>
-    <string name="icmp_total_packets">总包数</string>
-    <string name="loss_packets_rate">丢包率</string>
-    <string name="time_min_of_ping">最小用时</string>
-    <string name="time_max_of_ping">最大用时</string>
-    <string name="time_avg_of_ping">平均用时</string>
-    <string name="ping_avaliable">能ping通</string>
-    <string name="ping_unavaliable">不能ping通</string>
+    <string name="server_address">测试服务器</string>
+    <string name="server_address_test">www.baidu.com</string>
+    <string name="redirect_address">重定向地址</string>
+    <string name="is_url_wrong">url是否错误</string>
+    <string name="is_timed_out">请求超时</string>
+    <string name="yes">是</string>
+    <string name="no">否</string>
+    <string name="exception_msg">异常信息</string>
+    <string name="time_used">请求用时</string>
+    <string name="response_status_code">返回状态码</string>
+    <string name="response_byte_size">响应字节数</string>
+    <string name="request_result">请求结果</string>
+    <string name="execption_occured">请求异常发生</string>
+    <string name="result_ok">请求正常</string>
+    <string name="empty">空</string>
+    <string name="dowload_speed">下载速度</string>
+
 </resources>
