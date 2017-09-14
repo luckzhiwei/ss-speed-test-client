@@ -4,13 +4,16 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.widget.ListView;
 
-import com.vecent.ssspeedtest.adpater.SpeedTestAdapter;
 import com.vecent.ssspeedtest.R;
+import com.vecent.ssspeedtest.adpater.SpeedTestAdapter;
 import com.vecent.ssspeedtest.model.INetImpl;
 import com.vecent.ssspeedtest.model.SpeedTest;
 import com.vecent.ssspeedtest.model.bean.SpeedTestResult;
+import com.vecent.ssspeedtest.util.LogUtil;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Vector;
 
 /**
  * Created by zhiwei on 2017/9/9.
@@ -20,6 +23,8 @@ public class SpeedTestActivity extends Activity {
 
     private SpeedTest mSpeedTest;
     private ListView mContentListView;
+    private List<SpeedTestResult> mSpeedTestResults;
+    private SpeedTestAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +39,11 @@ public class SpeedTestActivity extends Activity {
     }
 
     private void initData() {
+        this.mSpeedTestResults = new Vector<>();
+        this.mAdapter = new SpeedTestAdapter(getApplicationContext(),
+                R.layout.speed_test_item_layout, mSpeedTestResults);
         ArrayList<String> servers = new ArrayList<>();
+        this.mContentListView.setAdapter(this.mAdapter);
         servers.add("http://www.baidu.com");
         servers.add("http://www.2dbook.com");
         servers.add("http://www.4tern.com");
@@ -109,6 +118,7 @@ public class SpeedTestActivity extends Activity {
         servers.add("http://www.matome-plus.com");
         servers.add("http://www.matome-plus.net");
         this.mSpeedTest = new SpeedTest(servers);
+        LogUtil.logDebug(getClass().getName(), servers.size() + "");
         this.startSpeedTest();
     }
 
@@ -116,7 +126,9 @@ public class SpeedTestActivity extends Activity {
         this.mSpeedTest.setPingCallBack(new SpeedTest.OnPingCallBack() {
             @Override
             public void onPingRetListener(SpeedTestResult result) {
-
+                mSpeedTestResults.add(result);
+                LogUtil.logDebug(getClass().getName(), mSpeedTestResults.size() + "");
+                mAdapter.notifyDataSetChanged();
             }
         });
         new Thread(new Runnable() {

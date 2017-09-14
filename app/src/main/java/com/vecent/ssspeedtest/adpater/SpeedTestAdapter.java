@@ -31,13 +31,12 @@ public class SpeedTestAdapter extends CommonAdapter<SpeedTestResult> {
         LinearLayout container = holder.getView(R.id.speed_test_layout_container);
         if (container.getChildCount() == 0) {
             this.initView(container, mContext.getResources());
+        }
+        this.setCommonInfo(container, result, res);
+        if (result.isExceptionOccured()) {
+            this.setExceptionInfo(container, result, res);
         } else {
-            this.setCommonInfo(container, result, res);
-            if (result.isExceptionOccured()) {
-                this.setExceptionInfo(container, result, res);
-            } else {
-                this.setNormalInfo(container, result, res);
-            }
+            this.setNormalInfo(container, result, res);
         }
     }
 
@@ -65,7 +64,7 @@ public class SpeedTestAdapter extends CommonAdapter<SpeedTestResult> {
         ((KeyValueView) view.getChildAt(0)).setValue(result.getRequestServer());
         String redirectServer = result.isRedirect() ? result.getRedirectServer() : res.getString(R.string.empty);
         ((KeyValueView) view.getChildAt(1)).setValue(redirectServer);
-        String requestResult = result.isExceptionOccured() ? res.getString(R.string.result_ok) : res.getString(R.string.execption_occured);
+        String requestResult = result.isExceptionOccured() ? res.getString(R.string.execption_occured) : res.getString(R.string.result_ok);
         ((KeyValueView) view.getChildAt(2)).setValue(requestResult);
     }
 
@@ -82,7 +81,7 @@ public class SpeedTestAdapter extends CommonAdapter<SpeedTestResult> {
     private void setNormalInfo(ViewGroup view, SpeedTestResult result, Resources res) {
         ((KeyValueView) view.getChildAt(6)).setValue(result.getTotalSize() + "");
         ((KeyValueView) view.getChildAt(7)).setValue(result.getTimeUsed() + "");
-        ((KeyValueView) view.getChildAt(8)).setValue(result.getDownLoadSpeed() + "");
+        ((KeyValueView) view.getChildAt(8)).setValue(result.getDownLoadSpeed() + res.getString(R.string.kb_by_second));
         this.hidenExceptionInfo(view);
         this.showNormalInfo(view);
     }

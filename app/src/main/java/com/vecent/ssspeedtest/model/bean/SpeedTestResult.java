@@ -26,6 +26,12 @@ public class SpeedTestResult {
         this.downLoadSpeed = downLoadSpeed;
     }
 
+    public void setDownLoadSpeed() {
+        if (this.totalSize != 0 && this.timeUsed != 0) {
+            this.downLoadSpeed = this.totalSize * 1.0f / this.timeUsed;
+        }
+    }
+
     public boolean isUrlWrong() {
         return isUrlWrong;
     }

@@ -43,35 +43,13 @@ public class SpeedTest {
                 public void run() {
                     final SpeedTestResult pingResult = httpSpeedTest(net, servers);
                     if (pingResult != null) {
-                        LogUtil.logDebug(getClass().getName(), pingResult.getRequestServer());
-                        if (pingResult.isExceptionOccured()) {
-                            LogUtil.logDebug(getClass().getName(), "exception msg :" + pingResult.getExceptionMsg());
-                            if (pingResult.isRedirect()) {
-                                LogUtil.logDebug(getClass().getName(), "redirect server :" + pingResult.getRedirectServer());
+                        mHandler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                mPingCallBack.onPingRetListener(pingResult);
                             }
-                            if (pingResult.isUrlWrong()) {
-                                LogUtil.logDebug(getClass().getName(), "reuslt is url wrong");
-                            } else if (pingResult.isTimedOut()) {
-                                LogUtil.logDebug(getClass().getName(), "result is time out");
-                            } else {
-                                LogUtil.logDebug(getClass().getName(), "result is other exception");
-                            }
-                        } else {
-                            if (pingResult.isRedirect()) {
-                                LogUtil.logDebug(getClass().getName(), "redirect server :" + pingResult.getRedirectServer());
-                            }
-                            LogUtil.logDebug(getClass().getName(), "result is OK");
-                            LogUtil.logDebug(getClass().getName(), "size is " + pingResult.getTotalSize());
-                            LogUtil.logDebug(getClass().getName(), "code " + pingResult.getStatusCode());
-                            LogUtil.logDebug(getClass().getName(), "time  " + pingResult.getTimeUsed());
-                        }
+                        });
                     }
-                    mHandler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            mPingCallBack.onPingRetListener(pingResult);
-                        }
-                    });
                 }
             });
         }

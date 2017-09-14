@@ -33,6 +33,7 @@ public class INetImpl implements INet {
             result.setTotalSize(this.getResponseSize(conn.getInputStream()));
             result.setStatusCode(conn.getResponseCode());
             result.setTimeUsed(System.currentTimeMillis() - startTime);
+            result.setDownLoadSpeed();
         } catch (MalformedURLException e) {
             result.setUrlWrong(true);
             setResultExceptionMsg(result, e.getMessage());
