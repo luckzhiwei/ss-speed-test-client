@@ -1,7 +1,6 @@
 package com.vecent.ssspeedtest.model;
 
 import com.vecent.ssspeedtest.model.bean.SpeedTestResult;
-import com.vecent.ssspeedtest.util.LogUtil;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -29,7 +28,7 @@ public class INetImpl implements INet {
                 String newUrl = conn.getHeaderField("Location");
                 conn = getConnection(newUrl);
                 result.setRedirect(true);
-                result.setRequestServer(newUrl);
+                result.setRedirectServer(newUrl);
             }
             result.setTotalSize(this.getResponseSize(conn.getInputStream()));
             result.setStatusCode(conn.getResponseCode());

@@ -6,6 +6,7 @@ import com.vecent.ssspeedtest.util.LogUtil;
 import java.util.ArrayList;
 
 import android.os.Handler;
+import android.util.Log;
 
 /**
  * Created by zhiwei on 2017/9/4.
@@ -42,16 +43,27 @@ public class SpeedTest {
                 public void run() {
                     final SpeedTestResult pingResult = httpSpeedTest(net, servers);
                     if (pingResult != null) {
+                        LogUtil.logDebug(getClass().getName(), pingResult.getRequestServer());
                         if (pingResult.isExceptionOccured()) {
-                            LogUtil.logDebug(getClass().getName(), pingResult.getExceptionMsg() + "excepiton");
+                            LogUtil.logDebug(getClass().getName(), "exception msg :" + pingResult.getExceptionMsg());
                             if (pingResult.isRedirect()) {
-
+                                LogUtil.logDebug(getClass().getName(), "redirect server :" + pingResult.getRedirectServer());
+                            }
+                            if (pingResult.isUrlWrong()) {
+                                LogUtil.logDebug(getClass().getName(), "reuslt is url wrong");
+                            } else if (pingResult.isTimedOut()) {
+                                LogUtil.logDebug(getClass().getName(), "result is time out");
+                            } else {
+                                LogUtil.logDebug(getClass().getName(), "result is other exception");
                             }
                         } else {
-                            LogUtil.logDebug(getClass().getName(), pingResult.getRequestServer());
-                            LogUtil.logDebug(getClass().getName(), pingResult.getTotalSize() + "size");
-                            LogUtil.logDebug(getClass().getName(), pingResult.getStatusCode() + "code");
-                            LogUtil.logDebug(getClass().getName(), pingResult.getTimeUsed() + "time");
+                            if (pingResult.isRedirect()) {
+                                LogUtil.logDebug(getClass().getName(), "redirect server :" + pingResult.getRedirectServer());
+                            }
+                            LogUtil.logDebug(getClass().getName(), "result is OK");
+                            LogUtil.logDebug(getClass().getName(), "size is " + pingResult.getTotalSize());
+                            LogUtil.logDebug(getClass().getName(), "code " + pingResult.getStatusCode());
+                            LogUtil.logDebug(getClass().getName(), "time  " + pingResult.getTimeUsed());
                         }
                     }
                     mHandler.post(new Runnable() {
