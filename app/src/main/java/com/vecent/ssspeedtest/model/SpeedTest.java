@@ -42,13 +42,17 @@ public class SpeedTest {
                 public void run() {
                     final SpeedTestResult pingResult = httpSpeedTest(net, servers);
                     if (pingResult != null) {
-                        if (pingResult.getExceptionMsg() != null) {
+                        if (pingResult.isExceptionOccured()) {
                             LogUtil.logDebug(getClass().getName(), pingResult.getExceptionMsg() + "excepiton");
+                            if (pingResult.isRedirect()) {
+
+                            }
+                        } else {
+                            LogUtil.logDebug(getClass().getName(), pingResult.getRequestServer());
+                            LogUtil.logDebug(getClass().getName(), pingResult.getTotalSize() + "size");
+                            LogUtil.logDebug(getClass().getName(), pingResult.getStatusCode() + "code");
+                            LogUtil.logDebug(getClass().getName(), pingResult.getTimeUsed() + "time");
                         }
-                        LogUtil.logDebug(getClass().getName(), pingResult.getRequestServer());
-                        LogUtil.logDebug(getClass().getName(), pingResult.getTotalSize() + "size");
-                        LogUtil.logDebug(getClass().getName(), pingResult.getStatusCode() + "code");
-                        LogUtil.logDebug(getClass().getName(), pingResult.getTimeUsed() + "time");
                     }
                     mHandler.post(new Runnable() {
                         @Override
@@ -66,8 +70,8 @@ public class SpeedTest {
             LogUtil.logInfo("Wait all task complete error", " InterruptedException");
         }
         long endTime = System.currentTimeMillis();
-        LogUtil.logInfo(null, "All task complete");
-        LogUtil.logDebug(null, (endTime - startTime) + "");
+        LogUtil.logInfo(getClass().getName(), "All task complete");
+        LogUtil.logDebug(getClass().getName(), (endTime - startTime) + " totalTImeUsed");
     }
 
     public void setPingCallBack(OnPingCallBack fun) {

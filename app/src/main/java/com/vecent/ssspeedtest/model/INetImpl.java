@@ -28,15 +28,18 @@ public class INetImpl implements INet {
             if (this.isRedirect(responseCode)) {
                 String newUrl = conn.getHeaderField("Location");
                 conn = getConnection(newUrl);
-                LogUtil.logInfo("Redirect Url", newUrl.toString());
+                result.setRedirect(true);
+                result.setRequestServer(newUrl);
             }
             result.setTotalSize(this.getResponseSize(conn.getInputStream()));
             result.setStatusCode(conn.getResponseCode());
             result.setTimeUsed(System.currentTimeMillis() - startTime);
         } catch (MalformedURLException e) {
-            result.setExceptionMsg(e.getMessage());
+            result.setUrlWrong(true);
+            setResultExceptionMsg(result, e.getMessage());
         } catch (IOException e) {
-            result.setExceptionMsg(e.getMessage());
+            result.setTimedOut(true);
+            setResultExceptionMsg(result, e.getMessage());
         } finally {
             if (conn != null) {
                 conn.disconnect();
@@ -45,6 +48,10 @@ public class INetImpl implements INet {
         return result;
     }
 
+    private void setResultExceptionMsg(SpeedTestResult ret, String msg) {
+        ret.setExceptionOccured(true);
+        ret.setExceptionMsg(msg);
+    }
 
     private HttpURLConnection getConnection(String server) throws
             MalformedURLException, ProtocolException, IOException {
@@ -76,6 +83,5 @@ public class INetImpl implements INet {
         inputStream.close();
         return totalSize;
     }
-
 
 }
