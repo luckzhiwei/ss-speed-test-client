@@ -74,5 +74,4 @@ public class SpeedTestAdapter extends CommonAdapter<SpeedTestResult> {
         ((KeyValueView) container.getChildAt(1)).setValue(pingRet);
     }
 
-
 }
