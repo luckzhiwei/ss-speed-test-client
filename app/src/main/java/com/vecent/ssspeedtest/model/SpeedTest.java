@@ -1,12 +1,11 @@
 package com.vecent.ssspeedtest.model;
 
+import android.os.Handler;
+
 import com.vecent.ssspeedtest.model.bean.SpeedTestResult;
 import com.vecent.ssspeedtest.util.LogUtil;
 
 import java.util.ArrayList;
-
-import android.os.Handler;
-import android.util.Log;
 
 /**
  * Created by zhiwei on 2017/9/4.
@@ -26,7 +25,7 @@ public class SpeedTest {
 
     public SpeedTest(ArrayList<String> serversForTest) {
         this.mServersForTest = serversForTest;
-        mThreadPool = ThreadPool.getInstance();
+        mThreadPool = new ThreadPool();
         mHandler = new Handler();
     }
 
