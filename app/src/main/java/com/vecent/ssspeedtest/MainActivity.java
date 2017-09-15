@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.vecent.ssspeedtest.controller.SpeedTestActivity;
+import com.vecent.ssspeedtest.util.LogUtil;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -17,7 +18,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initView();
-        initModel();
     }
 
     private void initView() {
@@ -30,7 +30,11 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void initModel() {
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        LogUtil.logDebug(getClass().getName(), "destory the main activity");
     }
+
+
 }
