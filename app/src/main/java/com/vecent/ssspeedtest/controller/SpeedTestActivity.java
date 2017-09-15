@@ -131,18 +131,18 @@ public class SpeedTestActivity extends Activity {
                 mAdapter.notifyDataSetChanged();
             }
         });
-        Thread oneThread = new Thread(new Runnable() {
+        new Thread(new Runnable() {
             @Override
             public void run() {
                 mSpeedTest.startTest(new INetImpl());
             }
-        });
-        oneThread.start();
+        }).start();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        this.mSpeedTest.cancel();
         LogUtil.logDebug(getClass().getName(), "destory the speedtest activity");
     }
 

@@ -33,7 +33,6 @@ public class SpeedTest {
         return net.getHttpTestResult(serverToPing);
     }
 
-
     public void startTest(final INet net) {
         long startTime = System.currentTimeMillis();
         for (final String servers : mServersForTest) {
@@ -66,5 +65,10 @@ public class SpeedTest {
     public void setPingCallBack(OnPingCallBack fun) {
         this.mPingCallBack = fun;
     }
+
+    public void cancel() {
+        this.mThreadPool.stopNow();
+    }
+
 
 }

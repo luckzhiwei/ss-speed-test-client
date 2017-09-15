@@ -36,6 +36,10 @@ public class ThreadPool {
         }
     }
 
+    public void stopNow() {
+        this.mExecutor.shutdownNow();
+    }
+
     public void stopAddTask() {
         this.mExecutor.shutdown();
     }
