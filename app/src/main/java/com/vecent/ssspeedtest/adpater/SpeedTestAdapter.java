@@ -79,8 +79,8 @@ public class SpeedTestAdapter extends CommonAdapter<SpeedTestResult> {
     }
 
     private void setNormalInfo(ViewGroup view, SpeedTestResult result, Resources res) {
-        ((KeyValueView) view.getChildAt(6)).setValue(result.getTotalSize() + "");
-        ((KeyValueView) view.getChildAt(7)).setValue(result.getTimeUsed() + "");
+        ((KeyValueView) view.getChildAt(6)).setValue(result.getTotalSize() + res.getString(R.string.unit_byte));
+        ((KeyValueView) view.getChildAt(7)).setValue(result.getTimeUsed() + res.getString(R.string.unit_millisecond));
         ((KeyValueView) view.getChildAt(8)).setValue(result.getDownLoadSpeed() + res.getString(R.string.kb_by_second));
         this.hidenExceptionInfo(view);
         this.showNormalInfo(view);

@@ -1,6 +1,9 @@
 package com.vecent.ssspeedtest.model;
 
+import android.util.Log;
+
 import com.vecent.ssspeedtest.model.bean.SpeedTestResult;
+import com.vecent.ssspeedtest.util.LogUtil;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -30,8 +33,8 @@ public class INetImpl implements INet {
                 result.setRedirect(true);
                 result.setRedirectServer(newUrl);
             }
-            result.setTotalSize(this.getResponseSize(conn.getInputStream()));
             result.setStatusCode(conn.getResponseCode());
+            result.setTotalSize(this.getResponseSize(conn.getInputStream()));
             result.setTimeUsed(System.currentTimeMillis() - startTime);
             result.setDownLoadSpeed();
         } catch (MalformedURLException e) {

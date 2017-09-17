@@ -19,4 +19,6 @@
     <string name="empty">空</string>
     <string name="dowload_speed">下载速度</string>
     <string name="kb_by_second">KB/s</string>
+    <string name="unit_millisecond">ms</string>
+    <string name="unit_byte">Byte</string>
 </resources>
