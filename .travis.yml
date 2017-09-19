@@ -10,9 +10,7 @@ android:
     - extra-android-m2repository
     - extra-android-support
 
-stages:
-  - name: build
-    if: branch = master
+
 
 
 install:
