@@ -29,7 +29,12 @@ jobs:
   include:
     stage: build
     script: 
-      - chmod a+x ./gradlew && ./gradlew assembleRelease
+      - chmod a+x ./gradlew && ./gradlew assembleRelease && ls app/build/outputs/apk/
+    # depoly:
+    #     provider: releases 
+    #     user: $GITHUB_USERNAME
+    #     password: $GITHUB_PASSWD
+    #     file: app/build/outputs/apk/app-release.apk  
       
 
 
