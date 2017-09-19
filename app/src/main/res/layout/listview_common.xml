@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <ListView
+        android:id="@+id/common_list_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:cacheColorHint="@color/tranparent"
+        android:divider="@color/list_separator"
+        android:dividerHeight="@dimen/line_width"
+        android:listSelector="@drawable/press_normal_trans" />
+</merge>
