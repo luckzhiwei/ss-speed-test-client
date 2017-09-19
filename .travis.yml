@@ -11,7 +11,7 @@ android:
     - extra-android-support
 
 stages:
-  - name: deploy
+  - name: build
     if: branch = master
 
 install:
