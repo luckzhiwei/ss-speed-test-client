@@ -21,9 +21,11 @@ cache:
     - $HOME/.android/build-cache
 
 
+
 install:
     - echo yes | sdkmanager "extras;m2repository;com;android;support;constraint;constraint-layout;1.0.2"
     - echo yes | sdkmanager "extras;m2repository;com;android;support;constraint;constraint-layout-solver;1.0.2"
+
 
 jobs:
   include:
