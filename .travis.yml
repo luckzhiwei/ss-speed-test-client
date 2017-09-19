@@ -1,0 +1,7 @@
+language: android
+jdk: oraclejdk8
+
+before_install:
+  - echo $PWD
+script:
+  - ls -al  
