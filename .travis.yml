@@ -29,12 +29,13 @@ jobs:
   include:
     stage: build
     script: 
-      - chmod a+x ./gradlew && ./gradlew assembleRelease && ls app/build/outputs/apk/
+      - chmod a+x ./gradlew && ./gradlew assembleRelease 
     depoly:
         provider: releases 
         user: $GITHUB_USERNAME
         password: $GITHUB_PASSWD
         file: app/build/outputs/apk/app-release.apk
+        skip_cleanup: true 
         on: 
           branch: master
           tags: true  
