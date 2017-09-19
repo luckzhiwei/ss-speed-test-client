@@ -10,6 +10,10 @@ android:
     - extra-android-m2repository
     - extra-android-support
 
+stages:
+  - name: deploy
+    if: branch = master
+
 install:
     - echo yes | sdkmanager "extras;m2repository;com;android;support;constraint;constraint-layout;1.0.2"
     - echo yes | sdkmanager "extras;m2repository;com;android;support;constraint;constraint-layout-solver;1.0.2"
@@ -20,5 +24,6 @@ jobs:
     script: 
       - chmod a+x ./gradlew && ./gradlew assembleRelease
       
+
 
 
