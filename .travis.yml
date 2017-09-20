@@ -22,7 +22,7 @@ install:
 before_script:
 - chmod a+x ./gradlew
 script:
-- "./gradlew assembleRelease"
+- "./gradlew assembleRelease && ls app/build/outputs/apk/"
 deploy:
   provider: releases
   api_key:
