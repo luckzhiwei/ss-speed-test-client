@@ -32,6 +32,7 @@ jobs:
       script: 
           - chmod a+x ./gradlew && ./gradlew assembleRelease 
     - stage: depoly
+      script: skip
       depoly: &releases
         provider: releases 
         user: luckzhiwei
