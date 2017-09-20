@@ -30,6 +30,7 @@ deploy:
     secure: mHQKg9+v/n8zstQhorUgMQ6NQTPkrc1fUgeES9D7GNcG2S7P93bgPsm8eeCMHOdTHAE3W10QpWtZDgu3TXxwzfgxAh8uNdlVh2RtC3d3Ln/aUV+MYy87a/p8mH7L0l4krxmPO9TDQlqVAqssfzo5OsWzooGNBs6mrJsjLO7PyrJmt3X8RUVGYWKpaG/3O59bA0LCy+jclSjTjj07R/UCxsHdncsuGi5RfDznqEXp016leH1m8giu/MGh/lWihzrdpAKAwcDbkVOoC4Ewk3Xf/RY3eg8DpzeiA9Bgm6OVaewvf4g02W+HoJT0BHbf44lFBLcfAhL1wSZSl5BQwTy5ql+Kf7HuFmTIY/qdIa7j/nNH7s5yLoGACAIgrIp/zX1UPlhm7XqqeiyMw0C/gp0g1rnJAmDDqKW3MQjEcnjnuuHhefaLqyb9Fs5lDLdB/z5ahxlFWzXV0NN+h0oUi55irurfz1l6wBr/pi0a09g7DRf5Vn7Rjth279kOj3AtrXnr5IR5d58UEvUsVmw52x/izLGPSIgCeW1khg23/5biqwqDH6JJ18mj2IaY11MuTumnGlsFsCmye1su6M/8q2wBhVTLf/oGWYXv9xRunUJRkuyC0O/4aWd0gVlWoXov5HNECEQx+cyHeAeTo14hPkfTx4LRCSiR8Ec3Jo5Lk3gjT8U=
   file: app/build/outputs/apk/ss_speed_test_$TRAVIS_TAG.apk
   skip_cleanup: true
+  name: Build" "$TRAVIS_TAG" "$(date +'%d.%m.%Y %R')
   on:
     repo: luckzhiwei/ss-speed-test-client
     branch: master
