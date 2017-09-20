@@ -12,6 +12,7 @@ import queue
 import threading
 from threading import Thread
 import time
+import json
 
 # 取消验证ssl中域名与证书一致
 # https://stackoverflow.com/questions/28768530/certificateerror-hostname-doesnt-match
@@ -27,6 +28,8 @@ class gfwlist2web:
     static_id = 0
     queue = queue.Queue()
     threadResultDict = dict()
+    json_list = list()
+    json_file = "./gfwweb.json"
 
     def __init__(self, gfwlist_file = None, gfwlist_database = None, proxy = None):
         if gfwlist_file:
@@ -193,16 +196,28 @@ class gfwlist2web:
         self.conn.commit()
 
     def setVerifyToDatabase(self):
-        c = self.conn.execute("SELECT ID, DIRECTGUESS, CONN_INFO from GFWLIST WHERE CONN_INFO IS NOT NULL")
+        c = self.conn.execute("SELECT ID, DIRECTGUESS, CONN_INFO, IF_AT from GFWLIST WHERE CONN_INFO IS NOT NULL")
         for row in c:
-            ID, DIRECTGUESS, CONN_INFO = row
+            ID, DIRECTGUESS, CONN_INFO, IF_AT = row
+            _dict = dict()
+            web = ''
             if CONN_INFO == "OK":
-                self.conn.execute("""UPDATE GFWLIST set VERIFYWEB = "%s" where ID=%d""" % (DIRECTGUESS, ID) )
-                print("""servers.add("%s");""" % DIRECTGUESS)
+                web = DIRECTGUESS
             if CONN_INFO == "OK but remove www.":
-                self.conn.execute("""UPDATE GFWLIST set VERIFYWEB = "%s" where ID=%d""" % (DIRECTGUESS.replace("www.",""), ID) )
-                print("""servers.add("%s");""" % DIRECTGUESS.replace("www.","") )
+                web = DIRECTGUESS.replace("www.","")
+            if web:
+                _dict["type"] = 'w' if IF_AT else 'b'
+                _dict["web"] = web
+                self.conn.execute("""UPDATE GFWLIST set VERIFYWEB = "%s" where ID=%d""" % (web, ID) )
+                self.json_list.append(_dict)
+                print("""servers.add("%s");""" % web)
         self.conn.commit()
+
+    def writeJson(self,file = None):
+        if file is None:
+            file = self.json_file
+        with open(file, "w") as f:
+            f.write(json.dumps(self.json_list))
 
 if __name__ == '__main__':
     g = gfwlist2web()
@@ -211,3 +226,4 @@ if __name__ == '__main__':
     g.directGuessFromDatabase()
     g.testConnect()
     g.setVerifyToDatabase()
+    g.writeJson()
