@@ -31,12 +31,13 @@ jobs:
     stage: build
     script: 
       - chmod a+x ./gradlew && ./gradlew assembleRelease 
-    depoly:
+    depoly: &releases
         provider: releases 
         user: luckzhiwei
         password: lzw159753
         file: app/build/outputs/apk/app-release.apk
         skip_cleanup: true 
+
       
 
 
