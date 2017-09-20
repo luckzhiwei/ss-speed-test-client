@@ -25,20 +25,32 @@ install:
     - echo yes | sdkmanager "extras;m2repository;com;android;support;constraint;constraint-layout;1.0.2"
     - echo yes | sdkmanager "extras;m2repository;com;android;support;constraint;constraint-layout-solver;1.0.2"
 
+before_script:
+    - "chmod a+x ./gradlew"
 
-jobs:
-  include:
-    - stage: build
-      script: 
-          - chmod a+x ./gradlew && ./gradlew assembleRelease 
-    - stage: depoly
-      script: skip
-      depoly: &releases
-        provider: releases 
-        user: luckzhiwei
-        password: lzw159753
-        file: app/build/outputs/apk/app-release.apk
-        skip_cleanup: true 
+script:
+    - "./gradlew assembleRelease"
+
+deploy:
+  provider: releases
+  api_key:
+    secure: ss-speed-test-android
+  file: ./app/build/outputs/apk/app-release.apk
+  skip_cleanup: true   
+
+# jobs:
+#   include:
+#     - stage: build
+#       script: 
+#           - chmod a+x ./gradlew && ./gradlew assembleRelease 
+#     - stage: depoly
+#       script: skip
+#       depoly: &releases
+#         provider: releases 
+#         user: luckzhiwei
+#         password: lzw159753
+#         file: ./app/build/outputs/apk/app-release.apk
+#         skip_cleanup: true 
 
       
 
