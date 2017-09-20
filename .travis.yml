@@ -28,10 +28,11 @@ install:
 
 jobs:
   include:
-    stage: build
-    script: 
-      - chmod a+x ./gradlew && ./gradlew assembleRelease 
-    depoly: &releases
+    - stage: build
+      script: 
+          - chmod a+x ./gradlew && ./gradlew assembleRelease 
+    - stage: depoly
+      depoly: &releases
         provider: releases 
         user: luckzhiwei
         password: lzw159753
