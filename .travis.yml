@@ -21,7 +21,6 @@ cache:
     - $HOME/.android/build-cache
 
 
-
 install:
     - echo yes | sdkmanager "extras;m2repository;com;android;support;constraint;constraint-layout;1.0.2"
     - echo yes | sdkmanager "extras;m2repository;com;android;support;constraint;constraint-layout-solver;1.0.2"
@@ -38,9 +37,6 @@ jobs:
         password: $GITHUB_PASSWD
         file: app/build/outputs/apk/app-release.apk
         skip_cleanup: true 
-        on: 
-          branch: master
-          tags: true  
       
 
 
