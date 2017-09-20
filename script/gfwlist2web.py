@@ -13,6 +13,7 @@ import threading
 from threading import Thread
 import time
 import json
+import sys, getopt
 
 # 取消验证ssl中域名与证书一致
 # https://stackoverflow.com/questions/28768530/certificateerror-hostname-doesnt-match
@@ -220,10 +221,31 @@ class gfwlist2web:
             f.write(json.dumps(self.json_list))
 
 if __name__ == '__main__':
-    g = gfwlist2web()
+    gfwlist_file = None
+    json_file = None
+    try:
+        options,args = getopt.getopt(sys.argv[1:],"hi:o:", ["help","input=","output="])
+    except getopt.GetoptError:
+        sys.exit()
+    if len(options) == 0:
+        print("gfwlist2web.py -i ./gfwlist -o ./json")
+        sys.exit()
+    for name,value in options:
+        if name in ("-h","--help"):
+            print("gfwlist2web.py -i ./gfwlist -o ./json")
+            sys.exit()
+        if name in ("-i","--input"):
+            gfwlist_file = value
+            print("input")
+        if name in ("-o","--output"):
+            json_file = value
+            print("output")
+    g = gfwlist2web(gfwlist_file = gfwlist_file)
     g.createDatabase()
     g.readGfwlistToDatabase()
     g.directGuessFromDatabase()
     g.testConnect()
     g.setVerifyToDatabase()
-    g.writeJson()
+    g.writeJson(json_file)
+
+
