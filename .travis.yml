@@ -34,9 +34,10 @@ script:
 deploy:
   provider: releases
   api_key:  "ss-speed-test-android"
-  file: "./app/build/outputs/apk/app-release.apk"
+  file: "app/build/outputs/apk/app-release.apk"
   skip_cleanup: true   
-
+  on:
+    branch: production   
       
 
 
