@@ -1,6 +1,10 @@
 language: android
 jdk: oraclejdk8
 
+
+services:
+  - docker
+
 android:
   components:
     - tools
@@ -20,11 +24,15 @@ cache:
     - $HOME/.gradle/wrapper/
     - $HOME/.android/build-cache
 
+before_install:
+    - cd ./script
+    - docker build -t gfwlist_img  . && cd ..
 
 install:
     - echo yes | sdkmanager "extras;m2repository;com;android;support;constraint;constraint-layout;1.0.2"
     - echo yes | sdkmanager "extras;m2repository;com;android;support;constraint;constraint-layout-solver;1.0.2"
-
+    - cd ./script && docker run -it --dns=114.114.114.114 gfwlist_img && cat /out/gfwlistOutput.json
+   
 jobs:
   include:
     stage: build
