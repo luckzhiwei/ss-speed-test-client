@@ -25,11 +25,11 @@ public class TestINetImpl {
         this.appContext = InstrumentationRegistry.getTargetContext();
     }
 
-    //todo 有像taobao.com这种跳转多次的情况如何处理？
+
     @Test
     public void testINetImplHttpRequestWhiteListAddr() {
         INet iNetForTest = new INetImpl();
-        SpeedTestResult result = iNetForTest.getHttpTestResult("http://m.taobao.com/?sprefer=sypc00");
+        SpeedTestResult result = iNetForTest.getHttpTestResult("http://taobao.com/");
 
         Assert.assertEquals(false, result.isExceptionOccured());
         Assert.assertEquals(true, result.isRedirect());
@@ -39,6 +39,7 @@ public class TestINetImpl {
         Assert.assertEquals(true, result.getTotalSize() > 0);
         Assert.assertEquals(true, result.getTimeUsed() > 0);
         Assert.assertEquals(true, result.getDownLoadSpeed() > 0);
+        Assert.assertEquals(false,result.is2ManyTimeRelocation());
 
     }
 
