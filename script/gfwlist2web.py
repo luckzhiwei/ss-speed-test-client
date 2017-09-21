@@ -23,7 +23,8 @@ import sys, getopt
 class gfwlist2web:
     gfwlist_txt = 'gfwlist.txt'
     gfwlist_db  = 'gfwlist.db'
-    http_proxy = {'http': '127.0.0.1:1087'}
+    # http_proxy = {'http': '127.0.0.1:1087'}
+    http_proxy = None
     # 网址正则
     pattern = re.compile("([a-zA-Z0-9-]+\.)+([a-zA-Z0-9-_/])+$")
     static_id = 0
@@ -140,8 +141,11 @@ class gfwlist2web:
             row = self.queue.get()
             id = row[0]
             url = row[2]
-            proxy = urllib.request.ProxyHandler(self.http_proxy)
-            opener = urllib.request.build_opener(proxy)
+            if self.http_proxy:
+                proxy = urllib.request.ProxyHandler(self.http_proxy)
+                opener = urllib.request.build_opener(proxy)
+            else :
+                opener = urllib.request.build_opener()
             opener.addheaders = [('User-agent', 'Mozilla/5.0 (X11; U; Windows NT 6; en-US) AppleWebKit/534.12 (KHTML, like Gecko) Chrome/9.0.587.0 Safari/534.12'),('connection','keep-alive'),('Accept-Encoding', 'gzip')]
             # print('url %s, curent: %s' % (url, threading.current_thread()))
             # print(row)
@@ -211,7 +215,7 @@ class gfwlist2web:
                 _dict["web"] = web
                 self.conn.execute("""UPDATE GFWLIST set VERIFYWEB = "%s" where ID=%d""" % (web, ID) )
                 self.json_list.append(_dict)
-                print("""servers.add("%s");""" % web)
+                # print("""servers.add("%s");""" % web)
         self.conn.commit()
 
     def writeJson(self,file = None):
@@ -223,8 +227,9 @@ class gfwlist2web:
 if __name__ == '__main__':
     gfwlist_file = None
     json_file = None
+    proxy = None
     try:
-        options,args = getopt.getopt(sys.argv[1:],"hi:o:", ["help","input=","output="])
+        options,args = getopt.getopt(sys.argv[1:],"hi:o:p:", ["help","input=","output="])
     except getopt.GetoptError:
         sys.exit()
     if len(options) == 0:
@@ -240,12 +245,15 @@ if __name__ == '__main__':
         if name in ("-o","--output"):
             json_file = value
             print("output")
-    g = gfwlist2web(gfwlist_file = gfwlist_file)
+        if name in ("-p"):
+            port = value
+            proxy = {'http': '127.0.0.1:%d' % int(port)}
+            print("proxy")
+
+    g = gfwlist2web(gfwlist_file = gfwlist_file, proxy = proxy)
     g.createDatabase()
     g.readGfwlistToDatabase()
     g.directGuessFromDatabase()
     g.testConnect()
     g.setVerifyToDatabase()
     g.writeJson(json_file)
-
-
