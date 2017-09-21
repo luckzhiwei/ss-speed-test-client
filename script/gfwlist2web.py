@@ -178,7 +178,7 @@ class gfwlist2web:
 
     def testConnect(self):
     # 创建线程池
-        for i in range(100):
+        for i in range(500):
             t = Thread(target=self.do_job)
             t.daemon=True # 设置线程daemon  主线程退出，daemon线程也会推出，即时正在运行
             t.start()
@@ -187,8 +187,8 @@ class gfwlist2web:
         count = 0
         for row in c:
             count += 1
-            if count > 100:
-                break
+            # if count > 100:
+            #     break
             self.queue.put(row)
 
         self.queue.join()
