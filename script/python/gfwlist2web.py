@@ -14,6 +14,7 @@ from threading import Thread
 import time
 import json
 import sys, getopt
+import base64
 
 # 取消验证ssl中域名与证书一致
 # https://stackoverflow.com/questions/28768530/certificateerror-hostname-doesnt-match
@@ -32,10 +33,22 @@ class gfwlist2web:
     threadResultDict = dict()
     json_list = list()
     json_file = "./gfwweb.json"
+    gfwlist_http = "http://raw.githubusercontent.com/gfwlist/gfwlist/master/gfwlist.txt"
 
     def __init__(self, gfwlist_file = None, gfwlist_database = None, proxy = None):
         if gfwlist_file:
             self.gfwlist_txt = gfwlist_file
+        else :
+            with open(self.gfwlist_txt, "w") as f:
+                print("下载gfwlist.txt")
+                opener = urllib.request.build_opener()
+                response = opener.open(self.gfwlist_http, timeout=4)
+                raw = response.read().decode('utf-8')
+                print(base64.b64decode(raw))
+                print("下载成功")
+                f.write(str(base64.b64decode(raw)))
+                # exit()
+
         if gfwlist_database:
             self.gfwlist_db = gfwlist_database
         if proxy:
