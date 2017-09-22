@@ -7,5 +7,6 @@
 /build
 /captures
 .externalNativeBuild
-*/gfwlist.db
+*gfwlist.db
 /script/out/
+*gfwweb.json

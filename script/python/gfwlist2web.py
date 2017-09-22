@@ -7,6 +7,7 @@ import urllib
 import urllib.request
 import socket
 import ssl
+import os
 
 import queue
 import threading
@@ -29,24 +30,31 @@ class gfwlist2web:
     # 网址正则
     pattern = re.compile("([a-zA-Z0-9-]+\.)+([a-zA-Z0-9-_/])+$")
     static_id = 0
-    queue = queue.Queue()
-    threadResultDict = dict()
-    json_list = list()
     json_file = "./gfwweb.json"
-    gfwlist_http = "http://raw.githubusercontent.com/gfwlist/gfwlist/master/gfwlist.txt"
+    gfwlist_http = "https://raw.githubusercontent.com/gfwlist/gfwlist/master/gfwlist.txt"
 
     def __init__(self, gfwlist_file = None, gfwlist_database = None, proxy = None):
         if gfwlist_file:
             self.gfwlist_txt = gfwlist_file
         else :
-            with open(self.gfwlist_txt, "w") as f:
+            with open(self.gfwlist_txt, "wb") as f:
                 print("下载gfwlist.txt")
-                opener = urllib.request.build_opener()
-                response = opener.open(self.gfwlist_http, timeout=4)
-                raw = response.read().decode('utf-8')
-                print(base64.b64decode(raw))
-                print("下载成功")
-                f.write(str(base64.b64decode(raw)))
+                err_count = 4
+                while err_count > 0:
+                    try:
+                        opener = urllib.request.build_opener()
+                        response = opener.open(self.gfwlist_http, timeout=6)
+                        raw = response.read().decode('utf-8')
+                        # print(base64.b64decode(raw))
+                        print("下载成功")
+                        f.write(base64.b64decode(raw))
+                        break
+                    except Exception as error:
+                        err_count -= 1
+                        if err_count > 0 :
+                            print("下载失败，正在重试")
+                if err_count == 0:
+                     print("下载失败，使用自带gfwlist.txt") 
                 # exit()
 
         if gfwlist_database:
@@ -167,11 +175,11 @@ class gfwlist2web:
                 try:
                     if retryTime == 1:
                         url = url.replace("www.","")
-                        response = opener.open(url, timeout=10)
+                        response = opener.open(url, timeout=6)
                         self.threadResultDict[id] = "OK but remove www."
                         print(row[0], "OK but remove www.")
                     else:
-                        response = opener.open(url, timeout=10)
+                        response = opener.open(url, timeout=6)
                         self.threadResultDict[id] = "OK"
                         print(row[0], "OK")
                     break
@@ -191,7 +199,9 @@ class gfwlist2web:
 
     def testConnect(self):
     # 创建线程池
-        for i in range(500):
+        self.threadResultDict = dict()
+        self.queue = queue.Queue()
+        for i in range(100):
             t = Thread(target=self.do_job)
             t.daemon=True # 设置线程daemon  主线程退出，daemon线程也会推出，即时正在运行
             t.start()
@@ -217,25 +227,28 @@ class gfwlist2web:
         c = self.conn.execute("SELECT ID, DIRECTGUESS, CONN_INFO, IF_AT from GFWLIST WHERE CONN_INFO IS NOT NULL")
         for row in c:
             ID, DIRECTGUESS, CONN_INFO, IF_AT = row
-            _dict = dict()
             web = ''
             if CONN_INFO == "OK":
                 web = DIRECTGUESS
             if CONN_INFO == "OK but remove www.":
                 web = DIRECTGUESS.replace("www.","")
             if web:
-                _dict["type"] = 'w' if IF_AT else 'b'
-                _dict["web"] = web
                 self.conn.execute("""UPDATE GFWLIST set VERIFYWEB = "%s" where ID=%d""" % (web, ID) )
-                self.json_list.append(_dict)
-                # print("""servers.add("%s");""" % web)
         self.conn.commit()
 
-    def writeJson(self,file = None):
+    def writeJsonFromDatabase(self,file = None):
         if file is None:
             file = self.json_file
+        c = self.conn.execute("SELECT VERIFYWEB, IF_AT from GFWLIST WHERE VERIFYWEB IS NOT NULL")
+        json_list=list()
+        for row in c:
+            VERIFYWEB, IF_AT = row
+            _dict = dict()
+            _dict["type"] = 'w' if IF_AT else 'b'
+            _dict["web"] = VERIFYWEB
+            json_list.append(_dict)
         with open(file, "w") as f:
-            f.write(json.dumps(self.json_list))
+            f.write(json.dumps(json_list, indent=4))        
 
 if __name__ == '__main__':
     gfwlist_file = None
@@ -245,23 +258,20 @@ if __name__ == '__main__':
         options,args = getopt.getopt(sys.argv[1:],"hi:o:p:", ["help","input=","output="])
     except getopt.GetoptError:
         sys.exit()
-    # if len(options) == 0:
-    #     print("gfwlist2web.py -i ./gfwlist -o ./json")
-    #     sys.exit()
     for name,value in options:
         if name in ("-h","--help"):
             print("gfwlist2web.py -i ./gfwlist -o ./json")
             sys.exit()
         if name in ("-i","--input"):
             gfwlist_file = value
-            print("input")
+            print("input file", value)
         if name in ("-o","--output"):
             json_file = value
-            print("output")
+            print("output file", value)
         if name in ("-p"):
             port = value
             proxy = {'http': '127.0.0.1:%d' % int(port)}
-            print("proxy")
+            print("port" , port)
 
     g = gfwlist2web(gfwlist_file = gfwlist_file, proxy = proxy)
     g.createDatabase()
@@ -269,4 +279,6 @@ if __name__ == '__main__':
     g.directGuessFromDatabase()
     g.testConnect()
     g.setVerifyToDatabase()
-    g.writeJson(json_file)
+    g.writeJsonFromDatabase(json_file)
+
+    os.remove(g.gfwlist_db)
