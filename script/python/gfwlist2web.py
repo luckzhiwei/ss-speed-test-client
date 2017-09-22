@@ -206,7 +206,7 @@ class gfwlist2web:
     # 创建线程池
         self.threadResultDict = dict()
         self.queue = queue.Queue()
-        for i in range(100):
+        for i in range(500):
             t = Thread(target=self.do_job)
             t.daemon=True # 设置线程daemon  主线程退出，daemon线程也会推出，即时正在运行
             t.start()
