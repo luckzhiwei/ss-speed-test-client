@@ -177,22 +177,27 @@ class gfwlist2web:
                         url = url.replace("www.","")
                         response = opener.open(url, timeout=6)
                         self.threadResultDict[id] = "OK but remove www."
-                        print(row[0], "OK but remove www.")
+                        if row[0] % 10 == 0 :
+                            print(row[0], "OK but remove www.")
                     else:
                         response = opener.open(url, timeout=6)
                         self.threadResultDict[id] = "OK"
-                        print(row[0], "OK")
+                        if row[0] % 10 == 0 : 
+                            print(row[0], "OK")
                     break
                 except (socket.timeout , urllib.error.URLError) as error:
-                    print(row[0], str(error))
+                    if row[0] % 10 == 0 :
+                        print(row[0], str(error))
                     self.threadResultDict[id] = str(error)
                     retryTime+=1
                 except ssl.CertificateError as error:
-                    print(row[0], str(error))
+                    if row[0] % 10 == 0 :
+                        print(row[0], str(error))
                     self.threadResultDict[id] = str(error)
                     retryTime+=1
                 except Exception as error:
-                    print(row[0], str(error))
+                    if row[0] % 10 == 0 :
+                        print(row[0], str(error))
                     self.threadResultDict[id] = str(error)
                     retryTime+=1
             self.queue.task_done()
