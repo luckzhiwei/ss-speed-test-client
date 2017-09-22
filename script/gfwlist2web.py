@@ -178,7 +178,7 @@ class gfwlist2web:
 
     def testConnect(self):
     # 创建线程池
-        for i in range(100):
+        for i in range(500):
             t = Thread(target=self.do_job)
             t.daemon=True # 设置线程daemon  主线程退出，daemon线程也会推出，即时正在运行
             t.start()
@@ -187,8 +187,8 @@ class gfwlist2web:
         count = 0
         for row in c:
             count += 1
-            if count > 100:
-                break
+            # if count > 100:
+            #     break
             self.queue.put(row)
 
         self.queue.join()
@@ -232,9 +232,9 @@ if __name__ == '__main__':
         options,args = getopt.getopt(sys.argv[1:],"hi:o:p:", ["help","input=","output="])
     except getopt.GetoptError:
         sys.exit()
-    if len(options) == 0:
-        print("gfwlist2web.py -i ./gfwlist -o ./json")
-        sys.exit()
+    # if len(options) == 0:
+    #     print("gfwlist2web.py -i ./gfwlist -o ./json")
+    #     sys.exit()
     for name,value in options:
         if name in ("-h","--help"):
             print("gfwlist2web.py -i ./gfwlist -o ./json")
