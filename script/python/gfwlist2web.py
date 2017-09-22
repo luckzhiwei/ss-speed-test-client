@@ -37,25 +37,25 @@ class gfwlist2web:
         if gfwlist_file:
             self.gfwlist_txt = gfwlist_file
         else :
-            with open(self.gfwlist_txt, "wb") as f:
-                print("下载gfwlist.txt")
-                err_count = 4
-                while err_count > 0:
-                    try:
-                        opener = urllib.request.build_opener()
-                        response = opener.open(self.gfwlist_http, timeout=6)
-                        raw = response.read().decode('utf-8')
-                        # print(base64.b64decode(raw))
-                        print("下载成功")
+            print("下载gfwlist.txt")
+            err_count = 4
+            while err_count > 0:
+                try:
+                    opener = urllib.request.build_opener()
+                    response = opener.open(self.gfwlist_http, timeout=6)
+                    raw = response.read().decode('utf-8')
+                    # print(base64.b64decode(raw))
+                    print("下载成功")
+                    with open(self.gfwlist_txt, "wb") as f:
                         f.write(base64.b64decode(raw))
-                        break
-                    except Exception as error:
-                        err_count -= 1
-                        if err_count > 0 :
-                            print("下载失败，正在重试")
-                if err_count == 0:
-                     print("下载失败，使用自带gfwlist.txt") 
-                # exit()
+                    break
+                except Exception as error:
+                    err_count -= 1
+                    if err_count > 0 :
+                        print("下载失败，正在重试")
+            if err_count == 0:
+                print("下载失败，使用自带gfwlist.txt") 
+            # exit()
 
         if gfwlist_database:
             self.gfwlist_db = gfwlist_database
