@@ -2,10 +2,11 @@ package com.vecent.ssspeedtest.model;
 
 import android.os.Handler;
 
+import com.vecent.ssspeedtest.model.bean.Server;
 import com.vecent.ssspeedtest.model.bean.SpeedTestResult;
 import com.vecent.ssspeedtest.util.LogUtil;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by zhiwei on 2017/9/4.
@@ -13,7 +14,7 @@ import java.util.ArrayList;
 
 public class SpeedTest {
 
-    private ArrayList<String> mServersForTest;
+    private List<Server> mServersForTest;
     private ThreadPool mThreadPool;
 
     private Handler mHandler;
@@ -23,7 +24,7 @@ public class SpeedTest {
         void onPingRetListener(SpeedTestResult result);
     }
 
-    public SpeedTest(ArrayList<String> serversForTest) {
+    public SpeedTest(List<Server> serversForTest) {
         this.mServersForTest = serversForTest;
         mThreadPool = new ThreadPool();
         mHandler = new Handler();
@@ -35,11 +36,11 @@ public class SpeedTest {
 
     public void startTest(final INet net) {
         long startTime = System.currentTimeMillis();
-        for (final String servers : mServersForTest) {
+        for (final Server server2Test : mServersForTest) {
             mThreadPool.execTask(new Runnable() {
                 @Override
                 public void run() {
-                    final SpeedTestResult pingResult = httpSpeedTest(net, servers);
+                    final SpeedTestResult pingResult = httpSpeedTest(net, server2Test.getWeb());
                     if (pingResult != null) {
                         mHandler.post(new Runnable() {
                             @Override
