@@ -28,7 +28,7 @@ before_install:
 install:
 - echo yes | sdkmanager "extras;m2repository;com;android;support;constraint;constraint-layout;1.0.2"
 - echo yes | sdkmanager "extras;m2repository;com;android;support;constraint;constraint-layout-solver;1.0.2"
-- cd ./script && docker run -it --dns=8.8.8.8  -v $PWD/out/:/out/ gfwlist_img && cat ./out/gfwlistOutput.json && cp ./out/gfwlistOutput.json ../../app/src/main/assets/gfwlistOutput.txt  && cd ..
+- cd ./script && docker run -it --dns=8.8.8.8  -v $PWD/out/:/out/ gfwlist_img && cp ./out/gfwlistOutput.json ../../app/src/main/assets/gfwlistOutput.txt  && cd ..
 
 before_script:
 - chmod a+x ./gradlew

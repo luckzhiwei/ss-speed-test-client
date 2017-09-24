@@ -55,7 +55,9 @@ public class SpeedTestActivity extends Activity {
             @Override
             public void onPingRetListener(SpeedTestResult result) {
                 mSpeedTestResults.add(result);
-                LogUtil.logDebug(getClass().getName(), mSpeedTestResults.size() + "");
+                if (mSpeedTestResults.size() % 100 == 0 || mSpeedTestResults.size() > 560) {
+                    LogUtil.logDebug(getClass().getName(), mSpeedTestResults.size() + "");
+                }
                 mAdapter.notifyDataSetChanged();
             }
         });

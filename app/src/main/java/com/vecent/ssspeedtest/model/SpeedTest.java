@@ -1,6 +1,7 @@
 package com.vecent.ssspeedtest.model;
 
 import android.os.Handler;
+import android.util.Log;
 
 import com.vecent.ssspeedtest.model.bean.Server;
 import com.vecent.ssspeedtest.model.bean.SpeedTestResult;
