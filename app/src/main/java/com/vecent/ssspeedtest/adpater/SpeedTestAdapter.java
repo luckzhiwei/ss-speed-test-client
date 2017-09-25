@@ -48,6 +48,7 @@ public class SpeedTestAdapter extends CommonAdapter<SpeedTestResult> {
         this.addKVView(container, res.getString(R.string.exception_msg), "");
         this.addKVView(container, res.getString(R.string.is_url_wrong), "");
         this.addKVView(container, res.getString(R.string.is_timed_out), "");
+        this.addKVView(container, res.getString(R.string.too_mangy_time_redirect), "");
 
         this.addKVView(container, res.getString(R.string.response_byte_size), "");
         this.addKVView(container, res.getString(R.string.time_used), "");
@@ -74,39 +75,41 @@ public class SpeedTestAdapter extends CommonAdapter<SpeedTestResult> {
         ((KeyValueView) view.getChildAt(4)).setValue(isUrlWrong);
         String isTimedOut = result.isTimedOut() ? res.getString(R.string.yes) : res.getString(R.string.no);
         ((KeyValueView) view.getChildAt(5)).setValue(isTimedOut);
+        String is2ManyRedirect = result.is2ManyTimeRelocation() ? res.getString(R.string.yes) : res.getString(R.string.no);
+        ((KeyValueView) view.getChildAt(6)).setValue(is2ManyRedirect);
         this.hidenNormalInfo(view);
         this.showExceptionInfo(view);
     }
 
     private void setNormalInfo(ViewGroup view, SpeedTestResult result, Resources res) {
-        ((KeyValueView) view.getChildAt(6)).setValue(result.getTotalSize() + res.getString(R.string.unit_byte));
-        ((KeyValueView) view.getChildAt(7)).setValue(result.getTimeUsed() + res.getString(R.string.unit_millisecond));
-        ((KeyValueView) view.getChildAt(8)).setValue(result.getDownLoadSpeed() + res.getString(R.string.kb_by_second));
+        ((KeyValueView) view.getChildAt(7)).setValue(result.getTotalSize() + res.getString(R.string.unit_byte));
+        ((KeyValueView) view.getChildAt(8)).setValue(result.getTimeUsed() + res.getString(R.string.unit_millisecond));
+        ((KeyValueView) view.getChildAt(9)).setValue(result.getDownLoadSpeed() + res.getString(R.string.kb_by_second));
         this.hidenExceptionInfo(view);
         this.showNormalInfo(view);
     }
 
 
     private void hidenExceptionInfo(ViewGroup container) {
-        for (int i = 3; i <= 5; i++) {
+        for (int i = 3; i <= 6; i++) {
             ((KeyValueView) container.getChildAt(i)).hidden();
         }
     }
 
     private void hidenNormalInfo(ViewGroup container) {
-        for (int i = 6; i <= 8; i++) {
+        for (int i = 7; i <= 9; i++) {
             ((KeyValueView) container.getChildAt(i)).hidden();
         }
     }
 
     private void showNormalInfo(ViewGroup container) {
-        for (int i = 6; i <= 8; i++) {
+        for (int i = 7; i <= 9; i++) {
             ((KeyValueView) container.getChildAt(i)).show();
         }
     }
 
     private void showExceptionInfo(ViewGroup container) {
-        for (int i = 3; i <= 5; i++) {
+        for (int i = 3; i <= 6; i++) {
             ((KeyValueView) container.getChildAt(i)).show();
         }
     }
