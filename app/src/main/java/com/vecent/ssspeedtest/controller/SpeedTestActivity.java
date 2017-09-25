@@ -2,6 +2,7 @@ package com.vecent.ssspeedtest.controller;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.widget.ListView;
 
 import com.vecent.ssspeedtest.R;
@@ -123,12 +124,17 @@ public class SpeedTestActivity extends Activity {
     }
 
     private void startSpeedTest() {
-        this.mSpeedTest.setPingCallBack(new SpeedTest.OnPingCallBack() {
+        this.mSpeedTest.setPingCallBack(new SpeedTest.RequestCallBack() {
             @Override
-            public void onPingRetListener(SpeedTestResult result) {
+            public void onOneRequestFinishListener(SpeedTestResult result) {
                 mSpeedTestResults.add(result);
                 LogUtil.logDebug(getClass().getName(), mSpeedTestResults.size() + "");
                 mAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onAllRequestFinishListener(float timeUsed, int totalReqSize) {
+
             }
         });
         new Thread(new Runnable() {
@@ -139,14 +145,19 @@ public class SpeedTestActivity extends Activity {
         }).start();
     }
 
+    private void setResult(float timeUsed, int totalReqSize) {
+        this.mContentListView.addFooterView(LayoutInflater.from(this.getApplicationContext()).
+                inflate(R.layout.speed_total_result_layout, null));
+        this.mSpeedTest.calConnectRateWhiteList();
+        this.mSpeedTest.calConnectRateBalckList();
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
         this.mSpeedTest.cancel();
         LogUtil.logDebug(getClass().getName(), "destory the speedtest activity");
     }
-
-
 
 
 }

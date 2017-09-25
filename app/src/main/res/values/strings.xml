@@ -22,4 +22,8 @@
     <string name="unit_millisecond">ms</string>
     <string name="unit_byte">Byte</string>
     <string name="too_mangy_time_redirect">过多次数的重定向</string>
+    <string name="total_used_time">测试总用时间</string>
+    <string name="white_list">白名单</string>
+    <string name="balck_list">黑名单</string>
+    <string name="connection_success_rate">连接成功率</string>
 </resources>

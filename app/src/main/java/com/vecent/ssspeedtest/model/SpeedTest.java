@@ -17,10 +17,12 @@ public class SpeedTest {
     private ThreadPool mThreadPool;
 
     private Handler mHandler;
-    private OnPingCallBack mPingCallBack;
+    private RequestCallBack mPingCallBack;
 
-    public static interface OnPingCallBack {
-        void onPingRetListener(SpeedTestResult result);
+    public static interface RequestCallBack {
+        void onAllRequestFinishListener(float timeUsed, int totalReqSize);
+
+        void onOneRequestFinishListener(SpeedTestResult result);
     }
 
     public SpeedTest(ArrayList<String> serversForTest) {
@@ -34,7 +36,7 @@ public class SpeedTest {
     }
 
     public void startTest(final INet net) {
-        long startTime = System.currentTimeMillis();
+        final long startTime = System.currentTimeMillis();
         for (final String servers : mServersForTest) {
             mThreadPool.execTask(new Runnable() {
                 @Override
@@ -44,7 +46,7 @@ public class SpeedTest {
                         mHandler.post(new Runnable() {
                             @Override
                             public void run() {
-                                mPingCallBack.onPingRetListener(pingResult);
+                                mPingCallBack.onOneRequestFinishListener(pingResult);
                             }
                         });
                     }
@@ -57,17 +59,30 @@ public class SpeedTest {
         } catch (InterruptedException e) {
             LogUtil.logInfo("Wait all task complete error", " InterruptedException");
         }
-        long endTime = System.currentTimeMillis();
-        LogUtil.logInfo(getClass().getName(), "All task complete");
-        LogUtil.logDebug(getClass().getName(), (endTime - startTime) + " totalTImeUsed");
+        final long endTime = System.currentTimeMillis();
+        this.mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                mPingCallBack.onAllRequestFinishListener(1.0f * (endTime - startTime) / 1000, mServersForTest.size());
+            }
+        });
     }
 
-    public void setPingCallBack(OnPingCallBack fun) {
+    public void setPingCallBack(RequestCallBack fun) {
         this.mPingCallBack = fun;
     }
 
     public void cancel() {
         this.mThreadPool.stopNow();
+    }
+
+    public float calConnectRateWhiteList() {
+        int whiteListSize, connectServers = 0;
+
+    }
+
+    public float calConnectRateBalckList() {
+        return 0.0f;
     }
 
 
