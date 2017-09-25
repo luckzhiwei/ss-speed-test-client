@@ -1,5 +1,10 @@
 language: android
 jdk: oraclejdk8
+
+
+services:
+  - docker
+
 android:
   components:
   - tools
@@ -16,9 +21,16 @@ cache:
   - "$HOME/.gradle/caches/"
   - "$HOME/.gradle/wrapper/"
   - "$HOME/.android/build-cache"
+### todo docker image 缓存设置
+before_install:
+  - cd ./script && docker build -t gfwlist_img . && cd ..
+
 install:
 - echo yes | sdkmanager "extras;m2repository;com;android;support;constraint;constraint-layout;1.0.2"
 - echo yes | sdkmanager "extras;m2repository;com;android;support;constraint;constraint-layout-solver;1.0.2"
+### todo 考虑把这个步骤放入gradle中
+- cd ./script && docker run -it --dns=8.8.8.8  -v $PWD/out/:/out/ gfwlist_img && cp ./out/gfwlistOutput.json ../app/src/main/assets/gfwlistOutput.txt  && cd ..
+
 before_script:
 - chmod a+x ./gradlew
 script:

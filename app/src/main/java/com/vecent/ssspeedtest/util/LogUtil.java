@@ -2,6 +2,7 @@ package com.vecent.ssspeedtest.util;
 
 import android.util.Log;
 
+
 /**
  * Created by zhiwei on 2017/9/5.
  */
@@ -38,6 +39,7 @@ public class LogUtil {
         if (LOG_DEBUG_TAG != 0) {
             tagPostfix = preProcessTag(tagPostfix);
             Log.i(Constant.LOG_TAG + tagPostfix, msg);
+
         }
     }
 

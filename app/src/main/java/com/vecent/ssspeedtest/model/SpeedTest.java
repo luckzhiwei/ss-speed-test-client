@@ -2,10 +2,11 @@ package com.vecent.ssspeedtest.model;
 
 import android.os.Handler;
 
+import com.vecent.ssspeedtest.model.bean.Server;
 import com.vecent.ssspeedtest.model.bean.SpeedTestResult;
 import com.vecent.ssspeedtest.util.LogUtil;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by zhiwei on 2017/9/4.
@@ -13,7 +14,7 @@ import java.util.ArrayList;
 
 public class SpeedTest {
 
-    private ArrayList<String> mServersForTest;
+    private List<Server> mServers2Test;
     private ThreadPool mThreadPool;
 
     private Handler mHandler;
@@ -25,23 +26,24 @@ public class SpeedTest {
         void onOneRequestFinishListener(SpeedTestResult result);
     }
 
-    public SpeedTest(ArrayList<String> serversForTest) {
-        this.mServersForTest = serversForTest;
+    public SpeedTest(List<Server> serversForTest) {
+        this.mServers2Test = serversForTest;
         mThreadPool = new ThreadPool();
         mHandler = new Handler();
     }
 
-    public SpeedTestResult httpSpeedTest(INet net, String serverToPing) {
-        return net.getHttpTestResult(serverToPing);
+    public SpeedTestResult httpSpeedTest(INet net, Server server2Request) {
+        return net.getHttpTestResult(server2Request);
     }
 
     public void startTest(final INet net) {
         final long startTime = System.currentTimeMillis();
-        for (final String servers : mServersForTest) {
+        for (final Server server : mServers2Test) {
+
             mThreadPool.execTask(new Runnable() {
                 @Override
                 public void run() {
-                    final SpeedTestResult pingResult = httpSpeedTest(net, servers);
+                    final SpeedTestResult pingResult = httpSpeedTest(net, server);
                     if (pingResult != null) {
                         mHandler.post(new Runnable() {
                             @Override
@@ -63,7 +65,7 @@ public class SpeedTest {
         this.mHandler.post(new Runnable() {
             @Override
             public void run() {
-                mPingCallBack.onAllRequestFinishListener(1.0f * (endTime - startTime) / 1000, mServersForTest.size());
+                mPingCallBack.onAllRequestFinishListener(1.0f * (endTime - startTime) / 1000, mServers2Test.size());
             }
         });
     }
@@ -76,13 +78,36 @@ public class SpeedTest {
         this.mThreadPool.stopNow();
     }
 
-    public float calConnectRateWhiteList() {
-        int whiteListSize, connectServers = 0;
-
+    public float calConnectRateWhiteList(List<SpeedTestResult> result) {
+        int whiteListSize = 0, connectServers = 0;
+        for (SpeedTestResult oneRet : result) {
+            if (oneRet.isWhiteAddr()) {
+                whiteListSize++;
+                if (!oneRet.isExceptionOccured()) {
+                    connectServers++;
+                }
+            }
+        }
+        if (whiteListSize == 0) {
+            return 0;
+        }
+        return (1.0f * connectServers / whiteListSize);
     }
 
-    public float calConnectRateBalckList() {
-        return 0.0f;
+    public float calConnectRateBalckList(List<SpeedTestResult> result) {
+        int blackListSize = 0, connectServers = 0;
+        for (SpeedTestResult oneRet : result) {
+            if (!oneRet.isWhiteAddr()) {
+                blackListSize++;
+                if (!oneRet.isExceptionOccured()) {
+                    connectServers++;
+                }
+            }
+        }
+        if (blackListSize == 0) {
+            return 0;
+        }
+        return (1.0f * connectServers / blackListSize);
     }
 
 
