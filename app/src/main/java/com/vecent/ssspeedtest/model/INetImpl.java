@@ -1,9 +1,7 @@
 package com.vecent.ssspeedtest.model;
 
-import android.util.Log;
-
 import com.vecent.ssspeedtest.model.bean.SpeedTestResult;
-import com.vecent.ssspeedtest.util.LogUtil;
+import com.vecent.ssspeedtest.util.Constant;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -19,6 +17,8 @@ import java.net.URL;
 
 public class INetImpl implements INet {
 
+    public static final String TOO_MANY_TIMES_TO_REDIRECT = "too many times to redriect";
+
     public SpeedTestResult getHttpTestResult(String server) {
         SpeedTestResult result = new SpeedTestResult();
         result.setRequestServer(server);
@@ -27,11 +27,18 @@ public class INetImpl implements INet {
             long startTime = System.currentTimeMillis();
             conn = this.getConnection(server);
             int responseCode = conn.getResponseCode();
-            if (this.isRedirect(responseCode)) {
+            int countNum = 0;
+            while (this.isRedirect(responseCode)) {
                 String newUrl = conn.getHeaderField("Location");
                 conn = getConnection(newUrl);
                 result.setRedirect(true);
                 result.setRedirectServer(newUrl);
+                responseCode = conn.getResponseCode();
+                if (++countNum > Constant.MAX_REDIRECT_TIMES) {
+                    this.setResultExceptionMsg(result, TOO_MANY_TIMES_TO_REDIRECT);
+                    result.setIs2ManyTimeRelocation(true);
+                    return result;
+                }
             }
             result.setStatusCode(conn.getResponseCode());
             result.setTotalSize(this.getResponseSize(conn.getInputStream()));

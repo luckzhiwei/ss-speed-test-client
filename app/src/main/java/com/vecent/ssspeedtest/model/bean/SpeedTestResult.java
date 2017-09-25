@@ -16,6 +16,16 @@ public class SpeedTestResult {
     private boolean isTimedOut = false;
     private String redirectServer;
     private boolean isExceptionOccured = false;
+
+    public boolean is2ManyTimeRelocation() {
+        return is2ManyTimeRelocation;
+    }
+
+    public void setIs2ManyTimeRelocation(boolean is2ManyTimeRelocation) {
+        this.is2ManyTimeRelocation = is2ManyTimeRelocation;
+    }
+
+    private boolean is2ManyTimeRelocation = false;
     private float downLoadSpeed;
 
     public float getDownLoadSpeed() {
