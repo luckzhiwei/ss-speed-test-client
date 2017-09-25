@@ -29,6 +29,7 @@ android {
         }
     }
 
+    sourceSets { main { assets.srcDirs = ['src/main/assets', 'src/androidTest/assets/'] } }
 }
 
 dependencies {
@@ -42,4 +43,5 @@ dependencies {
     testCompile 'org.mockito:mockito-core:2.9.0'
     androidTestCompile 'org.mockito:mockito-android:2.9.0'
     compile 'com.zhy:base-adapter:3.0.3'
+    compile 'com.alibaba:fastjson:1.1.63.android'
 }
