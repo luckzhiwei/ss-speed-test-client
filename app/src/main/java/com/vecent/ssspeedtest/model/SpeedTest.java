@@ -19,6 +19,7 @@ public class SpeedTest {
 
     private Handler mHandler;
     private RequestCallBack mPingCallBack;
+    private int tottalSize;
 
     public static interface RequestCallBack {
         void onAllRequestFinishListener(float timeUsed, int totalReqSize);
@@ -28,6 +29,7 @@ public class SpeedTest {
 
     public SpeedTest(List<Server> serversForTest) {
         this.mServers2Test = serversForTest;
+        this.tottalSize = serversForTest.size();
         mThreadPool = new ThreadPool();
         mHandler = new Handler();
     }

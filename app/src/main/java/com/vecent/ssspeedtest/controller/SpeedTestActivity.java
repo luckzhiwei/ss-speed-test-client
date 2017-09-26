@@ -30,6 +30,7 @@ public class SpeedTestActivity extends Activity {
     private List<SpeedTestResult> mSpeedTestResults;
     private SpeedTestAdapter mAdapter;
     private ViewGroup footerView;
+    private Servers servers2Test;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +49,7 @@ public class SpeedTestActivity extends Activity {
         this.mAdapter = new SpeedTestAdapter(getApplicationContext(),
                 R.layout.speed_test_item_layout, mSpeedTestResults);
         this.mContentListView.setAdapter(this.mAdapter);
-        Servers servers2Test = new Servers(this.getApplicationContext());
+        this.servers2Test = new Servers(this.getApplicationContext());
         this.mSpeedTest = new SpeedTest(servers2Test.getServers());
         LogUtil.logDebug(getClass().getName(), servers2Test.getServers().size() + "");
         this.startSpeedTest();
@@ -59,8 +60,6 @@ public class SpeedTestActivity extends Activity {
             @Override
             public void onOneRequestFinishListener(SpeedTestResult result) {
                 mSpeedTestResults.add(result);
-                LogUtil.logDebug(getClass().getName(), result.getRequestServer() + "");
-                LogUtil.logDebug(getClass().getName(), mSpeedTestResults.size() + "");
                 mAdapter.notifyDataSetChanged();
             }
 
