@@ -202,11 +202,13 @@ class gfwlist2web:
                     retryTime+=1
             self.queue.task_done()
 
-    def testConnect(self):
+    def testConnect(self, max_count = None, max_thread = None):
     # 创建线程池
         self.threadResultDict = dict()
         self.queue = queue.Queue()
-        for i in range(500):
+        if max_thread is None:
+            max_thread = 256
+        for i in range(max_thread):
             t = Thread(target=self.do_job)
             t.daemon=True # 设置线程daemon  主线程退出，daemon线程也会推出，即时正在运行
             t.start()
@@ -215,8 +217,8 @@ class gfwlist2web:
         count = 0
         for row in c:
             count += 1
-            # if count > 100:
-            #     break
+            if testCount and count > testCount:
+                break
             self.queue.put(row)
 
         self.queue.join()
@@ -259,14 +261,21 @@ if __name__ == '__main__':
     gfwlist_file = None
     json_file = None
     proxy = None
+    testCount = None
+    thread = None
+    print("使用方法 -i 输入文件 -o 输出文件 -p 代理端口 -c 输出数量 -t 线程数量")
     try:
-        options,args = getopt.getopt(sys.argv[1:],"hi:o:p:", ["help","input=","output="])
+        options,args = getopt.getopt(sys.argv[1:],"hi:o:p:c:t:", ["help","input=","output="])
     except getopt.GetoptError:
         sys.exit()
     for name,value in options:
         if name in ("-h","--help"):
-            print("gfwlist2web.py -i ./gfwlist -o ./json")
-            sys.exit()
+            print("示例：gfwlist2web.py -i ./gfwlist -o ./json")
+            print("-i 不输入默认使用网络gfwlist，无法下载则使用本地gfwlist")
+            print("-c 默认输出所有http")
+            print("-t 默认线程数量500")
+            print("-p 默认代理不设置")
+            print("-o 默认该目录下的gfwweb.json")
         if name in ("-i","--input"):
             gfwlist_file = value
             print("input file", value)
@@ -277,12 +286,18 @@ if __name__ == '__main__':
             port = value
             proxy = {'http': '127.0.0.1:%d' % int(port)}
             print("port" , port)
+        if name in ("-c"):
+            testCount = int(value)
+            print("testCount", testCount)
+        if name in ("-t"):
+            thread = int(value)
+            print("thread", thread)
 
     g = gfwlist2web(gfwlist_file = gfwlist_file, proxy = proxy)
     g.createDatabase()
     g.readGfwlistToDatabase()
     g.directGuessFromDatabase()
-    g.testConnect()
+    g.testConnect(max_count = testCount, max_thread = thread)
     g.setVerifyToDatabase()
     g.writeJsonFromDatabase(json_file)
 
