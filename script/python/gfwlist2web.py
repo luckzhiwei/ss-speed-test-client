@@ -16,6 +16,7 @@ import time
 import json
 import sys, getopt
 import base64
+import time
 
 # 取消验证ssl中域名与证书一致
 # https://stackoverflow.com/questions/28768530/certificateerror-hostname-doesnt-match
@@ -37,25 +38,31 @@ class gfwlist2web:
         if gfwlist_file:
             self.gfwlist_txt = gfwlist_file
         else :
-            print("下载gfwlist.txt")
-            err_count = 4
-            while err_count > 0:
-                try:
-                    opener = urllib.request.build_opener()
-                    response = opener.open(self.gfwlist_http, timeout=6)
-                    raw = response.read().decode('utf-8')
-                    # print(base64.b64decode(raw))
-                    print("下载成功")
-                    with open(self.gfwlist_txt, "wb") as f:
-                        f.write(base64.b64decode(raw))
-                    break
-                except Exception as error:
-                    err_count -= 1
-                    if err_count > 0 :
-                        print("下载失败，正在重试")
-            if err_count == 0:
-                print("下载失败，使用自带gfwlist.txt") 
-            # exit()
+            filemt= time.localtime(os.stat(self.gfwlist_txt).st_mtime)
+            print("------更新gfwlist------")
+            print(time.strftime("本地 gfwlist.txt 文件更新时间 %Y-%m-%d", filemt))
+            print(time.strftime("当前时间 %Y-%m-%d %H:%M:%S", time.localtime()) )
+            if time.strftime("%Y-%m-%d" , filemt) == time.strftime("%Y-%m-%d" , time.localtime()):
+                print("已经更新过gfwlist，跳过更新")
+            else :
+                print("下载gfwlist.txt")
+                err_count = 4
+                while err_count > 0:
+                    try:
+                        opener = urllib.request.build_opener()
+                        response = opener.open(self.gfwlist_http, timeout=6)
+                        raw = response.read().decode('utf-8')
+                        # print(base64.b64decode(raw))
+                        print("下载成功")
+                        with open(self.gfwlist_txt, "wb") as f:
+                            f.write(base64.b64decode(raw))
+                        break
+                    except Exception as error:
+                        err_count -= 1
+                        if err_count > 0 :
+                            print("下载失败，正在重试")
+                if err_count == 0:
+                    print("下载失败，使用自带gfwlist.txt") 
 
         if gfwlist_database:
             self.gfwlist_db = gfwlist_database
@@ -204,6 +211,7 @@ class gfwlist2web:
 
     def testConnect(self, max_count = None, max_thread = None):
     # 创建线程池
+        print("------开始测试------")
         self.threadResultDict = dict()
         self.queue = queue.Queue()
         if max_thread is None:
@@ -255,7 +263,8 @@ class gfwlist2web:
             _dict["web"] = VERIFYWEB
             json_list.append(_dict)
         with open(file, "w") as f:
-            f.write(json.dumps(json_list, indent=4))        
+            f.write(json.dumps(json_list, indent=4))    
+        print("------json文件已生成------")    
 
 if __name__ == '__main__':
     gfwlist_file = None
@@ -278,20 +287,20 @@ if __name__ == '__main__':
             print("-o 默认该目录下的gfwweb.json")
         if name in ("-i","--input"):
             gfwlist_file = value
-            print("input file", value)
+            print("使用输入文件", value)
         if name in ("-o","--output"):
             json_file = value
-            print("output file", value)
+            print("输出文件路径", value)
         if name in ("-p"):
             port = value
             proxy = {'http': '127.0.0.1:%d' % int(port)}
-            print("port" , port)
+            print("代理端口号" , port)
         if name in ("-c"):
             testCount = int(value)
-            print("testCount", testCount)
+            print("只测试前%d个" % testCount)
         if name in ("-t"):
             thread = int(value)
-            print("thread", thread)
+            print("线程数量设置为%d个" % thread)
 
     g = gfwlist2web(gfwlist_file = gfwlist_file, proxy = proxy)
     g.createDatabase()
