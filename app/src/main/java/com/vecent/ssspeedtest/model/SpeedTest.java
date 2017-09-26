@@ -110,5 +110,24 @@ public class SpeedTest {
         return (1.0f * connectServers / blackListSize);
     }
 
+    public int countWhiteListAddr(List<SpeedTestResult> result) {
+        int count = 0;
+        for (SpeedTestResult server : result) {
+            if (server.isWhiteAddr()) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    public int countBlackListAddr(List<SpeedTestResult> result) {
+        int count = 0;
+        for (SpeedTestResult server : result) {
+            if (!server.isWhiteAddr()) {
+                count++;
+            }
+        }
+        return count;
+    }
 
 }

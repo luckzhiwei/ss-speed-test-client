@@ -16,7 +16,6 @@ import com.vecent.ssspeedtest.model.bean.SpeedTestResult;
 import com.vecent.ssspeedtest.util.LogUtil;
 import com.vecent.ssspeedtest.view.KeyValueView;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
@@ -87,14 +86,21 @@ public class SpeedTestActivity extends Activity {
 
         float whiteListConnectRate = this.mSpeedTest.calConnectRateWhiteList(this.mSpeedTestResults);
         float balckListConnectRate = this.mSpeedTest.calConnectRateBalckList(this.mSpeedTestResults);
+        int whiteAddrCount = this.mSpeedTest.countWhiteListAddr(this.mSpeedTestResults);
+        int blackAddrCount = this.mSpeedTest.countBlackListAddr(this.mSpeedTestResults);
+
         footerView.addView(new KeyValueView(getApplicationContext()).
                 setKey(res.getString(R.string.total_server_count)).setValue(totalReqSize + ""));
         footerView.addView(new KeyValueView(getApplicationContext()).
-                setKey(res.getString(R.string.total_used_time)).setValue(timeUsed +"  "+ res.getString(R.string.unit_second)));
+                setKey(res.getString(R.string.total_used_time)).setValue(timeUsed + "  " + res.getString(R.string.unit_second)));
         footerView.addView(new KeyValueView(getApplicationContext()).
                 setKey(res.getString(R.string.white_list_success_rate)).setValue(whiteListConnectRate + ""));
+        footerView.addView(new KeyValueView(getApplication()).
+                setKey(res.getString(R.string.white_list_addr_count)).setValue(whiteAddrCount + ""));
         footerView.addView(new KeyValueView(getApplicationContext()).
-                setKey(res.getString(R.string.balck_list_success_rate)).setValue(balckListConnectRate + ""));
+                setKey(res.getString(R.string.black_list_success_rate)).setValue(balckListConnectRate + ""));
+        footerView.addView(new KeyValueView(getApplicationContext()).
+                setKey(res.getString(R.string.black_list_addr_count)).setValue(blackAddrCount + ""));
         this.mContentListView.addFooterView(footerView);
     }
 

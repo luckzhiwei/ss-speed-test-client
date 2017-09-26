@@ -28,7 +28,6 @@ public class Servers {
         }
     }
 
-
     public List<Server> getServers() {
         return this.mServers;
     }

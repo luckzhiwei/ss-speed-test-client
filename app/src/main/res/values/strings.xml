@@ -27,6 +27,8 @@
     <string name="too_mangy_time_redirect">过多次数的重定向</string>
     <string name="total_used_time">测试总用时间</string>
     <string name="white_list_success_rate">白名单成功率</string>
-    <string name="balck_list_success_rate">黑名单成功率</string>
+    <string name="white_list_addr_count">白名单地址个数</string>
+    <string name="black_list_success_rate">黑名单成功率</string>
+    <string name="black_list_addr_count">黑名单地址个数</string>
     <string name="connection_success_rate">连接成功率</string>
 </resources>

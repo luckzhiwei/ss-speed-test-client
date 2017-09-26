@@ -48,4 +48,16 @@ public class TestSpeetTest {
         SpeedTest test = new SpeedTest(mockServer);
         Assert.assertEquals(1.0f, test.calConnectRateBalckList(mockResult), 0.002f);
     }
+
+    @Test
+    public void testCountWhiteListAddr() {
+        SpeedTest test = new SpeedTest(mockServer);
+        Assert.assertEquals(2, test.countWhiteListAddr(mockResult));
+    }
+
+    @Test
+    public void testCountBlackListAddr() {
+        SpeedTest test = new SpeedTest(mockServer);
+        Assert.assertEquals(1, test.countBlackListAddr(mockResult));
+    }
 }
