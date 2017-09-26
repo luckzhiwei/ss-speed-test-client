@@ -3,9 +3,11 @@ package com.vecent.ssspeedtest.controller;
 import android.app.Activity;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 
 import com.vecent.ssspeedtest.R;
 import com.vecent.ssspeedtest.adpater.SpeedTestAdapter;
@@ -30,7 +32,7 @@ public class SpeedTestActivity extends Activity {
     private List<SpeedTestResult> mSpeedTestResults;
     private SpeedTestAdapter mAdapter;
     private ViewGroup footerView;
-    private Servers servers2Test;
+    private ProgressBar mProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +44,9 @@ public class SpeedTestActivity extends Activity {
 
     private void initView() {
         this.mContentListView = this.findViewById(R.id.common_list_view);
+        this.mProgressBar = this.findViewById(R.id.speed_test_progress);
+        this.mProgressBar.setMax(100);
+
     }
 
     private void initData() {
@@ -49,7 +54,7 @@ public class SpeedTestActivity extends Activity {
         this.mAdapter = new SpeedTestAdapter(getApplicationContext(),
                 R.layout.speed_test_item_layout, mSpeedTestResults);
         this.mContentListView.setAdapter(this.mAdapter);
-        this.servers2Test = new Servers(this.getApplicationContext());
+        Servers servers2Test = new Servers(this.getApplicationContext());
         this.mSpeedTest = new SpeedTest(servers2Test.getServers());
         LogUtil.logDebug(getClass().getName(), servers2Test.getServers().size() + "");
         this.startSpeedTest();
@@ -58,9 +63,11 @@ public class SpeedTestActivity extends Activity {
     private void startSpeedTest() {
         this.mSpeedTest.setPingCallBack(new SpeedTest.RequestCallBack() {
             @Override
-            public void onOneRequestFinishListener(SpeedTestResult result) {
+            public void onOneRequestFinishListener(SpeedTestResult result, int totalSize) {
                 mSpeedTestResults.add(result);
                 mAdapter.notifyDataSetChanged();
+                int progress = (int) (100.0f * mSpeedTestResults.size() / totalSize);
+                mProgressBar.setProgress(progress);
             }
 
             @Override
@@ -75,6 +82,7 @@ public class SpeedTestActivity extends Activity {
             }
         }).start();
     }
+
 
     private void setResult(float timeUsed, int totalReqSize) {
         if (this.footerView == null) {
