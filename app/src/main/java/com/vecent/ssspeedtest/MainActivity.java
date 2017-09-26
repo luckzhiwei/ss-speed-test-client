@@ -33,7 +33,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        LogUtil.logDebug(getClass().getName(), "destory the main activity");
     }
 
 

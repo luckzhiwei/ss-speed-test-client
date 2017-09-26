@@ -1,8 +1,10 @@
 package com.vecent.ssspeedtest.controller;
 
 import android.app.Activity;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.vecent.ssspeedtest.R;
@@ -12,6 +14,7 @@ import com.vecent.ssspeedtest.model.Servers;
 import com.vecent.ssspeedtest.model.SpeedTest;
 import com.vecent.ssspeedtest.model.bean.SpeedTestResult;
 import com.vecent.ssspeedtest.util.LogUtil;
+import com.vecent.ssspeedtest.view.KeyValueView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +30,7 @@ public class SpeedTestActivity extends Activity {
     private ListView mContentListView;
     private List<SpeedTestResult> mSpeedTestResults;
     private SpeedTestAdapter mAdapter;
+    private ViewGroup footerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,13 +60,14 @@ public class SpeedTestActivity extends Activity {
             @Override
             public void onOneRequestFinishListener(SpeedTestResult result) {
                 mSpeedTestResults.add(result);
+                LogUtil.logDebug(getClass().getName(), result.getRequestServer() + "");
                 LogUtil.logDebug(getClass().getName(), mSpeedTestResults.size() + "");
                 mAdapter.notifyDataSetChanged();
             }
 
             @Override
             public void onAllRequestFinishListener(float timeUsed, int totalReqSize) {
-
+                setResult(timeUsed, totalReqSize);
             }
         });
         new Thread(new Runnable() {
@@ -74,19 +79,29 @@ public class SpeedTestActivity extends Activity {
     }
 
     private void setResult(float timeUsed, int totalReqSize) {
-//        this.mContentListView.addFooterView(LayoutInflater.from(this.getApplicationContext()).
-//                inflate(R.layout.speed_total_result_layout, null));
-        LogUtil.logDebug(getClass().getName(), "total time " + timeUsed);
-        LogUtil.logDebug(getClass().getName(), "total size  " + totalReqSize);
-        LogUtil.logDebug(getClass().getName(), "white rate is  " + this.mSpeedTest.calConnectRateWhiteList(mSpeedTestResults));
-        LogUtil.logDebug(getClass().getName(), "black rata is" + this.mSpeedTest.calConnectRateBalckList(mSpeedTestResults));
+        if (this.footerView == null) {
+            this.footerView = (ViewGroup) LayoutInflater.from(this.getApplicationContext()).
+                    inflate(R.layout.speed_total_result_layout, null);
+        }
+        Resources res = getApplicationContext().getResources();
+
+        float whiteListConnectRate = this.mSpeedTest.calConnectRateWhiteList(this.mSpeedTestResults);
+        float balckListConnectRate = this.mSpeedTest.calConnectRateBalckList(this.mSpeedTestResults);
+        footerView.addView(new KeyValueView(getApplicationContext()).
+                setKey(res.getString(R.string.total_server_count)).setValue(totalReqSize + ""));
+        footerView.addView(new KeyValueView(getApplicationContext()).
+                setKey(res.getString(R.string.total_used_time)).setValue(timeUsed +"  "+ res.getString(R.string.unit_second)));
+        footerView.addView(new KeyValueView(getApplicationContext()).
+                setKey(res.getString(R.string.white_list_success_rate)).setValue(whiteListConnectRate + ""));
+        footerView.addView(new KeyValueView(getApplicationContext()).
+                setKey(res.getString(R.string.balck_list_success_rate)).setValue(balckListConnectRate + ""));
+        this.mContentListView.addFooterView(footerView);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         this.mSpeedTest.cancel();
-        LogUtil.logDebug(getClass().getName(), "destory the speedtest activity");
     }
 
 
