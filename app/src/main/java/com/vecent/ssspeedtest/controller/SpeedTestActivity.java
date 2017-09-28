@@ -14,7 +14,6 @@ import com.vecent.ssspeedtest.model.INetImpl;
 import com.vecent.ssspeedtest.model.Servers;
 import com.vecent.ssspeedtest.model.SpeedTest;
 import com.vecent.ssspeedtest.model.bean.SpeedTestResult;
-import com.vecent.ssspeedtest.util.LogUtil;
 import com.vecent.ssspeedtest.view.KeyValueView;
 
 import java.util.List;
@@ -48,8 +47,8 @@ public class SpeedTestActivity extends Activity {
         this.mProgressBar = this.findViewById(R.id.speed_test_progress);
         this.totalServerItem = this.findViewById(R.id.item_total_server_count);
         this.currentServerItem = this.findViewById(R.id.item_total_server_count_current);
-        this.totalServerItem.setKey(getResources().getString(R.string.total_server_count));
-        this.currentServerItem.setKey(getResources().getString(R.string.cur_server_count));
+        this.totalServerItem.setKey(getResources().getString(R.string.total_server_count)).setKeyTextColor(R.color.colorWhite).setValueTextColor(R.color.colorWhite);
+        this.currentServerItem.setKey(getResources().getString(R.string.cur_server_count)).setKeyTextColor(R.color.colorWhite).setValueTextColor(R.color.colorWhite);
         this.mProgressBar.setMax(100);
     }
 
@@ -60,7 +59,6 @@ public class SpeedTestActivity extends Activity {
         this.mContentListView.setAdapter(this.mAdapter);
         Servers servers2Test = new Servers(this.getApplicationContext());
         this.mSpeedTest = new SpeedTest(servers2Test.getServers());
-        LogUtil.logDebug(getClass().getName(), servers2Test.getServers().size() + "");
         this.startSpeedTest();
     }
 

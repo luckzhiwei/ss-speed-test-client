@@ -5,9 +5,7 @@
     android:orientation="vertical">
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:text="@string/speed_test_result"
-        android:textColor="@color/colorBlack" />
+        style="@style/textViewMiddle.Gray"
+        android:layout_margin="8dp"
+        android:text="@string/speed_test_result" />
 </LinearLayout>

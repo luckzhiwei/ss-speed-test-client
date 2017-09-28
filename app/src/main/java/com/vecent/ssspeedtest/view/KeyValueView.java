@@ -19,6 +19,7 @@ public class KeyValueView extends RelativeLayout {
 
     private TextView textViewKey;
     private TextView textViewValue;
+    private Context mContext;
 
     public KeyValueView(Context context) {
         super(context);
@@ -36,6 +37,7 @@ public class KeyValueView extends RelativeLayout {
     }
 
     private void init(Context context) {
+        this.mContext = context;
         LayoutInflater.from(context).inflate(R.layout.key_value_item, this);
         textViewKey = this.findViewById(R.id.item_key_value_key_content);
         textViewValue = this.findViewById(R.id.item_key_value_value_content);
@@ -63,5 +65,23 @@ public class KeyValueView extends RelativeLayout {
         this.textViewValue.setVisibility(View.VISIBLE);
         return this;
     }
+
+    public KeyValueView setTextSize(int dimen) {
+        float size = mContext.getResources().getDimension(dimen);
+        this.textViewKey.setTextSize(size);
+        this.textViewValue.setTextSize(size);
+        return this;
+    }
+
+    public KeyValueView setKeyTextColor(int colorId) {
+        this.textViewKey.setTextColor(mContext.getResources().getColor(colorId));
+        return this;
+    }
+
+    public KeyValueView setValueTextColor(int colorId) {
+        this.textViewValue.setTextColor(mContext.getResources().getColor(colorId));
+        return this;
+    }
+
 
 }
