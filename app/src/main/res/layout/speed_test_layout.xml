@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:background="@color/colorLightBlue">
+        android:background="@mipmap/background_blue">
 
         <TextView
             android:id="@+id/speed_test_title"
@@ -46,4 +47,4 @@
 
     <include layout="@layout/listview_common" />
 
-</RelativeLayout>
+</LinearLayout>
