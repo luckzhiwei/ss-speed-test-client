@@ -32,4 +32,5 @@
     <string name="black_list_addr_count">黑名单地址个数</string>
     <string name="connection_success_rate">连接成功率</string>
     <string name="cur_time">现在请求的个数</string>
+    <string name="connection_progress">连接进度</string>
 </resources>

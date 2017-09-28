@@ -19,12 +19,12 @@ public class SpeedTest {
 
     private Handler mHandler;
     private RequestCallBack mPingCallBack;
-    private int tottalSize;
+    private final int tottalSize;
 
     public static interface RequestCallBack {
         void onAllRequestFinishListener(float timeUsed, int totalReqSize);
 
-        void onOneRequestFinishListener(SpeedTestResult result);
+        void onOneRequestFinishListener(SpeedTestResult result, int totalSize);
     }
 
     public SpeedTest(List<Server> serversForTest) {
@@ -50,7 +50,7 @@ public class SpeedTest {
                         mHandler.post(new Runnable() {
                             @Override
                             public void run() {
-                                mPingCallBack.onOneRequestFinishListener(pingResult);
+                                mPingCallBack.onOneRequestFinishListener(pingResult, tottalSize);
                             }
                         });
                     }
