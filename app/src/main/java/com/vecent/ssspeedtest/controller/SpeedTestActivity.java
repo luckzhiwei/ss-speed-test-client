@@ -3,7 +3,6 @@ package com.vecent.ssspeedtest.controller;
 import android.app.Activity;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.ListView;
@@ -33,6 +32,8 @@ public class SpeedTestActivity extends Activity {
     private SpeedTestAdapter mAdapter;
     private ViewGroup footerView;
     private ProgressBar mProgressBar;
+    private KeyValueView totalServerItem;
+    private KeyValueView currentServerItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,8 +46,11 @@ public class SpeedTestActivity extends Activity {
     private void initView() {
         this.mContentListView = this.findViewById(R.id.common_list_view);
         this.mProgressBar = this.findViewById(R.id.speed_test_progress);
+        this.totalServerItem = this.findViewById(R.id.item_total_server_count);
+        this.currentServerItem = this.findViewById(R.id.item_total_server_count_current);
+        this.totalServerItem.setKey(getResources().getString(R.string.total_server_count));
+        this.currentServerItem.setKey(getResources().getString(R.string.cur_server_count));
         this.mProgressBar.setMax(100);
-
     }
 
     private void initData() {
@@ -66,7 +70,10 @@ public class SpeedTestActivity extends Activity {
             public void onOneRequestFinishListener(SpeedTestResult result, int totalSize) {
                 mSpeedTestResults.add(result);
                 mAdapter.notifyDataSetChanged();
-                int progress = (int) (100.0f * mSpeedTestResults.size() / totalSize);
+                int curRequestedServerCount = mSpeedTestResults.size();
+                int progress = (int) (100.0f * curRequestedServerCount / totalSize);
+                totalServerItem.setValue(totalSize + "");
+                currentServerItem.setValue(curRequestedServerCount + "");
                 mProgressBar.setProgress(progress);
             }
 

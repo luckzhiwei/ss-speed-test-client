@@ -22,6 +22,20 @@ public class KeyValueView extends RelativeLayout {
 
     public KeyValueView(Context context) {
         super(context);
+        init(context);
+    }
+
+    public KeyValueView(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        init(context);
+    }
+
+    public KeyValueView(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+        init(context);
+    }
+
+    private void init(Context context) {
         LayoutInflater.from(context).inflate(R.layout.key_value_item, this);
         textViewKey = this.findViewById(R.id.item_key_value_key_content);
         textViewValue = this.findViewById(R.id.item_key_value_value_content);
