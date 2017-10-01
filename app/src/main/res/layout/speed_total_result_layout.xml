@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorWhite"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -45,129 +46,192 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:padding="8dp">
 
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:src="@mipmap/total" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/textview_total_server_count"
-            style="@style/textViewMiddle.Gray"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="8dp"
-            android:text="@string/total_server_count" />
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:src="@mipmap/total" />
+
+            <TextView
+                android:id="@+id/textview_total_server_count"
+                style="@style/textViewMiddle.Gray"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="8dp"
+                android:text="@string/total_server_count" />
+        </LinearLayout>
+
+        <View
+            style="@style/HLine.Gray"
+            android:layout_marginTop="4dp" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:padding="8dp">
 
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:src="@mipmap/pass" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/textview_white_server_count"
-            style="@style/textViewMiddle.Gray"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="8dp"
-            android:text="@string/white_list_addr_count" />
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:src="@mipmap/pass" />
+
+            <TextView
+                android:id="@+id/textview_white_server_count"
+                style="@style/textViewMiddle.Gray"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="8dp"
+                android:text="@string/white_list_addr_count" />
+        </LinearLayout>
+
+        <View
+            style="@style/HLine.Gray"
+            android:layout_marginTop="4dp" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:padding="8dp">
 
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:src="@mipmap/ratio" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/textview_white_server_ratio"
-            style="@style/textViewMiddle.Gray"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="8dp"
-            android:text="@string/white_list_success_rate" />
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:src="@mipmap/ratio" />
+
+            <TextView
+                android:id="@+id/textview_white_server_ratio"
+                style="@style/textViewMiddle.Gray"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="8dp"
+                android:text="@string/white_list_success_rate" />
+        </LinearLayout>
+
+        <View
+            style="@style/HLine.Gray"
+            android:layout_marginTop="4dp" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="8dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:src="@mipmap/forbidden" />
+
+            <TextView
+                android:id="@+id/textview_black_server_count"
+                style="@style/textViewMiddle.Gray"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="8dp"
+                android:text="@string/black_list_addr_count" />
+        </LinearLayout>
+
+        <View
+            style="@style/HLine.Gray"
+            android:layout_marginTop="4dp" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="8dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:src="@mipmap/ratio" />
+
+            <TextView
+                android:id="@+id/textview_black_server_ratio"
+                style="@style/textViewMiddle.Gray"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="8dp"
+                android:text="@string/black_list_success_rate" />
+        </LinearLayout>
+
+        <View
+            style="@style/HLine.Gray"
+            android:layout_marginTop="4dp" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:padding="8dp">
 
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:src="@mipmap/forbidden" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/textview_black_server_count"
-            style="@style/textViewMiddle.Gray"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="8dp"
-            android:text="@string/black_list_addr_count" />
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:src="@mipmap/timer1" />
+
+            <TextView
+                android:id="@+id/textview_total_time_used"
+                style="@style/textViewMiddle.Gray"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="8dp"
+                android:text="@string/total_used_time" />
+        </LinearLayout>
+
+        <View
+            style="@style/HLine.Gray"
+            android:layout_marginTop="4dp" />
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="8dp">
-
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:src="@mipmap/ratio" />
-
-        <TextView
-            android:id="@+id/textview_black_server_ratio"
-            style="@style/textViewMiddle.Gray"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="8dp"
-            android:text="@string/black_list_success_rate" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="8dp">
-
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:src="@mipmap/timer1" />
-
-        <TextView
-            android:id="@+id/textview_total_time_used"
-            style="@style/textViewMiddle.Gray"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="8dp"
-            android:text="@string/total_used_time" />
-    </LinearLayout>
 
 </LinearLayout>

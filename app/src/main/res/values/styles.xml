@@ -42,5 +42,14 @@
         <item name="android:textColor">@color/colorGray</item>
     </style>
 
+    <style name="HLine">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/line_width</item>
+    </style>
+
+    <style name="HLine.Gray">
+        <item name="android:background">@color/colorGray</item>
+    </style>
+
 
 </resources>

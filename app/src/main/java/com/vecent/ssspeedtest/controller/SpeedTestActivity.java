@@ -33,6 +33,7 @@ public class SpeedTestActivity extends Activity {
     private ProgressBar mProgressBar;
     private KeyValueView totalServerItem;
     private KeyValueView currentServerItem;
+    private RelativeLayout mContainer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +48,7 @@ public class SpeedTestActivity extends Activity {
         this.mProgressBar = this.findViewById(R.id.speed_test_progress);
         this.totalServerItem = this.findViewById(R.id.item_total_server_count);
         this.currentServerItem = this.findViewById(R.id.item_total_server_count_current);
+        this.mContainer=this.findViewById(R.id.speed_test_root_view);
         this.totalServerItem.setKey(getResources().getString(R.string.total_server_count)).setKeyTextColor(R.color.colorWhite).setValueTextColor(R.color.colorWhite);
         this.currentServerItem.setKey(getResources().getString(R.string.cur_server_count)).setKeyTextColor(R.color.colorWhite).setValueTextColor(R.color.colorWhite);
         this.mProgressBar.setMax(100);
@@ -104,6 +106,7 @@ public class SpeedTestActivity extends Activity {
         result.setWhiteAddrConnectSuccesRate(mSpeedTest.calConnectRateWhiteList(mSpeedTestResults));
         result.setBlackAddrConnectSuccesRate(mSpeedTest.calConnectRateBalckList(mSpeedTestResults));
         resultView.setReuslt(result);
+        this.mContainer.addView(resultView);
 
     }
 
