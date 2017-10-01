@@ -1,12 +1,10 @@
 package com.vecent.ssspeedtest.controller;
 
 import android.app.Activity;
-import android.content.res.Resources;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 
 import com.vecent.ssspeedtest.R;
 import com.vecent.ssspeedtest.adpater.SpeedTestAdapter;
@@ -14,7 +12,9 @@ import com.vecent.ssspeedtest.model.INetImpl;
 import com.vecent.ssspeedtest.model.Servers;
 import com.vecent.ssspeedtest.model.SpeedTest;
 import com.vecent.ssspeedtest.model.bean.SpeedTestResult;
+import com.vecent.ssspeedtest.model.bean.TotalSpeedTestResult;
 import com.vecent.ssspeedtest.view.KeyValueView;
+import com.vecent.ssspeedtest.view.ResultLayout;
 
 import java.util.List;
 import java.util.Vector;
@@ -29,7 +29,7 @@ public class SpeedTestActivity extends Activity {
     private ListView mContentListView;
     private List<SpeedTestResult> mSpeedTestResults;
     private SpeedTestAdapter mAdapter;
-    private ViewGroup footerView;
+    private ResultLayout resultView;
     private ProgressBar mProgressBar;
     private KeyValueView totalServerItem;
     private KeyValueView currentServerItem;
@@ -90,30 +90,21 @@ public class SpeedTestActivity extends Activity {
 
 
     private void setResult(float timeUsed, int totalReqSize) {
-        if (this.footerView == null) {
-            this.footerView = (ViewGroup) LayoutInflater.from(this.getApplicationContext()).
-                    inflate(R.layout.speed_total_result_layout, null);
+        if (this.resultView == null) {
+            this.resultView = new ResultLayout(this.getApplicationContext());
+            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+            params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+            this.resultView.setLayoutParams(params);
         }
-        Resources res = getApplicationContext().getResources();
+        TotalSpeedTestResult result = new TotalSpeedTestResult();
+        result.setTotalTimeUsed(timeUsed);
+        result.setTotalSize(totalReqSize);
+        result.setWhiteAddrServerCount(mSpeedTest.countWhiteListAddr(mSpeedTestResults));
+        result.setBlackAddrServerCount(mSpeedTest.countBlackListAddr(mSpeedTestResults));
+        result.setWhiteAddrConnectSuccesRate(mSpeedTest.calConnectRateWhiteList(mSpeedTestResults));
+        result.setBlackAddrConnectSuccesRate(mSpeedTest.calConnectRateBalckList(mSpeedTestResults));
+        resultView.setReuslt(result);
 
-        float whiteListConnectRate = this.mSpeedTest.calConnectRateWhiteList(this.mSpeedTestResults);
-        float balckListConnectRate = this.mSpeedTest.calConnectRateBalckList(this.mSpeedTestResults);
-        int whiteAddrCount = this.mSpeedTest.countWhiteListAddr(this.mSpeedTestResults);
-        int blackAddrCount = this.mSpeedTest.countBlackListAddr(this.mSpeedTestResults);
-
-        footerView.addView(new KeyValueView(getApplicationContext()).
-                setKey(res.getString(R.string.total_server_count)).setValue(totalReqSize + ""));
-        footerView.addView(new KeyValueView(getApplicationContext()).
-                setKey(res.getString(R.string.total_used_time)).setValue(timeUsed + "  " + res.getString(R.string.unit_second)));
-        footerView.addView(new KeyValueView(getApplicationContext()).
-                setKey(res.getString(R.string.white_list_success_rate)).setValue(whiteListConnectRate + ""));
-        footerView.addView(new KeyValueView(getApplication()).
-                setKey(res.getString(R.string.white_list_addr_count)).setValue(whiteAddrCount + ""));
-        footerView.addView(new KeyValueView(getApplicationContext()).
-                setKey(res.getString(R.string.black_list_success_rate)).setValue(balckListConnectRate + ""));
-        footerView.addView(new KeyValueView(getApplicationContext()).
-                setKey(res.getString(R.string.black_list_addr_count)).setValue(blackAddrCount + ""));
-        this.mContentListView.addFooterView(footerView);
     }
 
     @Override
