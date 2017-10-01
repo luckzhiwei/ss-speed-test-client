@@ -8,4 +8,5 @@
         style="@style/textViewMiddle.Gray"
         android:layout_margin="8dp"
         android:text="@string/speed_test_result" />
+
 </LinearLayout>
