@@ -10,6 +10,7 @@
     <color name="tranparent">#00000000</color>
     <color name="list_separator">#222222</color>
     <color name="selector_press">#10000000</color>
+    <color name="colorOrange">#f90</color>
     <color name="colorBlack">#000000</color>
     <color name="colorLightBlue">#11C2EE</color>
 </resources>

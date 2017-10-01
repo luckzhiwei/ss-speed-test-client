@@ -39,7 +39,7 @@
     </style>
 
     <style name="textViewMiddle.Gray">
-        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:textColor">@color/colorGray</item>
     </style>
 
 
