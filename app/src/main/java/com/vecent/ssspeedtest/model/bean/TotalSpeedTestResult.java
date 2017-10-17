@@ -12,22 +12,41 @@ public class TotalSpeedTestResult {
     private float whiteAddrConnectSuccesRate;
     private float blackAddrConnectSuccesRate;
     private int curServerCount;
-    private int totalSize;
+    private int totalServerSize;
+    private int totalByteSize = 0;
+    private float speedDownLoad = 0;
+
+
+    public float getSpeedDownLoad() {
+        return speedDownLoad;
+    }
+
+    public void setSpeedDownLoad(float speedDownLoad) {
+        this.speedDownLoad = speedDownLoad;
+    }
 
     public int getCurServerCount() {
         return curServerCount;
+    }
+
+    public int getTotalByteSize() {
+        return totalByteSize;
+    }
+
+    public void setTotalByteSize(int totalByteSize) {
+        this.totalByteSize = totalByteSize;
     }
 
     public void setCurServerCount(int curServerCount) {
         this.curServerCount = curServerCount;
     }
 
-    public int getTotalSize() {
-        return totalSize;
+    public int getTotalServerSize() {
+        return totalServerSize;
     }
 
-    public void setTotalSize(int totalSize) {
-        this.totalSize = totalSize;
+    public void setTotalServerSize(int totalSize) {
+        this.totalServerSize = totalSize;
     }
 
     public float getTotalTimeUsed() {

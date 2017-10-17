@@ -2,10 +2,8 @@ package com.vecent.ssspeedtest.controller;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 
 import com.vecent.ssspeedtest.R;
 import com.vecent.ssspeedtest.adpater.SpeedTestAdapter;
@@ -14,7 +12,7 @@ import com.vecent.ssspeedtest.model.Servers;
 import com.vecent.ssspeedtest.model.SpeedTest;
 import com.vecent.ssspeedtest.model.bean.SpeedTestResult;
 import com.vecent.ssspeedtest.model.bean.TotalSpeedTestResult;
-import com.vecent.ssspeedtest.view.KeyValueView;
+import com.vecent.ssspeedtest.util.LogUtil;
 import com.vecent.ssspeedtest.view.ResultLayout;
 
 import java.util.List;
@@ -57,7 +55,7 @@ public class SpeedTestActivity extends Activity {
         Servers servers2Test = new Servers(this.getApplicationContext());
         this.mSpeedTest = new SpeedTest(servers2Test.getServers());
         result = new TotalSpeedTestResult();
-        result.setTotalSize(servers2Test.getServers().size());
+        result.setTotalServerSize(servers2Test.getServers().size());
         this.startSpeedTest();
     }
 
@@ -67,16 +65,17 @@ public class SpeedTestActivity extends Activity {
             public void onOneRequestFinishListener(SpeedTestResult result, int totalSize) {
                 mSpeedTestResults.add(result);
                 mAdapter.notifyDataSetChanged();
+                LogUtil.logDebug(getClass().getName(), result.isWhiteAddr() + "");
                 int curRequestedServerCount = mSpeedTestResults.size();
                 int progress = (int) (100.0f * curRequestedServerCount / totalSize);
                 mProgressBar.setProgress(progress);
                 float timeUsed = (System.currentTimeMillis() - mSpeedTest.getTimeStart()) / 1000.0f;
-                setResult(timeUsed, curRequestedServerCount);
+                setResult(timeUsed, curRequestedServerCount, result.getTotalSize());
             }
 
             @Override
             public void onAllRequestFinishListener(float timeUsed, int totalReqSize) {
-                setResult(timeUsed, totalReqSize);
+                setResult(timeUsed, totalReqSize, result.getTotalByteSize());
             }
         });
         new Thread(new Runnable() {
@@ -87,13 +86,16 @@ public class SpeedTestActivity extends Activity {
         }).start();
     }
 
-    private void setResult(float timeUsed, int curServerCount) {
+    private void setResult(float timeUsed, int curServerCount, int responseSize) {
         result.setTotalTimeUsed(timeUsed);
+        int totalByteSize = result.getTotalServerSize() + responseSize;
+        result.setTotalByteSize(totalByteSize);
         result.setCurServerCount(curServerCount);
         result.setWhiteAddrServerCount(mSpeedTest.countWhiteListAddr(mSpeedTestResults));
         result.setBlackAddrServerCount(mSpeedTest.countBlackListAddr(mSpeedTestResults));
         result.setWhiteAddrConnectSuccesRate(mSpeedTest.calConnectRateWhiteList(mSpeedTestResults));
         result.setBlackAddrConnectSuccesRate(mSpeedTest.calConnectRateBalckList(mSpeedTestResults));
+        result.setSpeedDownLoad(1.0f * totalByteSize / (timeUsed * 1000));
         mResultLayout.setReuslt(result);
     }
 
@@ -109,6 +111,5 @@ public class SpeedTestActivity extends Activity {
         super.onWindowFocusChanged(hasFocus);
         mResultLayout.setHeaderShowCor(this);
     }
-
 
 }

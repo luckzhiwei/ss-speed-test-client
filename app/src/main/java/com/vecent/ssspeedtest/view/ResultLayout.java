@@ -31,6 +31,7 @@ public class ResultLayout extends LinearLayout {
     private TextView mTextViewBlackListServerCount;
     private TextView mTextViewWhiteListServerRatio;
     private TextView mTextViewBlackListServerRatio;
+    private TextView mTextViewSpeed;
     private TextView mTextViewTotalTimeUsed;
     private TextView mTextViewTotalSize;
     private TextView mTextViewCurServerCount;
@@ -98,18 +99,18 @@ public class ResultLayout extends LinearLayout {
     }
 
     private void initText(Resources res) {
-        this.totalServerSize = res.getString(R.string.total_server_count)+" ";
-        this.curServerSize = res.getString(R.string.cur_server_count)+" ";
-        this.whiteListCount = res.getString(R.string.white_list_addr_count)+" ";
-        this.whiteListRadio = res.getString(R.string.white_list_success_rate)+" ";
-        this.blackListCount = res.getString(R.string.black_list_addr_count)+" ";
-        this.blackListRadio = res.getString(R.string.black_list_success_rate)+" ";
-        this.curTimeUsed = res.getString(R.string.time_used)+" ";
+        this.totalServerSize = res.getString(R.string.total_server_count) + " ";
+        this.curServerSize = res.getString(R.string.cur_server_count) + " ";
+        this.whiteListCount = res.getString(R.string.white_list_addr_count) + " ";
+        this.whiteListRadio = res.getString(R.string.white_list_success_rate) + " ";
+        this.blackListCount = res.getString(R.string.black_list_addr_count) + " ";
+        this.blackListRadio = res.getString(R.string.black_list_success_rate) + " ";
+        this.curTimeUsed = res.getString(R.string.time_used) + " ";
     }
 
 
     public void setReuslt(TotalSpeedTestResult totalResult) {
-        this.mTextViewTotalSize.setText(this.totalServerSize + totalResult.getTotalSize());
+        this.mTextViewTotalSize.setText(this.totalServerSize + totalResult.getTotalServerSize());
         this.mTextViewCurServerCount.setText(this.curServerSize + totalResult.getCurServerCount());
         this.mTextViewWhiteListServerCount.setText(this.whiteListCount + totalResult.getWhiteAddrServerCount());
         this.mTextViewWhiteListServerRatio.setText(this.whiteListRadio + totalResult.getWhiteAddrConnectSuccesRate());
