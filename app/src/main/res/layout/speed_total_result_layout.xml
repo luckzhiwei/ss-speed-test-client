@@ -6,6 +6,7 @@
     android:orientation="vertical">
 
     <RelativeLayout
+        android:id="@+id/header_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="8dp">
@@ -67,6 +68,37 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="8dp"
                 android:text="@string/total_server_count" />
+        </LinearLayout>
+
+        <View
+            style="@style/HLine.Gray"
+            android:layout_marginTop="4dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="8dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:src="@mipmap/total" />
+
+            <TextView
+                android:id="@+id/textview_cur_server_count"
+                style="@style/textViewMiddle.Gray"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="8dp"
+                android:text="@string/cur_server_count" />
         </LinearLayout>
 
         <View

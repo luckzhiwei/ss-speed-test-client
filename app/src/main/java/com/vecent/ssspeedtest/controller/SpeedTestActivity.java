@@ -2,6 +2,7 @@ package com.vecent.ssspeedtest.controller;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -29,11 +30,9 @@ public class SpeedTestActivity extends Activity {
     private ListView mContentListView;
     private List<SpeedTestResult> mSpeedTestResults;
     private SpeedTestAdapter mAdapter;
-    private ResultLayout resultView;
     private ProgressBar mProgressBar;
-    private KeyValueView totalServerItem;
-    private KeyValueView currentServerItem;
-    private RelativeLayout mContainer;
+    private ResultLayout mResultLayout;
+    private TotalSpeedTestResult result;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,13 +43,9 @@ public class SpeedTestActivity extends Activity {
     }
 
     private void initView() {
+        this.mResultLayout = this.findViewById(R.id.speed_test_result_layout);
         this.mContentListView = this.findViewById(R.id.common_list_view);
         this.mProgressBar = this.findViewById(R.id.speed_test_progress);
-        this.totalServerItem = this.findViewById(R.id.item_total_server_count);
-        this.currentServerItem = this.findViewById(R.id.item_total_server_count_current);
-        this.mContainer=this.findViewById(R.id.speed_test_root_view);
-        this.totalServerItem.setKey(getResources().getString(R.string.total_server_count)).setKeyTextColor(R.color.colorWhite).setValueTextColor(R.color.colorWhite);
-        this.currentServerItem.setKey(getResources().getString(R.string.cur_server_count)).setKeyTextColor(R.color.colorWhite).setValueTextColor(R.color.colorWhite);
         this.mProgressBar.setMax(100);
     }
 
@@ -61,6 +56,8 @@ public class SpeedTestActivity extends Activity {
         this.mContentListView.setAdapter(this.mAdapter);
         Servers servers2Test = new Servers(this.getApplicationContext());
         this.mSpeedTest = new SpeedTest(servers2Test.getServers());
+        result = new TotalSpeedTestResult();
+        result.setTotalSize(servers2Test.getServers().size());
         this.startSpeedTest();
     }
 
@@ -72,9 +69,9 @@ public class SpeedTestActivity extends Activity {
                 mAdapter.notifyDataSetChanged();
                 int curRequestedServerCount = mSpeedTestResults.size();
                 int progress = (int) (100.0f * curRequestedServerCount / totalSize);
-                totalServerItem.setValue(totalSize + "");
-                currentServerItem.setValue(curRequestedServerCount + "");
                 mProgressBar.setProgress(progress);
+                float timeUsed = (System.currentTimeMillis() - mSpeedTest.getTimeStart()) / 1000.0f;
+                setResult(timeUsed, curRequestedServerCount);
             }
 
             @Override
@@ -90,30 +87,27 @@ public class SpeedTestActivity extends Activity {
         }).start();
     }
 
-
-    private void setResult(float timeUsed, int totalReqSize) {
-        if (this.resultView == null) {
-            this.resultView = new ResultLayout(this.getApplicationContext());
-            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-            params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-            this.resultView.setLayoutParams(params);
-        }
-        TotalSpeedTestResult result = new TotalSpeedTestResult();
+    private void setResult(float timeUsed, int curServerCount) {
         result.setTotalTimeUsed(timeUsed);
-        result.setTotalSize(totalReqSize);
+        result.setCurServerCount(curServerCount);
         result.setWhiteAddrServerCount(mSpeedTest.countWhiteListAddr(mSpeedTestResults));
         result.setBlackAddrServerCount(mSpeedTest.countBlackListAddr(mSpeedTestResults));
         result.setWhiteAddrConnectSuccesRate(mSpeedTest.calConnectRateWhiteList(mSpeedTestResults));
         result.setBlackAddrConnectSuccesRate(mSpeedTest.calConnectRateBalckList(mSpeedTestResults));
-        resultView.setReuslt(result);
-        this.mContainer.addView(resultView);
-
+        mResultLayout.setReuslt(result);
     }
+
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         this.mSpeedTest.cancel();
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        mResultLayout.setHeaderShowCor(this);
     }
 
 

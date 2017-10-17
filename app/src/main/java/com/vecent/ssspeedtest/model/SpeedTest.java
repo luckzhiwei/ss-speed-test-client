@@ -20,8 +20,9 @@ public class SpeedTest {
     private Handler mHandler;
     private RequestCallBack mPingCallBack;
     private final int tottalSize;
+    private long startTime;
 
-    public static interface RequestCallBack {
+    public interface RequestCallBack {
         void onAllRequestFinishListener(float timeUsed, int totalReqSize);
 
         void onOneRequestFinishListener(SpeedTestResult result, int totalSize);
@@ -39,7 +40,7 @@ public class SpeedTest {
     }
 
     public void startTest(final INet net) {
-        final long startTime = System.currentTimeMillis();
+        this.startTime = System.currentTimeMillis();
         for (final Server server : mServers2Test) {
 
             mThreadPool.execTask(new Runnable() {
@@ -131,5 +132,10 @@ public class SpeedTest {
         }
         return count;
     }
+
+    public long getTimeStart() {
+        return startTime;
+    }
+
 
 }

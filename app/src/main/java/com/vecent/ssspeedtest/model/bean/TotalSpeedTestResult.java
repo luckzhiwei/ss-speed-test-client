@@ -11,7 +11,16 @@ public class TotalSpeedTestResult {
     private int blackAddrServerCount;
     private float whiteAddrConnectSuccesRate;
     private float blackAddrConnectSuccesRate;
+    private int curServerCount;
     private int totalSize;
+
+    public int getCurServerCount() {
+        return curServerCount;
+    }
+
+    public void setCurServerCount(int curServerCount) {
+        this.curServerCount = curServerCount;
+    }
 
     public int getTotalSize() {
         return totalSize;

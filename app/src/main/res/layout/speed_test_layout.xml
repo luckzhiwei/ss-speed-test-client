@@ -19,7 +19,7 @@
             android:layout_marginTop="8dp"
             android:text="@string/connection_progress" />
 
-        <!--todo layout_abvoe 屬性失效-->
+        <!--todo layout_above 属性失效-->
         <ProgressBar
             android:id="@+id/speed_test_progress"
             style="@style/Widget.AppCompat.ProgressBar.Horizontal"
@@ -27,30 +27,20 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/speed_test_title"
             android:progressDrawable="@drawable/progress_background" />
-
-        <com.vecent.ssspeedtest.view.KeyValueView
-            android:id="@+id/item_total_server_count"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/speed_test_progress"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="8dp" />
-
-        <com.vecent.ssspeedtest.view.KeyValueView
-            android:id="@+id/item_total_server_count_current"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/item_total_server_count"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="8dp" />
     </RelativeLayout>
 
     <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_below="@id/speed_test_top_view"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_below="@id/speed_test_top_view">
         <include layout="@layout/listview_common" />
     </LinearLayout>
+
+    <com.vecent.ssspeedtest.view.ResultLayout
+        android:id="@+id/speed_test_result_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </com.vecent.ssspeedtest.view.ResultLayout>
 
 
 </RelativeLayout>
