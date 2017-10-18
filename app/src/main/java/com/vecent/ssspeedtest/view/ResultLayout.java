@@ -31,7 +31,8 @@ public class ResultLayout extends LinearLayout {
     private TextView mTextViewBlackListServerCount;
     private TextView mTextViewWhiteListServerRatio;
     private TextView mTextViewBlackListServerRatio;
-    private TextView mTextViewSpeed;
+    private TextView mTextViewWhiteAddrSpeedAvg;
+    private TextView mTextViewBlackAddrSpeedAvg;
     private TextView mTextViewTotalTimeUsed;
     private TextView mTextViewTotalSize;
     private TextView mTextViewCurServerCount;
@@ -52,6 +53,10 @@ public class ResultLayout extends LinearLayout {
     private String blackListCount;
     private String whiteListRadio;
     private String blackListRadio;
+    private String whiteSpeedAvg;
+    private String blackSpeedAvg;
+    private String speedUnit;
+    private String timeUnit;
 
 
     public ResultLayout(Context context) {
@@ -77,6 +82,8 @@ public class ResultLayout extends LinearLayout {
         this.mTextViewWhiteListServerCount = this.findViewById(R.id.textview_white_server_count);
         this.mTextViewBlackListServerRatio = this.findViewById(R.id.textview_black_server_ratio);
         this.mTextViewBlackListServerCount = this.findViewById(R.id.textview_black_server_count);
+        this.mTextViewWhiteAddrSpeedAvg = this.findViewById(R.id.textview_white_server_avg_speed);
+        this.mTextViewBlackAddrSpeedAvg = this.findViewById(R.id.textview_black_add_speed_avg);
         this.mTextViewCurServerCount = this.findViewById(R.id.textview_cur_server_count);
         this.mTextViewTotalTimeUsed = this.findViewById(R.id.textview_total_time_used);
         this.mTextViewTotalSize = this.findViewById(R.id.textview_total_server_count);
@@ -106,6 +113,10 @@ public class ResultLayout extends LinearLayout {
         this.blackListCount = res.getString(R.string.black_list_addr_count) + " ";
         this.blackListRadio = res.getString(R.string.black_list_success_rate) + " ";
         this.curTimeUsed = res.getString(R.string.time_used) + " ";
+        this.speedUnit = res.getString(R.string.kb_by_second);
+        this.timeUnit = res.getString(R.string.unit_millisecond);
+        this.whiteSpeedAvg = res.getString(R.string.white_avg_time) + " ";
+        this.blackSpeedAvg = res.getString(R.string.black_avg_time) + " ";
     }
 
 
@@ -116,7 +127,9 @@ public class ResultLayout extends LinearLayout {
         this.mTextViewWhiteListServerRatio.setText(this.whiteListRadio + totalResult.getWhiteAddrConnectSuccesRate());
         this.mTextViewBlackListServerCount.setText(this.blackListCount + totalResult.getBlackAddrServerCount());
         this.mTextViewBlackListServerRatio.setText(this.blackListRadio + totalResult.getBlackAddrConnectSuccesRate());
-        this.mTextViewTotalTimeUsed.setText(this.curTimeUsed + totalResult.getTotalTimeUsed());
+        this.mTextViewTotalTimeUsed.setText(this.curTimeUsed + totalResult.getTotalTimeUsed() + this.timeUnit);
+        this.mTextViewWhiteAddrSpeedAvg.setText(this.whiteSpeedAvg + totalResult.getSpeedWhiteAddrDownLoadAvg() + this.speedUnit);
+        this.mTextViewBlackAddrSpeedAvg.setText(this.blackSpeedAvg + totalResult.getSpeedBlackAddrDownLoadAvg() + this.speedUnit);
     }
 
     /**

@@ -3,6 +3,7 @@ package com.vecent.ssspeedtest;
 import com.vecent.ssspeedtest.model.SpeedTest;
 import com.vecent.ssspeedtest.model.bean.Server;
 import com.vecent.ssspeedtest.model.bean.SpeedTestResult;
+import com.vecent.ssspeedtest.model.bean.TotalSpeedTestResult;
 
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -18,7 +19,7 @@ import java.util.List;
 public class TestSpeetTest {
 
     private static List<SpeedTestResult> mockResult;
-    private static List<Server> mockServer=new ArrayList<>();
+    private static List<Server> mockServer = new ArrayList<>();
 
     @BeforeClass
     public static void beforeClass() {
@@ -40,32 +41,18 @@ public class TestSpeetTest {
     }
 
     @Test
-    public void testWhiteListConnectionRate() {
+    public void testSpeedTestCount() {
         SpeedTest test = new SpeedTest(mockServer);
-        Assert.assertEquals(0.5f, test.calConnectRateWhiteList(mockResult), 0.002f);
+        TotalSpeedTestResult result = new TotalSpeedTestResult();
+        test.countResult(result, mockResult);
+        Assert.assertEquals(2, result.getWhiteAddrServerCount());
+        Assert.assertEquals(0.5f, result.getWhiteAddrConnectSuccesRate(), 0.002f);
+        Assert.assertEquals(1, result.getBlackAddrServerCount());
+        Assert.assertEquals(1.0f, result.getBlackAddrServerCount(), 0.002f);
+        Assert.assertEquals(10.0f, result.getSpeedWhiteAddrDownLoadAvg(), 0.002f);
+        Assert.assertEquals(30.0f, result.getSpeedBlackAddrDownLoadAvg(), 0.002f);
+        Assert.assertEquals(3, result.getTotalServerSize());
     }
 
-    @Test
-    public void testBlackListConnectionRate() {
-        SpeedTest test = new SpeedTest(mockServer);
-        Assert.assertEquals(1.0f, test.calConnectRateBalckList(mockResult), 0.002f);
-    }
 
-    @Test
-    public void testCountWhiteListAddr() {
-        SpeedTest test = new SpeedTest(mockServer);
-        Assert.assertEquals(2, test.countWhiteListAddr(mockResult));
-    }
-
-    @Test
-    public void testCountBlackListAddr() {
-        SpeedTest test = new SpeedTest(mockServer);
-        Assert.assertEquals(1, test.countBlackListAddr(mockResult));
-    }
-
-    @Test
-    public void testCountDownSpeed() {
-        SpeedTest test = new SpeedTest(mockServer);
-        Assert.assertEquals(20.0f, test.countSpeedAvg(mockResult), 0.002f);
-    }
 }

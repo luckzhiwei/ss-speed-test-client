@@ -4,6 +4,7 @@ import android.os.Handler;
 
 import com.vecent.ssspeedtest.model.bean.Server;
 import com.vecent.ssspeedtest.model.bean.SpeedTestResult;
+import com.vecent.ssspeedtest.model.bean.TotalSpeedTestResult;
 import com.vecent.ssspeedtest.util.LogUtil;
 
 import java.util.List;
@@ -81,71 +82,56 @@ public class SpeedTest {
         this.mThreadPool.stopNow();
     }
 
-    public float calConnectRateWhiteList(List<SpeedTestResult> result) {
-        int whiteAddrSize = 0, connectServersWhiteAddr = 0,
-                blackAddrSize = 0, connectServersBlackAddr = 0;
-
+    public void countResult(TotalSpeedTestResult total, List<SpeedTestResult> result) {
+        int whiteAddrSize = 0, connectWhiteAddrSize = 0,
+                blackAddrSize = 0, connectBlackAddrSize = 0,
+                whiteAddrSpeedAvgSum = 0, blackAddrSpeedAvgSum = 0;
         for (SpeedTestResult oneRet : result) {
             if (oneRet.isWhiteAddr()) {
                 whiteAddrSize++;
                 if (!oneRet.isExceptionOccured()) {
-                    connectServersWhiteAddr++;
+                    connectWhiteAddrSize++;
+                    whiteAddrSpeedAvgSum += oneRet.getDownLoadSpeed();
+                }
+            } else {
+                blackAddrSize++;
+                if (!oneRet.isExceptionOccured()) {
+                    connectBlackAddrSize++;
+                    blackAddrSpeedAvgSum += oneRet.getDownLoadSpeed();
                 }
             }
         }
         if (whiteAddrSize == 0) {
-            return 0;
-        }
-        return (1.0f * connectServersWhiteAddr / whiteAddrSize);
-    }
-
-    public float calConnectRateBalckList(List<SpeedTestResult> result) {
-        int blackListSize = 0, connectServers = 0;
-        for (SpeedTestResult oneRet : result) {
-            if (!oneRet.isWhiteAddr()) {
-                blackListSize++;
-                if (!oneRet.isExceptionOccured()) {
-                    connectServers++;
-                }
+            total.setWhiteAddrServerCount(0);
+            total.setWhiteAddrConnectSuccesRate(0);
+            total.setSpeedWhiteAddrDownLoadAvg(0.0f);
+        } else {
+            total.setWhiteAddrServerCount(whiteAddrSize);
+            total.setWhiteAddrConnectSuccesRate(1.0f * connectWhiteAddrSize / whiteAddrSize);
+            if (connectBlackAddrSize == 0) {
+                total.setSpeedWhiteAddrDownLoadAvg(0.0f);
+            } else {
+                total.setSpeedWhiteAddrDownLoadAvg(whiteAddrSpeedAvgSum * 1.0f / connectWhiteAddrSize);
             }
         }
-        if (blackListSize == 0) {
-            return 0;
-        }
-        return (1.0f * connectServers / blackListSize);
-    }
 
-    public int countWhiteListAddr(List<SpeedTestResult> result) {
-        int count = 0;
-        for (SpeedTestResult server : result) {
-            if (server.isWhiteAddr()) {
-                count++;
+
+        if (blackAddrSize == 0) {
+            total.setBlackAddrServerCount(0);
+            total.setBlackAddrConnectSuccesRate(0);
+            total.setSpeedBlackAddrDownLoadAvg(0.0f);
+        } else {
+            total.setBlackAddrServerCount(blackAddrSize);
+            total.setBlackAddrConnectSuccesRate(1.0f * connectBlackAddrSize / blackAddrSize);
+            if (connectBlackAddrSize == 0) {
+                total.setSpeedBlackAddrDownLoadAvg(0);
+            } else {
+                total.setSpeedBlackAddrDownLoadAvg(1.0f * blackAddrSpeedAvgSum / connectBlackAddrSize);
             }
         }
-        return count;
+        total.setTotalServerSize(whiteAddrSize + blackAddrSize);
     }
 
-    public int countBlackListAddr(List<SpeedTestResult> result) {
-        int count = 0;
-        for (SpeedTestResult server : result) {
-            if (!server.isWhiteAddr()) {
-                count++;
-            }
-        }
-        return count;
-    }
-
-    public float countSpeedAvg(List<SpeedTestResult> result) {
-        float sum = 0;
-        int count = 0;
-        for (SpeedTestResult server : result) {
-            if (!server.isExceptionOccured()) {
-                sum += server.getDownLoadSpeed();
-                count++;
-            }
-        }
-        return sum / count;
-    }
 
     public long getTimeStart() {
         return startTime;

@@ -14,14 +14,23 @@ public class TotalSpeedTestResult {
     private int curServerCount;
     private int totalServerSize;
     private int totalByteSize = 0;
-    private float speedDownLoadAvg = 0;
+    private float speedWhiteAddrDownLoadAvg = 0;
+    private float speedBlackAddrDownLoadAvg = 0;
 
-    public float getSpeedDownLoadAvg() {
-        return speedDownLoadAvg;
+    public float getSpeedBlackAddrDownLoadAvg() {
+        return speedBlackAddrDownLoadAvg;
     }
 
-    public void setSpeedDownLoadAvg(float speedDownLoadAvg) {
-        this.speedDownLoadAvg = speedDownLoadAvg;
+    public void setSpeedBlackAddrDownLoadAvg(float speedBlackAddrDownLoadAvg) {
+        this.speedBlackAddrDownLoadAvg = speedBlackAddrDownLoadAvg;
+    }
+
+    public float getSpeedWhiteAddrDownLoadAvg() {
+        return speedWhiteAddrDownLoadAvg;
+    }
+
+    public void setSpeedWhiteAddrDownLoadAvg(float speedWhiteAddrDownLoadAvg) {
+        this.speedWhiteAddrDownLoadAvg = speedWhiteAddrDownLoadAvg;
     }
 
     public int getCurServerCount() {

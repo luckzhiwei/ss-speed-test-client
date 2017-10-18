@@ -169,6 +169,36 @@
             android:layout_marginTop="4dp" />
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="8dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:src="@mipmap/average" />
+
+            <TextView
+                android:id="@+id/textview_white_server_avg_speed"
+                style="@style/textViewMiddle.Gray"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="8dp"
+                android:text="@string/white_avg_time" />
+        </LinearLayout>
+
+        <View
+            style="@style/HLine.Gray"
+            android:layout_marginTop="4dp" />
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -227,6 +257,37 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="8dp"
                 android:text="@string/black_list_success_rate" />
+        </LinearLayout>
+
+        <View
+            style="@style/HLine.Gray"
+            android:layout_marginTop="4dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="8dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:src="@mipmap/average" />
+
+            <TextView
+                android:id="@+id/textview_black_add_speed_avg"
+                style="@style/textViewMiddle.Gray"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="8dp"
+                android:text="@string/black_avg_time" />
         </LinearLayout>
 
         <View

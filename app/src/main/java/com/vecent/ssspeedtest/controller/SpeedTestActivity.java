@@ -69,12 +69,12 @@ public class SpeedTestActivity extends Activity {
                 int progress = (int) (100.0f * curRequestedServerCount / totalSize);
                 mProgressBar.setProgress(progress);
                 float timeUsed = (System.currentTimeMillis() - mSpeedTest.getTimeStart()) / 1000.0f;
-                setResult(timeUsed, curRequestedServerCount, result.getTotalSize());
+                setResult(timeUsed);
             }
 
             @Override
             public void onAllRequestFinishListener(float timeUsed, int totalReqSize) {
-                setResult(timeUsed, totalReqSize, result.getTotalByteSize());
+                setResult(timeUsed);
             }
         });
         new Thread(new Runnable() {
@@ -85,14 +85,9 @@ public class SpeedTestActivity extends Activity {
         }).start();
     }
 
-    private void setResult(float timeUsed, int curServerCount, int responseSize) {
+    private void setResult(float timeUsed) {
         result.setTotalTimeUsed(timeUsed);
-        result.setCurServerCount(curServerCount);
-        result.setWhiteAddrServerCount(mSpeedTest.countWhiteListAddr(mSpeedTestResults));
-        result.setBlackAddrServerCount(mSpeedTest.countBlackListAddr(mSpeedTestResults));
-        result.setWhiteAddrConnectSuccesRate(mSpeedTest.calConnectRateWhiteList(mSpeedTestResults));
-        result.setBlackAddrConnectSuccesRate(mSpeedTest.calConnectRateBalckList(mSpeedTestResults));
-        result.setSpeedDownLoadAvg(mSpeedTest.countSpeedAvg(mSpeedTestResults));
+        mSpeedTest.countResult(result, mSpeedTestResults);
         mResultLayout.setReuslt(result);
     }
 
