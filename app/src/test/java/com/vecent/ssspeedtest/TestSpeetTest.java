@@ -18,7 +18,7 @@ import java.util.List;
 public class TestSpeetTest {
 
     private static List<SpeedTestResult> mockResult;
-    private static List<Server> mockServer;
+    private static List<Server> mockServer=new ArrayList<>();
 
     @BeforeClass
     public static void beforeClass() {
@@ -26,12 +26,14 @@ public class TestSpeetTest {
         SpeedTestResult whiteLisAddrForTest = new SpeedTestResult();
         whiteLisAddrForTest.setWhiteAddr(true);
         whiteLisAddrForTest.setExceptionOccured(false);
+        whiteLisAddrForTest.setDownLoadSpeed(10.0f);
         mockResult.add(whiteLisAddrForTest);
         whiteLisAddrForTest = new SpeedTestResult();
         whiteLisAddrForTest.setWhiteAddr(true);
         whiteLisAddrForTest.setExceptionOccured(true);
         mockResult.add(whiteLisAddrForTest);
         whiteLisAddrForTest = new SpeedTestResult();
+        whiteLisAddrForTest.setDownLoadSpeed(30.0f);
         whiteLisAddrForTest.setWhiteAddr(false);
         whiteLisAddrForTest.setExceptionOccured(false);
         mockResult.add(whiteLisAddrForTest);
@@ -59,5 +61,11 @@ public class TestSpeetTest {
     public void testCountBlackListAddr() {
         SpeedTest test = new SpeedTest(mockServer);
         Assert.assertEquals(1, test.countBlackListAddr(mockResult));
+    }
+
+    @Test
+    public void testCountDownSpeed() {
+        SpeedTest test = new SpeedTest(mockServer);
+        Assert.assertEquals(20.0f, test.countSpeedAvg(mockResult), 0.002f);
     }
 }

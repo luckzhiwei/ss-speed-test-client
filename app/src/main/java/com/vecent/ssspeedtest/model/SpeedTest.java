@@ -82,19 +82,21 @@ public class SpeedTest {
     }
 
     public float calConnectRateWhiteList(List<SpeedTestResult> result) {
-        int whiteListSize = 0, connectServers = 0;
+        int whiteAddrSize = 0, connectServersWhiteAddr = 0,
+                blackAddrSize = 0, connectServersBlackAddr = 0;
+
         for (SpeedTestResult oneRet : result) {
             if (oneRet.isWhiteAddr()) {
-                whiteListSize++;
+                whiteAddrSize++;
                 if (!oneRet.isExceptionOccured()) {
-                    connectServers++;
+                    connectServersWhiteAddr++;
                 }
             }
         }
-        if (whiteListSize == 0) {
+        if (whiteAddrSize == 0) {
             return 0;
         }
-        return (1.0f * connectServers / whiteListSize);
+        return (1.0f * connectServersWhiteAddr / whiteAddrSize);
     }
 
     public float calConnectRateBalckList(List<SpeedTestResult> result) {
@@ -131,6 +133,18 @@ public class SpeedTest {
             }
         }
         return count;
+    }
+
+    public float countSpeedAvg(List<SpeedTestResult> result) {
+        float sum = 0;
+        int count = 0;
+        for (SpeedTestResult server : result) {
+            if (!server.isExceptionOccured()) {
+                sum += server.getDownLoadSpeed();
+                count++;
+            }
+        }
+        return sum / count;
     }
 
     public long getTimeStart() {

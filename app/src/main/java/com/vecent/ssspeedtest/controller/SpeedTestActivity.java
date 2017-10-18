@@ -65,7 +65,6 @@ public class SpeedTestActivity extends Activity {
             public void onOneRequestFinishListener(SpeedTestResult result, int totalSize) {
                 mSpeedTestResults.add(result);
                 mAdapter.notifyDataSetChanged();
-                LogUtil.logDebug(getClass().getName(), result.isWhiteAddr() + "");
                 int curRequestedServerCount = mSpeedTestResults.size();
                 int progress = (int) (100.0f * curRequestedServerCount / totalSize);
                 mProgressBar.setProgress(progress);
@@ -88,14 +87,12 @@ public class SpeedTestActivity extends Activity {
 
     private void setResult(float timeUsed, int curServerCount, int responseSize) {
         result.setTotalTimeUsed(timeUsed);
-        int totalByteSize = result.getTotalServerSize() + responseSize;
-        result.setTotalByteSize(totalByteSize);
         result.setCurServerCount(curServerCount);
         result.setWhiteAddrServerCount(mSpeedTest.countWhiteListAddr(mSpeedTestResults));
         result.setBlackAddrServerCount(mSpeedTest.countBlackListAddr(mSpeedTestResults));
         result.setWhiteAddrConnectSuccesRate(mSpeedTest.calConnectRateWhiteList(mSpeedTestResults));
         result.setBlackAddrConnectSuccesRate(mSpeedTest.calConnectRateBalckList(mSpeedTestResults));
-        result.setSpeedDownLoad(1.0f * totalByteSize / (timeUsed * 1000));
+        result.setSpeedDownLoadAvg(mSpeedTest.countSpeedAvg(mSpeedTestResults));
         mResultLayout.setReuslt(result);
     }
 

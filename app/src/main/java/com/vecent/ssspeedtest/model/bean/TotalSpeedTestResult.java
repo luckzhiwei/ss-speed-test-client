@@ -14,15 +14,14 @@ public class TotalSpeedTestResult {
     private int curServerCount;
     private int totalServerSize;
     private int totalByteSize = 0;
-    private float speedDownLoad = 0;
+    private float speedDownLoadAvg = 0;
 
-
-    public float getSpeedDownLoad() {
-        return speedDownLoad;
+    public float getSpeedDownLoadAvg() {
+        return speedDownLoadAvg;
     }
 
-    public void setSpeedDownLoad(float speedDownLoad) {
-        this.speedDownLoad = speedDownLoad;
+    public void setSpeedDownLoadAvg(float speedDownLoadAvg) {
+        this.speedDownLoadAvg = speedDownLoadAvg;
     }
 
     public int getCurServerCount() {
