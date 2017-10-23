@@ -10,3 +10,5 @@
 *gfwlist.db
 /script/out/
 *gfwweb.json
+/obj
+/libs
