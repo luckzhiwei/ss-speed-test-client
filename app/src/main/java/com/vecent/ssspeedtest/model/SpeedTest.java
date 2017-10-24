@@ -89,9 +89,11 @@ public class SpeedTest {
         for (SpeedTestResult oneRet : result) {
             if (oneRet.isWhiteAddr()) {
                 whiteAddrSize++;
+                LogUtil.logDebug(getClass().getName(),oneRet.getRequestServer()+"");
                 if (!oneRet.isExceptionOccured()) {
                     connectWhiteAddrSize++;
                     whiteAddrSpeedAvgSum += oneRet.getDownLoadSpeed();
+
                 }
             } else {
                 blackAddrSize++;
@@ -108,14 +110,12 @@ public class SpeedTest {
         } else {
             total.setWhiteAddrServerCount(whiteAddrSize);
             total.setWhiteAddrConnectSuccesRate(1.0f * connectWhiteAddrSize / whiteAddrSize);
-            if (connectBlackAddrSize == 0) {
+            if (connectWhiteAddrSize == 0) {
                 total.setSpeedWhiteAddrDownLoadAvg(0.0f);
             } else {
                 total.setSpeedWhiteAddrDownLoadAvg(whiteAddrSpeedAvgSum * 1.0f / connectWhiteAddrSize);
             }
         }
-
-
         if (blackAddrSize == 0) {
             total.setBlackAddrServerCount(0);
             total.setBlackAddrConnectSuccesRate(0);
@@ -129,7 +129,7 @@ public class SpeedTest {
                 total.setSpeedBlackAddrDownLoadAvg(1.0f * blackAddrSpeedAvgSum / connectBlackAddrSize);
             }
         }
-        total.setTotalServerSize(whiteAddrSize + blackAddrSize);
+        total.setCurServerCount(whiteAddrSize + blackAddrSize);
     }
 
 
