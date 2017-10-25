@@ -89,7 +89,6 @@ public class SpeedTest {
         for (SpeedTestResult oneRet : result) {
             if (oneRet.isWhiteAddr()) {
                 whiteAddrSize++;
-                LogUtil.logDebug(getClass().getName(),oneRet.getRequestServer()+"");
                 if (!oneRet.isExceptionOccured()) {
                     connectWhiteAddrSize++;
                     whiteAddrSpeedAvgSum += oneRet.getDownLoadSpeed();

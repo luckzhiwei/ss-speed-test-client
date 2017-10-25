@@ -31,6 +31,7 @@ public class INetImpl implements INet {
             int responseCode = conn.getResponseCode();
             int countNum = 0;
             while (this.isRedirect(responseCode)) {
+                startTime = System.currentTimeMillis();
                 String newUrl = conn.getHeaderField("Location");
                 conn = getConnection(newUrl);
                 result.setRedirect(true);

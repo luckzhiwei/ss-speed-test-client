@@ -12,6 +12,7 @@ import com.vecent.ssspeedtest.controller.TestSSLocalActivity;
 public class MainActivity extends AppCompatActivity {
 
     private Button testSpeedBtn;
+    private Button predictBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,10 +23,18 @@ public class MainActivity extends AppCompatActivity {
 
     private void initView() {
         this.testSpeedBtn = (Button) this.findViewById(R.id.main_test_speed_btn);
+        this.predictBtn = (Button) this.findViewById(R.id.predict_btn);
         this.testSpeedBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(), SpeedTestActivity.class));
+            }
+        });
+        this.predictBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
                 startActivity(new Intent(getApplicationContext(), TestSSLocalActivity.class));
+
             }
         });
     }
