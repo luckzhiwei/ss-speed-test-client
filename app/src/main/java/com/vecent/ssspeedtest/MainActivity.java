@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.vecent.ssspeedtest.controller.SpeedTestActivity;
+import com.vecent.ssspeedtest.controller.TestSSLocalActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -24,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
         this.testSpeedBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(),SpeedTestActivity.class));
+                startActivity(new Intent(getApplicationContext(), TestSSLocalActivity.class));
             }
         });
     }
