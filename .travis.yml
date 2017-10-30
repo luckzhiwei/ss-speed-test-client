@@ -33,6 +33,8 @@ install:
 
 before_script:
 - chmod a+x ./gradlew
+- git submodule update --init --recursive
+- cd jni/shadowsocks-libev && ls -al
 script:
 - "./gradlew assembleRelease && mv app/build/outputs/apk/app-release.apk app/build/outputs/apk/ss_speed_test_$TRAVIS_TAG.apk"
 
