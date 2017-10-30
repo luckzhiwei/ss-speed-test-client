@@ -2,22 +2,21 @@ package com.vecent.ssspeedtest.controller;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 
 import com.vecent.ssspeedtest.R;
 import com.vecent.ssspeedtest.util.LogUtil;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.InetSocketAddress;
 import java.net.MalformedURLException;
 import java.net.Proxy;
+import java.net.ProxySelector;
 import java.net.SocketAddress;
 import java.net.URL;
 import java.net.URLConnection;
@@ -32,6 +31,7 @@ public class TestSSLocalActivity extends Activity {
 
 
     private Button ssproxyTestBtn;
+    private Handler handler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,33 +73,55 @@ public class TestSSLocalActivity extends Activity {
                 }
             }
         }).start();
+        this.handler = new Handler(getMainLooper());
         this.ssproxyTestBtn = this.findViewById(R.id.proxy_test_speed_btn);
         this.ssproxyTestBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
                         try {
-                            SocketAddress addr = new InetSocketAddress("0.0.0.0", 1080);
+                            ProxySelector.getDefault();
+                            SocketAddress addr = InetSocketAddress.createUnresolved("127.0.0.1", 1080);
                             Proxy proxy = new Proxy(Proxy.Type.SOCKS, addr);
-                            URL url = new URL("http://www.baidu.com");
-                            URLConnection conn = url.openConnection(proxy);
+                            URL url = new URL("http://ip.chinaz.com/getip.aspx");
+                            HttpURLConnection conn = (HttpURLConnection) url.openConnection(proxy);
+                            LogUtil.logDebug(getClass().getName(), conn.usingProxy() + "");
                             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
                             String buf = "";
-                            StringBuffer stringBuffer = new StringBuffer();
+                            final StringBuffer stringBuffer = new StringBuffer();
                             while ((buf = bufferedReader.readLine()) != null) {
                                 stringBuffer.append(buf);
                             }
                             bufferedReader.close();
                             LogUtil.logDebug(getClass().getName(), "proxy result is" + stringBuffer.toString());
                             bufferedReader.close();
-                        } catch (MalformedURLException e) {
+                            handler.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    ssproxyTestBtn.setText(stringBuffer.toString());
+                                }
+                            });
+                        } catch (final MalformedURLException e) {
                             e.printStackTrace();
                             LogUtil.logDebug(getClass().getName(), e.getMessage());
-                        } catch (IOException e) {
+                            handler.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    ssproxyTestBtn.setText(e.getMessage());
+                                }
+                            });
+                        } catch (final IOException e) {
                             e.printStackTrace();
                             LogUtil.logDebug(getClass().getName(), e.getMessage());
+                            handler.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    ssproxyTestBtn.setText(e.getMessage());
+                                }
+                            });
                         }
                     }
                 }).start();
