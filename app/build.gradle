@@ -32,9 +32,9 @@ android {
         commandLine 'ndk-build', '-C', file('../jni').absolutePath ,"NDK_LIBS_OUT="+file('src/main/jniLibs').absolutePath
     }
 
-//    tasks.withType(JavaCompile) {
-//        compileTask -> compileTask.dependsOn ndkBuild
-//    }
+    tasks.withType(JavaCompile) {
+        compileTask -> compileTask.dependsOn ndkBuild
+    }
     sourceSets { main { assets.srcDirs = ['src/main/assets', 'src/androidTest/assets/'] } }
 }
 
