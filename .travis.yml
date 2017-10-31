@@ -16,6 +16,7 @@ android:
 before_cache:
 - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
 - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+
 cache:
   directories:
   - "$HOME/.gradle/caches/"
@@ -24,6 +25,10 @@ cache:
 ### todo docker image 缓存设置
 before_install:
   - cd ./script && docker build -t gfwlist_img . && cd ..
+  - wget http://dl.google.com/android/repository/android-ndk-r15b-linux-x86_64.zip -O android-ndk-r15b-linux-x86_64.zip && unzip -q android-ndk-r15b-linux-x86_64.zip 
+  - export ANDROID_NDK_HOME=$PWD/android-ndk-r15b/
+  - export PATH=$ANDROID_NDK_HOME:$PATH
+  
 
 install:
 - echo yes | sdkmanager "extras;m2repository;com;android;support;constraint;constraint-layout;1.0.2"

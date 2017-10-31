@@ -8,4 +8,48 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="textViewBaseStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/colorBlack</item>
+    </style>
+
+    <style name="textViewSmall" parent="textViewBaseStyle">
+        <item name="android:textSize">@dimen/text_size_small</item>
+    </style>
+
+    <style name="textViewMiddle" parent="textViewBaseStyle">
+        <item name="android:textSize">@dimen/text_size_middle</item>
+    </style>
+
+    <style name="textViewLarge" parent="textViewBaseStyle">
+        <item name="android:textSize">@dimen/text_size_large</item>
+    </style>
+
+    <style name="textViewSmall.White">
+        <item name="android:textColor">@color/colorWhite</item>
+    </style>
+
+    <style name="textViewSmall.Gray">
+        <item name="android:textColor">@color/colorGray</item>
+    </style>
+
+    <style name="textViewMiddle.White">
+        <item name="android:textColor">@color/colorWhite</item>
+    </style>
+
+    <style name="textViewMiddle.Gray">
+        <item name="android:textColor">@color/colorGray</item>
+    </style>
+
+    <style name="HLine">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/line_width</item>
+    </style>
+
+    <style name="HLine.Gray">
+        <item name="android:background">@color/colorGray</item>
+    </style>
+
+
 </resources>

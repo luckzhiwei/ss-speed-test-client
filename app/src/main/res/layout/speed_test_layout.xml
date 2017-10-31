@@ -1,8 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/speed_test_root_view"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <include layout="@layout/listview_common" />
-</LinearLayout>
+    <RelativeLayout
+        android:id="@+id/speed_test_top_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:background="@mipmap/background_blue">
+
+        <TextView
+            android:id="@+id/speed_test_title"
+            style="@style/textViewMiddle.White"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="8dp"
+            android:text="@string/connection_progress" />
+
+        <!--todo layout_above 属性失效-->
+        <ProgressBar
+            android:id="@+id/speed_test_progress"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/speed_test_title"
+            android:progressDrawable="@drawable/progress_background" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/speed_test_top_view">
+        <include layout="@layout/listview_common" />
+    </LinearLayout>
+
+    <com.vecent.ssspeedtest.view.ResultLayout
+        android:id="@+id/speed_test_result_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </com.vecent.ssspeedtest.view.ResultLayout>
+
+
+</RelativeLayout>

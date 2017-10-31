@@ -6,6 +6,7 @@ import android.util.Log;
 
 import com.vecent.ssspeedtest.model.INet;
 import com.vecent.ssspeedtest.model.INetImpl;
+import com.vecent.ssspeedtest.model.bean.Server;
 import com.vecent.ssspeedtest.model.bean.SpeedTestResult;
 
 import org.junit.Assert;
@@ -29,7 +30,10 @@ public class TestINetImpl {
     @Test
     public void testINetImplHttpRequestWhiteListAddr() {
         INet iNetForTest = new INetImpl();
-        SpeedTestResult result = iNetForTest.getHttpTestResult("http://taobao.com/");
+        Server test = new Server();
+        test.setType("w");
+        test.setWeb("http://taobao.com/");
+        SpeedTestResult result = iNetForTest.getHttpTestResult(test);
 
         Assert.assertEquals(false, result.isExceptionOccured());
         Assert.assertEquals(true, result.isRedirect());
@@ -39,14 +43,17 @@ public class TestINetImpl {
         Assert.assertEquals(true, result.getTotalSize() > 0);
         Assert.assertEquals(true, result.getTimeUsed() > 0);
         Assert.assertEquals(true, result.getDownLoadSpeed() > 0);
-        Assert.assertEquals(false,result.is2ManyTimeRelocation());
+        Assert.assertEquals(false, result.is2ManyTimeRelocation());
 
     }
 
     @Test
     public void testINetImplPingBlackListAddr() {
         INet iNetForTest = new INetImpl();
-        SpeedTestResult result = iNetForTest.getHttpTestResult("https://www.google.com.hk");
+        Server test = new Server();
+        test.setType("w");
+        test.setWeb("https://www.google.com.hk");
+        SpeedTestResult result = iNetForTest.getHttpTestResult(test);
 
         Assert.assertEquals(true, result.isExceptionOccured());
         Assert.assertEquals(false, result.isRedirect());
@@ -63,7 +70,10 @@ public class TestINetImpl {
     @Test
     public void testINetImplHtpRequestRedirectAddr() {
         INet iNetForTest = new INetImpl();
-        SpeedTestResult result = iNetForTest.getHttpTestResult("http://www.baidu.com");
+        Server test = new Server();
+        test.setType("w");
+        test.setWeb("http://www.baidu.com");
+        SpeedTestResult result = iNetForTest.getHttpTestResult(test);
 
         Assert.assertEquals(false, result.isExceptionOccured());
         Assert.assertEquals(true, result.isRedirect());

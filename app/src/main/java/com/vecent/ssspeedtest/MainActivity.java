@@ -7,11 +7,12 @@ import android.view.View;
 import android.widget.Button;
 
 import com.vecent.ssspeedtest.controller.SpeedTestActivity;
-import com.vecent.ssspeedtest.util.LogUtil;
+import com.vecent.ssspeedtest.controller.TestSSLocalActivity;
 
 public class MainActivity extends AppCompatActivity {
 
     private Button testSpeedBtn;
+    private Button predictBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,10 +23,18 @@ public class MainActivity extends AppCompatActivity {
 
     private void initView() {
         this.testSpeedBtn = (Button) this.findViewById(R.id.main_test_speed_btn);
+        this.predictBtn = (Button) this.findViewById(R.id.predict_btn);
         this.testSpeedBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getApplicationContext(), SpeedTestActivity.class));
+            }
+        });
+        this.predictBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(), TestSSLocalActivity.class));
+
             }
         });
     }
@@ -33,7 +42,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        LogUtil.logDebug(getClass().getName(), "destory the main activity");
     }
 
 

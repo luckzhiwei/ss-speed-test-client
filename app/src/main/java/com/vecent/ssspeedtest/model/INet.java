@@ -1,5 +1,6 @@
 package com.vecent.ssspeedtest.model;
 
+import com.vecent.ssspeedtest.model.bean.Server;
 import com.vecent.ssspeedtest.model.bean.SpeedTestResult;
 
 /**
@@ -7,5 +8,5 @@ import com.vecent.ssspeedtest.model.bean.SpeedTestResult;
  */
 
 public interface INet {
-    public SpeedTestResult getHttpTestResult(String server);
+    public SpeedTestResult getHttpTestResult(Server server);
 }

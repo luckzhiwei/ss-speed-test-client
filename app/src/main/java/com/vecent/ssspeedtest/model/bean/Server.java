@@ -25,4 +25,8 @@ public class Server {
         this.type = type;
     }
 
+    public boolean isWhiteListAddr() {
+        return this.type.equals("w");
+    }
+
 }

@@ -16,6 +16,15 @@ public class SpeedTestResult {
     private boolean isTimedOut = false;
     private String redirectServer;
     private boolean isExceptionOccured = false;
+    private boolean isWhiteAddr;
+
+    public boolean isWhiteAddr() {
+        return isWhiteAddr;
+    }
+
+    public void setWhiteAddr(boolean whiteAddr) {
+        isWhiteAddr = whiteAddr;
+    }
 
     public boolean is2ManyTimeRelocation() {
         return is2ManyTimeRelocation;

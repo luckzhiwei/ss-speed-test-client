@@ -1,0 +1,18 @@
+[submodule "jni/shadowsocks-libev"]
+	path = jni/shadowsocks-libev
+	url = https://github.com/shadowsocks/shadowsocks-libev.git
+[submodule "jni/libancillary"]
+	path = jni/libancillary
+	url = https://github.com/shadowsocks/libancillary.git
+[submodule "jni/libsodium"]
+	path = jni/libsodium
+	url = https://github.com/jedisct1/libsodium.git
+[submodule "jni/libev"]
+	path = jni/libev
+	url = https://github.com/shadowsocks/libev.git
+[submodule "jni/mbedtls"]
+	path = jni/mbedtls
+	url = https://github.com/ARMmbed/mbedtls
+[submodule "jni/pcre"]
+	path = jni/pcre
+	url = https://android.googlesource.com/platform/external/pcre

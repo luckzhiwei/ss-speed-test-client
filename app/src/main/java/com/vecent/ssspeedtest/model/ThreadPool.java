@@ -1,9 +1,6 @@
 package com.vecent.ssspeedtest.model;
 
-import android.util.Log;
-
 import com.vecent.ssspeedtest.util.Constant;
-import com.vecent.ssspeedtest.util.LogUtil;
 
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;

@@ -20,6 +20,20 @@
     <string name="dowload_speed">下载速度</string>
     <string name="kb_by_second">KB/s</string>
     <string name="unit_millisecond">ms</string>
+    <string name="unit_second">S</string>
     <string name="unit_byte">Byte</string>
+    <string name="speed_test_result">总测试结果</string>
+    <string name="total_server_count">请求的总服务器个数</string>
     <string name="too_mangy_time_redirect">过多次数的重定向</string>
+    <string name="total_used_time">测试总用时间</string>
+    <string name="white_list_success_rate">白名单成功率</string>
+    <string name="white_list_addr_count">白名单地址个数</string>
+    <string name="black_list_success_rate">黑名单成功率</string>
+    <string name="black_list_addr_count">黑名单地址个数</string>
+    <string name="connection_success_rate">连接成功率</string>
+    <string name="cur_server_count">现在请求的个数</string>
+    <string name="connection_progress">连接进度</string>
+    <string name="cur_speed">当前速度</string>
+    <string name="white_avg_time">白名单平均速度</string>
+    <string name="black_avg_time">黑名单平均速度</string>
 </resources>

@@ -1,5 +1,6 @@
 package com.vecent.ssspeedtest.model;
 
+import com.vecent.ssspeedtest.model.bean.Server;
 import com.vecent.ssspeedtest.model.bean.SpeedTestResult;
 import com.vecent.ssspeedtest.util.Constant;
 
@@ -19,16 +20,18 @@ public class INetImpl implements INet {
 
     public static final String TOO_MANY_TIMES_TO_REDIRECT = "too many times to redriect";
 
-    public SpeedTestResult getHttpTestResult(String server) {
+    public SpeedTestResult getHttpTestResult(Server server) {
         SpeedTestResult result = new SpeedTestResult();
-        result.setRequestServer(server);
+        result.setRequestServer(server.getWeb());
+        result.setWhiteAddr(server.isWhiteListAddr());
         HttpURLConnection conn = null;
         try {
             long startTime = System.currentTimeMillis();
-            conn = this.getConnection(server);
+            conn = this.getConnection(server.getWeb());
             int responseCode = conn.getResponseCode();
             int countNum = 0;
             while (this.isRedirect(responseCode)) {
+                startTime = System.currentTimeMillis();
                 String newUrl = conn.getHeaderField("Location");
                 conn = getConnection(newUrl);
                 result.setRedirect(true);

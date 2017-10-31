@@ -31,7 +31,7 @@ public class TestServers {
         Servers test = new Servers(this.appContext);
         List<Server> ret = test.getServers();
         Assert.assertNotEquals(null, ret);
-        Assert.assertEquals(581, ret.size());
+        Assert.assertEquals(40, ret.size());
         Assert.assertEquals("http://www.2dbook.com", ret.get(0).getWeb());
         Assert.assertEquals("b", ret.get(0).getType());
         Assert.assertEquals("http://www.youdao.com", ret.get(ret.size() - 3).getWeb());
