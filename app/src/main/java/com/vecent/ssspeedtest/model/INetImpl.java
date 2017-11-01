@@ -72,8 +72,8 @@ public class INetImpl implements INet {
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("GET");
         conn.setDoInput(true);
-        conn.setConnectTimeout(3000);
-        conn.setReadTimeout(3000);
+        conn.setConnectTimeout(Constant.CONNECTION_TIME_OUTgi);
+        conn.setReadTimeout(Constant.READ_TIME_OUT);
         return conn;
     }
 

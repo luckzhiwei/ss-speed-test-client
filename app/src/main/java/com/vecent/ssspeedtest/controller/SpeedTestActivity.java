@@ -12,7 +12,6 @@ import com.vecent.ssspeedtest.model.Servers;
 import com.vecent.ssspeedtest.model.SpeedTest;
 import com.vecent.ssspeedtest.model.bean.SpeedTestResult;
 import com.vecent.ssspeedtest.model.bean.TotalSpeedTestResult;
-import com.vecent.ssspeedtest.util.LogUtil;
 import com.vecent.ssspeedtest.view.ResultLayout;
 
 import java.util.List;
@@ -45,7 +44,7 @@ public class SpeedTestActivity extends Activity {
         this.mResultLayout.post(new Runnable() {
             @Override
             public void run() {
-                mResultLayout.setHeaderShowCor(SpeedTestActivity.this);
+                mResultLayout.setHeaderShowCorOnInit(SpeedTestActivity.this);
             }
         });
         this.mContentListView = this.findViewById(R.id.common_list_view);

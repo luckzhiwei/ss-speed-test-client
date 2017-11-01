@@ -133,13 +133,12 @@ public class ResultLayout extends LinearLayout {
     }
 
     /**
-     * todo 感觉计算方式依然有问题
-     * getY 是相对于父控件的长度
+     * getY 是相对于父控件的长度:（ ps:这里默认loc[1]是父控件相对与屏幕的距离）
      *
      * @param context
      * @return
      */
-    public void setHeaderShowCor(Activity context) {
+    public void setHeaderShowCorOnInit(Activity context) {
         Display display = context.getWindowManager().getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);
