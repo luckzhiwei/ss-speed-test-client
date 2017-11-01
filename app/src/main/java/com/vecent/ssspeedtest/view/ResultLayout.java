@@ -178,12 +178,9 @@ public class ResultLayout extends LinearLayout {
             case MotionEvent.ACTION_UP:
                 float delta = event.getY() - this.lastYUserTouch;
                 if (delta < 0 && !this.showAll) {
-                    LogUtil.logDebug(getClass().getName(), "action up");
                     this.startAnimation(this.mTranslateAnimationUp);
-                    this.showAll = true;
                 } else if (delta >= 0 && this.showAll) {
                     this.startAnimation(this.mTranslateAnimationDown);
-                    this.showAll = false;
                 }
                 break;
         }
@@ -199,7 +196,10 @@ public class ResultLayout extends LinearLayout {
         @Override
         public void onAnimationEnd(Animation animation) {
             clearAnimation();
+            LogUtil.logDebug(getClass().getName(), "show all  coordinate y is  " + showAllContentCoordinateY);
             setY(showAllContentCoordinateY);
+            LogUtil.logDebug(getClass().getName(), "show all");
+            showAll = true;
         }
 
         @Override
@@ -217,7 +217,10 @@ public class ResultLayout extends LinearLayout {
         @Override
         public void onAnimationEnd(Animation animation) {
             clearAnimation();
+            LogUtil.logDebug(getClass().getName(), "show only coordinate y is  " + onlyShowTitleCoordinateY);
             setY(onlyShowTitleCoordinateY);
+            LogUtil.logDebug(getClass().getName(), "hide all");
+            showAll = false;
         }
 
         @Override
