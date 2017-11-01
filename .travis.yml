@@ -22,11 +22,14 @@ cache:
   - "$HOME/.gradle/caches/"
   - "$HOME/.gradle/wrapper/"
   - "$HOME/.android/build-cache"
+  - "$HOME/"
 ### todo docker image 缓存设置
 ### todo ndk 缓存设置
 before_install:
   - cd ./script && docker build -t gfwlist_img . && cd ..
   - wget http://dl.google.com/android/repository/android-ndk-r15b-linux-x86_64.zip -O android-ndk-r15b-linux-x86_64.zip && unzip -q android-ndk-r15b-linux-x86_64.zip 
+  - echo $HOME 
+  - echo $PWD
   - export ANDROID_NDK_HOME=$PWD/android-ndk-r15b/
   - export PATH=$ANDROID_NDK_HOME:$PATH
   
