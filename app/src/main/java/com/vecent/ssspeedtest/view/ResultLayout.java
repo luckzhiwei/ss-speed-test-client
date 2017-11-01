@@ -114,7 +114,7 @@ public class ResultLayout extends LinearLayout {
         this.blackListRadio = res.getString(R.string.black_list_success_rate) + " ";
         this.curTimeUsed = res.getString(R.string.time_used) + " ";
         this.speedUnit = res.getString(R.string.kb_by_second);
-        this.timeUnit = res.getString(R.string.unit_millisecond);
+        this.timeUnit = res.getString(R.string.unit_second);
         this.whiteSpeedAvg = res.getString(R.string.white_avg_time) + " ";
         this.blackSpeedAvg = res.getString(R.string.black_avg_time) + " ";
     }
@@ -133,13 +133,12 @@ public class ResultLayout extends LinearLayout {
     }
 
     /**
-     * todo 感觉计算方式依然有问题
-     * getY 是相对于父控件的长度
+     * getY 是相对于父控件的长度:（ ps:这里默认loc[1]是父控件相对与屏幕的距离）
      *
      * @param context
      * @return
      */
-    public void setHeaderShowCor(Activity context) {
+    public void setHeaderShowCorOnInit(Activity context) {
         Display display = context.getWindowManager().getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);
@@ -178,12 +177,9 @@ public class ResultLayout extends LinearLayout {
             case MotionEvent.ACTION_UP:
                 float delta = event.getY() - this.lastYUserTouch;
                 if (delta < 0 && !this.showAll) {
-                    LogUtil.logDebug(getClass().getName(), "up");
                     this.startAnimation(this.mTranslateAnimationUp);
-                    this.showAll = true;
                 } else if (delta >= 0 && this.showAll) {
                     this.startAnimation(this.mTranslateAnimationDown);
-                    this.showAll = false;
                 }
                 break;
         }
@@ -200,6 +196,7 @@ public class ResultLayout extends LinearLayout {
         public void onAnimationEnd(Animation animation) {
             clearAnimation();
             setY(showAllContentCoordinateY);
+            showAll = true;
         }
 
         @Override
@@ -218,6 +215,7 @@ public class ResultLayout extends LinearLayout {
         public void onAnimationEnd(Animation animation) {
             clearAnimation();
             setY(onlyShowTitleCoordinateY);
+            showAll = false;
         }
 
         @Override

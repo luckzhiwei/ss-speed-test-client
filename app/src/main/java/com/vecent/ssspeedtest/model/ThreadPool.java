@@ -1,6 +1,7 @@
 package com.vecent.ssspeedtest.model;
 
 import com.vecent.ssspeedtest.util.Constant;
+import com.vecent.ssspeedtest.util.LogUtil;
 
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -16,8 +17,7 @@ public class ThreadPool {
 
 
     public ThreadPool() {
-        this(Runtime.getRuntime().availableProcessors()
-                , Runtime.getRuntime().availableProcessors(), Constant.TIME_TO_KEPP_ALIVE);
+        this(100, 100, Constant.TIME_TO_KEPP_ALIVE);
     }
 
 

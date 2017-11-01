@@ -12,7 +12,6 @@ import com.vecent.ssspeedtest.model.Servers;
 import com.vecent.ssspeedtest.model.SpeedTest;
 import com.vecent.ssspeedtest.model.bean.SpeedTestResult;
 import com.vecent.ssspeedtest.model.bean.TotalSpeedTestResult;
-import com.vecent.ssspeedtest.util.LogUtil;
 import com.vecent.ssspeedtest.view.ResultLayout;
 
 import java.util.List;
@@ -42,6 +41,12 @@ public class SpeedTestActivity extends Activity {
 
     private void initView() {
         this.mResultLayout = this.findViewById(R.id.speed_test_result_layout);
+        this.mResultLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                mResultLayout.setHeaderShowCorOnInit(SpeedTestActivity.this);
+            }
+        });
         this.mContentListView = this.findViewById(R.id.common_list_view);
         this.mProgressBar = this.findViewById(R.id.speed_test_progress);
         this.mProgressBar.setMax(100);
@@ -96,12 +101,6 @@ public class SpeedTestActivity extends Activity {
     protected void onDestroy() {
         super.onDestroy();
         this.mSpeedTest.cancel();
-    }
-
-    @Override
-    public void onWindowFocusChanged(boolean hasFocus) {
-        super.onWindowFocusChanged(hasFocus);
-        mResultLayout.setHeaderShowCor(this);
     }
 
 }
