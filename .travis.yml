@@ -22,6 +22,7 @@ cache:
   - "$HOME/.gradle/caches/"
   - "$HOME/.gradle/wrapper/"
   - "$HOME/.android/build-cache"
+  - "/home/travis/build/luckzhiwei/ss-speed-test-client/android-ndk-r15b"
   
 ### todo docker image 缓存设置
 ### todo ndk 缓存设置
