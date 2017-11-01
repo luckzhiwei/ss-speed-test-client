@@ -196,9 +196,7 @@ public class ResultLayout extends LinearLayout {
         @Override
         public void onAnimationEnd(Animation animation) {
             clearAnimation();
-            LogUtil.logDebug(getClass().getName(), "show all  coordinate y is  " + showAllContentCoordinateY);
             setY(showAllContentCoordinateY);
-            LogUtil.logDebug(getClass().getName(), "show all");
             showAll = true;
         }
 
@@ -217,9 +215,7 @@ public class ResultLayout extends LinearLayout {
         @Override
         public void onAnimationEnd(Animation animation) {
             clearAnimation();
-            LogUtil.logDebug(getClass().getName(), "show only coordinate y is  " + onlyShowTitleCoordinateY);
             setY(onlyShowTitleCoordinateY);
-            LogUtil.logDebug(getClass().getName(), "hide all");
             showAll = false;
         }
 
