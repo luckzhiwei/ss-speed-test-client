@@ -114,7 +114,7 @@ public class ResultLayout extends LinearLayout {
         this.blackListRadio = res.getString(R.string.black_list_success_rate) + " ";
         this.curTimeUsed = res.getString(R.string.time_used) + " ";
         this.speedUnit = res.getString(R.string.kb_by_second);
-        this.timeUnit = res.getString(R.string.unit_millisecond);
+        this.timeUnit = res.getString(R.string.unit_second);
         this.whiteSpeedAvg = res.getString(R.string.white_avg_time) + " ";
         this.blackSpeedAvg = res.getString(R.string.black_avg_time) + " ";
     }
@@ -178,7 +178,7 @@ public class ResultLayout extends LinearLayout {
             case MotionEvent.ACTION_UP:
                 float delta = event.getY() - this.lastYUserTouch;
                 if (delta < 0 && !this.showAll) {
-                    LogUtil.logDebug(getClass().getName(), "up");
+                    LogUtil.logDebug(getClass().getName(), "action up");
                     this.startAnimation(this.mTranslateAnimationUp);
                     this.showAll = true;
                 } else if (delta >= 0 && this.showAll) {

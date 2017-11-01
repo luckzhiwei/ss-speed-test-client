@@ -43,7 +43,6 @@ public class SpeedTest {
     public void startTest(final INet net) {
         this.startTime = System.currentTimeMillis();
         for (final Server server : mServers2Test) {
-
             mThreadPool.execTask(new Runnable() {
                 @Override
                 public void run() {
