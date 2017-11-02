@@ -19,7 +19,7 @@ public class SpeedTest {
     private ThreadPool mThreadPool;
 
     private Handler mHandler;
-    private RequestCallBack mPingCallBack;
+    private RequestCallBack mRequestCallBack;
     private long startTime;
 
     public interface RequestCallBack {
@@ -49,7 +49,7 @@ public class SpeedTest {
                         mHandler.post(new Runnable() {
                             @Override
                             public void run() {
-                                mPingCallBack.onOneRequestFinishListener(pingResult);
+                                mRequestCallBack.onOneRequestFinishListener(pingResult);
                             }
                         });
                     }
@@ -66,13 +66,13 @@ public class SpeedTest {
         this.mHandler.post(new Runnable() {
             @Override
             public void run() {
-                mPingCallBack.onAllRequestFinishListener(1.0f * (endTime - startTime) / 1000, mServers2Test.size());
+                mRequestCallBack.onAllRequestFinishListener(1.0f * (endTime - startTime) / 1000, mServers2Test.size());
             }
         });
     }
 
-    public void setPingCallBack(RequestCallBack callback) {
-        this.mPingCallBack = callback;
+    public void setRequestCallBack(RequestCallBack callback) {
+        this.mRequestCallBack = callback;
     }
 
     public void cancel() {

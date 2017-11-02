@@ -70,7 +70,7 @@ public class SpeedTestActivity extends Activity {
     }
 
     private void startSpeedTest() {
-        this.mSpeedTest.setPingCallBack(new SpeedTest.RequestCallBack() {
+        this.mSpeedTest.setRequestCallBack(new SpeedTest.RequestCallBack() {
             @Override
             public void onOneRequestFinishListener(SpeedTestResult result) {
                 mSpeedTestResults.add(result);
