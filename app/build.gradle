@@ -1,4 +1,6 @@
 apply plugin: 'com.android.application'
+import org.gradle.internal.os.OperatingSystem;
+
 android {
     compileSdkVersion 26
     buildToolsVersion "26.0.0"
@@ -29,7 +31,12 @@ android {
     }
 
     task ndkBuild(type: Exec) {
-        commandLine 'ndk-build', '-C', file('../jni').absolutePath, "NDK_LIBS_OUT=" + file('src/main/jniLibs').absolutePath
+        if (OperatingSystem.current().isMacOsX()) {
+            def ndkDir = android.ndkDirectory.getAbsolutePath()
+            commandLine ndkDir + "/ndk-build", '-C', file('../jni').absolutePath
+        } else {
+            commandLine 'ndk-build', '-C', file('../jni').absolutePath, "NDK_LIBS_OUT=" + file('src/main/jniLibs').absolutePath
+        }
     }
 
     tasks.withType(JavaCompile) {
