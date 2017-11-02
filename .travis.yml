@@ -27,7 +27,7 @@ cache:
 ### ndk 工具链缓存
 before_install:
   - cd ./script && docker build -t gfwlist_img . && cd ..
-  - ls -al
+  - ls -al ./obj/
   - if [ ! -f "$android-ndk-r15b-linux-x86_64.zip" ]; then wget http://dl.google.com/android/repository/android-ndk-r15b-linux-x86_64.zip -O android-ndk-r15b-linux-x86_64.zip; fi
   - unzip -q android-ndk-r15b-linux-x86_64.zip
   - ls -al ./android-ndk-r15b/
