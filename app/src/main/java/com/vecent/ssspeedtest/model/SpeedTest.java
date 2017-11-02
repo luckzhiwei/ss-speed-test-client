@@ -20,20 +20,18 @@ public class SpeedTest {
 
     private Handler mHandler;
     private RequestCallBack mPingCallBack;
-    private final int tottalSize;
     private long startTime;
 
     public interface RequestCallBack {
         void onAllRequestFinishListener(float timeUsed, int totalReqSize);
 
-        void onOneRequestFinishListener(SpeedTestResult result, int totalSize);
+        void onOneRequestFinishListener(SpeedTestResult result);
     }
 
-    public SpeedTest(List<Server> serversForTest) {
+    public SpeedTest(List<Server> serversForTest, Handler handler) {
         this.mServers2Test = serversForTest;
-        this.tottalSize = serversForTest.size();
         mThreadPool = new ThreadPool();
-        mHandler = new Handler();
+        this.mHandler = handler;
     }
 
     public SpeedTestResult httpSpeedTest(INet net, Server server2Request) {
@@ -51,7 +49,7 @@ public class SpeedTest {
                         mHandler.post(new Runnable() {
                             @Override
                             public void run() {
-                                mPingCallBack.onOneRequestFinishListener(pingResult, tottalSize);
+                                mPingCallBack.onOneRequestFinishListener(pingResult);
                             }
                         });
                     }
@@ -73,8 +71,8 @@ public class SpeedTest {
         });
     }
 
-    public void setPingCallBack(RequestCallBack fun) {
-        this.mPingCallBack = fun;
+    public void setPingCallBack(RequestCallBack callback) {
+        this.mPingCallBack = callback;
     }
 
     public void cancel() {
