@@ -12,6 +12,8 @@ public class Constant {
     public static int MAX_REDIRECT_TIMES = 20;
     public static int CONNECTION_TIME_OUT = 3000;
     public static int READ_TIME_OUT = 3000;
+    public static String SOCKS_SERVER_ADDR = "127.0.0.1";
+    public static int SOCKS_SERVER_PORT = 1080;
 
 
 }

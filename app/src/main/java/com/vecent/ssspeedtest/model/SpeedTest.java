@@ -4,7 +4,7 @@ import android.os.Handler;
 
 import com.vecent.ssspeedtest.model.bean.Server;
 import com.vecent.ssspeedtest.model.bean.SpeedTestResult;
-import com.vecent.ssspeedtest.model.bean.TotalSpeedTestResult;
+import com.vecent.ssspeedtest.model.net.INet;
 import com.vecent.ssspeedtest.util.LogUtil;
 
 import java.util.List;
@@ -38,6 +38,12 @@ public class SpeedTest {
         return net.getHttpTestResult(server2Request);
     }
 
+    /**
+     * 策略模式的一种体现：
+     * net的行为在客户端看来都是一样的,但是实现可以是有走代理和不走代理两种情况
+     *
+     * @param net
+     */
     public void startTest(final INet net) {
         this.startTime = System.currentTimeMillis();
         for (final Server server : mServers2Test) {

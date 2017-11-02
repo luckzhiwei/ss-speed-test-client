@@ -1,7 +1,8 @@
-package com.vecent.ssspeedtest.model;
+package com.vecent.ssspeedtest.model.net;
 
 import com.vecent.ssspeedtest.model.bean.Server;
 import com.vecent.ssspeedtest.model.bean.SpeedTestResult;
+import com.vecent.ssspeedtest.model.net.INet;
 import com.vecent.ssspeedtest.util.Constant;
 
 import java.io.BufferedInputStream;
@@ -16,7 +17,7 @@ import java.net.URL;
  * Created by lzw on 17-9-5.
  */
 
-public class INetImpl implements INet {
+public class INetImplDefault implements INet {
 
     public static final String TOO_MANY_TIMES_TO_REDIRECT = "too many times to redriect";
 
@@ -66,7 +67,7 @@ public class INetImpl implements INet {
         ret.setExceptionMsg(msg);
     }
 
-    private HttpURLConnection getConnection(String server) throws
+    protected HttpURLConnection getConnection(String server) throws
             MalformedURLException, ProtocolException, IOException {
         URL url = new URL(server);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();

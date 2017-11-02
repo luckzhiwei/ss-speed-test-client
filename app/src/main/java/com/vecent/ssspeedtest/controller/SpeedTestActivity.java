@@ -8,7 +8,7 @@ import android.widget.ProgressBar;
 
 import com.vecent.ssspeedtest.R;
 import com.vecent.ssspeedtest.adpater.SpeedTestAdapter;
-import com.vecent.ssspeedtest.model.INetImpl;
+import com.vecent.ssspeedtest.model.net.INetImplDefault;
 import com.vecent.ssspeedtest.model.Servers;
 import com.vecent.ssspeedtest.model.SpeedTest;
 import com.vecent.ssspeedtest.model.bean.SpeedTestResult;
@@ -80,7 +80,7 @@ public class SpeedTestActivity extends Activity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                mSpeedTest.startTest(new INetImpl());
+                mSpeedTest.startTest(new INetImplDefault());
             }
         }).start();
     }
