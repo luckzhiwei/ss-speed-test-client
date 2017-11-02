@@ -24,6 +24,7 @@ cache:
   - "$HOME/.android/build-cache"
   - "/home/travis/build/luckzhiwei/ss-speed-test-client/obj/"
 ### todo docker image 缓存设置
+### ndk 工具链缓存
 before_install:
   - cd ./script && docker build -t gfwlist_img . && cd ..
   - ls -al
