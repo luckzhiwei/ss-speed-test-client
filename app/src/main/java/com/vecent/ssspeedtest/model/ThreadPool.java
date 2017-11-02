@@ -17,7 +17,7 @@ public class ThreadPool {
 
 
     public ThreadPool() {
-        this(100, 100, Constant.TIME_TO_KEPP_ALIVE);
+        this(Constant.MIN_THREAD_POOL_SIZE, Constant.MAX_THREAD_POOL_SIZE, Constant.TIME_TO_KEPP_ALIVE);
     }
 
 
