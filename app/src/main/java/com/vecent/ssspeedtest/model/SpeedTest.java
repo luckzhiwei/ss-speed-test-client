@@ -79,55 +79,6 @@ public class SpeedTest {
         this.mThreadPool.stopNow();
     }
 
-    public void countResult(TotalSpeedTestResult total, List<SpeedTestResult> result) {
-        int whiteAddrSize = 0, connectWhiteAddrSize = 0,
-                blackAddrSize = 0, connectBlackAddrSize = 0,
-                whiteAddrSpeedAvgSum = 0, blackAddrSpeedAvgSum = 0;
-        for (SpeedTestResult oneRet : result) {
-            if (oneRet.isWhiteAddr()) {
-                whiteAddrSize++;
-                if (!oneRet.isExceptionOccured()) {
-                    connectWhiteAddrSize++;
-                    whiteAddrSpeedAvgSum += oneRet.getDownLoadSpeed();
-
-                }
-            } else {
-                blackAddrSize++;
-                if (!oneRet.isExceptionOccured()) {
-                    connectBlackAddrSize++;
-                    blackAddrSpeedAvgSum += oneRet.getDownLoadSpeed();
-                }
-            }
-        }
-        if (whiteAddrSize == 0) {
-            total.setWhiteAddrServerCount(0);
-            total.setWhiteAddrConnectSuccesRate(0);
-            total.setSpeedWhiteAddrDownLoadAvg(0.0f);
-        } else {
-            total.setWhiteAddrServerCount(whiteAddrSize);
-            total.setWhiteAddrConnectSuccesRate(1.0f * connectWhiteAddrSize / whiteAddrSize);
-            if (connectWhiteAddrSize == 0) {
-                total.setSpeedWhiteAddrDownLoadAvg(0.0f);
-            } else {
-                total.setSpeedWhiteAddrDownLoadAvg(whiteAddrSpeedAvgSum * 1.0f / connectWhiteAddrSize);
-            }
-        }
-        if (blackAddrSize == 0) {
-            total.setBlackAddrServerCount(0);
-            total.setBlackAddrConnectSuccesRate(0);
-            total.setSpeedBlackAddrDownLoadAvg(0.0f);
-        } else {
-            total.setBlackAddrServerCount(blackAddrSize);
-            total.setBlackAddrConnectSuccesRate(1.0f * connectBlackAddrSize / blackAddrSize);
-            if (connectBlackAddrSize == 0) {
-                total.setSpeedBlackAddrDownLoadAvg(0);
-            } else {
-                total.setSpeedBlackAddrDownLoadAvg(1.0f * blackAddrSpeedAvgSum / connectBlackAddrSize);
-            }
-        }
-        total.setCurServerCount(whiteAddrSize + blackAddrSize);
-    }
-
 
     public long getTimeStart() {
         return startTime;

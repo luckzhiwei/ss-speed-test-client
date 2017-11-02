@@ -15,9 +15,6 @@ import com.vecent.ssspeedtest.model.bean.SpeedTestResult;
 import com.vecent.ssspeedtest.model.bean.TotalSpeedTestResult;
 import com.vecent.ssspeedtest.view.ResultLayout;
 
-import java.util.List;
-import java.util.Vector;
-
 /**
  * Created by zhiwei on 2017/9/9.
  */
@@ -26,11 +23,10 @@ public class SpeedTestActivity extends Activity {
 
     private SpeedTest mSpeedTest;
     private ListView mContentListView;
-    private List<SpeedTestResult> mSpeedTestResults;
     private SpeedTestAdapter mAdapter;
     private ProgressBar mProgressBar;
     private ResultLayout mResultLayout;
-    private TotalSpeedTestResult result;
+    private TotalSpeedTestResult mResult;
     private int totalSize;
     private Handler mHandler;
 
@@ -56,16 +52,15 @@ public class SpeedTestActivity extends Activity {
     }
 
     private void initData() {
-        this.mSpeedTestResults = new Vector<>();
+        mResult = new TotalSpeedTestResult();
         this.mAdapter = new SpeedTestAdapter(getApplicationContext(),
-                R.layout.speed_test_item_layout, mSpeedTestResults);
+                R.layout.speed_test_item_layout, mResult.getResultList());
         this.mContentListView.setAdapter(this.mAdapter);
         Servers servers2Test = new Servers(this.getApplicationContext());
         this.mHandler = new Handler(getMainLooper());
         this.mSpeedTest = new SpeedTest(servers2Test.getServers(), this.mHandler);
-        result = new TotalSpeedTestResult();
         this.totalSize = servers2Test.getServers().size();
-        result.setTotalServerSize(this.totalSize);
+        mResult.setTotalServerSize(this.totalSize);
         this.startSpeedTest();
     }
 
@@ -73,7 +68,7 @@ public class SpeedTestActivity extends Activity {
         this.mSpeedTest.setRequestCallBack(new SpeedTest.RequestCallBack() {
             @Override
             public void onOneRequestFinishListener(SpeedTestResult result) {
-                mSpeedTestResults.add(result);
+                mResult.addResult2List(result);
                 updateView();
             }
 
@@ -92,16 +87,13 @@ public class SpeedTestActivity extends Activity {
 
     private void updateView() {
         mAdapter.notifyDataSetChanged();
-        int curRequestedServerCount = mSpeedTestResults.size();
-        int progress = (int) (100.0f * curRequestedServerCount / totalSize);
-        mProgressBar.setProgress(progress);
+        mProgressBar.setProgress((int) (100.0f * mResult.getCurServerCount() / totalSize));
         setResultView((System.currentTimeMillis() - mSpeedTest.getTimeStart()) / 1000.0f);
     }
 
     private void setResultView(float timeUsed) {
-        result.setTotalTimeUsed(timeUsed);
-        mSpeedTest.countResult(result, mSpeedTestResults);
-        mResultLayout.setReuslt(result);
+        mResult.setTotalTimeUsed(timeUsed);
+        mResultLayout.update(mResult);
     }
 
 
