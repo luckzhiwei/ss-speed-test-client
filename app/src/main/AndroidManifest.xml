@@ -21,6 +21,8 @@
         </activity>
         <activity android:name=".controller.TestSSLocalActivity">
         </activity>
+        <activity android:name=".controller.InputSSServerSettingActivity">
+        </activity>
     </application>
 
 

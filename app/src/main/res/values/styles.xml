@@ -51,5 +51,9 @@
         <item name="android:background">@color/colorGray</item>
     </style>
 
+    <style name="textViewSmall.Green">
+        <item name="android:textColor">@color/colorGreen</item>
+    </style>
+
 
 </resources>
