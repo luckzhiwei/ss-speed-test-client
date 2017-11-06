@@ -1,4 +1,4 @@
-package com.vecent.ssspeedtest.model;
+package com.vecent.ssspeedtest.model.net;
 
 import com.vecent.ssspeedtest.model.bean.Server;
 import com.vecent.ssspeedtest.model.bean.SpeedTestResult;

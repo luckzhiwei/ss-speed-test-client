@@ -120,7 +120,7 @@ public class ResultLayout extends LinearLayout {
     }
 
 
-    public void setReuslt(TotalSpeedTestResult totalResult) {
+    public void update(TotalSpeedTestResult totalResult) {
         this.mTextViewTotalSize.setText(this.totalServerSize + totalResult.getTotalServerSize());
         this.mTextViewCurServerCount.setText(this.curServerSize + totalResult.getCurServerCount());
         this.mTextViewWhiteListServerCount.setText(this.whiteListCount + totalResult.getWhiteAddrServerCount());

@@ -4,7 +4,7 @@ import android.os.Handler;
 
 import com.vecent.ssspeedtest.model.bean.Server;
 import com.vecent.ssspeedtest.model.bean.SpeedTestResult;
-import com.vecent.ssspeedtest.model.bean.TotalSpeedTestResult;
+import com.vecent.ssspeedtest.model.net.INet;
 import com.vecent.ssspeedtest.util.LogUtil;
 
 import java.util.List;
@@ -19,27 +19,31 @@ public class SpeedTest {
     private ThreadPool mThreadPool;
 
     private Handler mHandler;
-    private RequestCallBack mPingCallBack;
-    private final int tottalSize;
+    private RequestCallBack mRequestCallBack;
     private long startTime;
 
     public interface RequestCallBack {
         void onAllRequestFinishListener(float timeUsed, int totalReqSize);
 
-        void onOneRequestFinishListener(SpeedTestResult result, int totalSize);
+        void onOneRequestFinishListener(SpeedTestResult result);
     }
 
-    public SpeedTest(List<Server> serversForTest) {
+    public SpeedTest(List<Server> serversForTest, Handler handler) {
         this.mServers2Test = serversForTest;
-        this.tottalSize = serversForTest.size();
         mThreadPool = new ThreadPool();
-        mHandler = new Handler();
+        this.mHandler = handler;
     }
 
     public SpeedTestResult httpSpeedTest(INet net, Server server2Request) {
         return net.getHttpTestResult(server2Request);
     }
 
+    /**
+     * 策略模式的一种体现：
+     * net的行为在客户端看来都是一样的,但是实现可以是有走代理和不走代理两种情况
+     *
+     * @param net
+     */
     public void startTest(final INet net) {
         this.startTime = System.currentTimeMillis();
         for (final Server server : mServers2Test) {
@@ -51,7 +55,7 @@ public class SpeedTest {
                         mHandler.post(new Runnable() {
                             @Override
                             public void run() {
-                                mPingCallBack.onOneRequestFinishListener(pingResult, tottalSize);
+                                mRequestCallBack.onOneRequestFinishListener(pingResult);
                             }
                         });
                     }
@@ -68,66 +72,17 @@ public class SpeedTest {
         this.mHandler.post(new Runnable() {
             @Override
             public void run() {
-                mPingCallBack.onAllRequestFinishListener(1.0f * (endTime - startTime) / 1000, mServers2Test.size());
+                mRequestCallBack.onAllRequestFinishListener(1.0f * (endTime - startTime) / 1000, mServers2Test.size());
             }
         });
     }
 
-    public void setPingCallBack(RequestCallBack fun) {
-        this.mPingCallBack = fun;
+    public void setRequestCallBack(RequestCallBack callback) {
+        this.mRequestCallBack = callback;
     }
 
     public void cancel() {
         this.mThreadPool.stopNow();
-    }
-
-    public void countResult(TotalSpeedTestResult total, List<SpeedTestResult> result) {
-        int whiteAddrSize = 0, connectWhiteAddrSize = 0,
-                blackAddrSize = 0, connectBlackAddrSize = 0,
-                whiteAddrSpeedAvgSum = 0, blackAddrSpeedAvgSum = 0;
-        for (SpeedTestResult oneRet : result) {
-            if (oneRet.isWhiteAddr()) {
-                whiteAddrSize++;
-                if (!oneRet.isExceptionOccured()) {
-                    connectWhiteAddrSize++;
-                    whiteAddrSpeedAvgSum += oneRet.getDownLoadSpeed();
-
-                }
-            } else {
-                blackAddrSize++;
-                if (!oneRet.isExceptionOccured()) {
-                    connectBlackAddrSize++;
-                    blackAddrSpeedAvgSum += oneRet.getDownLoadSpeed();
-                }
-            }
-        }
-        if (whiteAddrSize == 0) {
-            total.setWhiteAddrServerCount(0);
-            total.setWhiteAddrConnectSuccesRate(0);
-            total.setSpeedWhiteAddrDownLoadAvg(0.0f);
-        } else {
-            total.setWhiteAddrServerCount(whiteAddrSize);
-            total.setWhiteAddrConnectSuccesRate(1.0f * connectWhiteAddrSize / whiteAddrSize);
-            if (connectWhiteAddrSize == 0) {
-                total.setSpeedWhiteAddrDownLoadAvg(0.0f);
-            } else {
-                total.setSpeedWhiteAddrDownLoadAvg(whiteAddrSpeedAvgSum * 1.0f / connectWhiteAddrSize);
-            }
-        }
-        if (blackAddrSize == 0) {
-            total.setBlackAddrServerCount(0);
-            total.setBlackAddrConnectSuccesRate(0);
-            total.setSpeedBlackAddrDownLoadAvg(0.0f);
-        } else {
-            total.setBlackAddrServerCount(blackAddrSize);
-            total.setBlackAddrConnectSuccesRate(1.0f * connectBlackAddrSize / blackAddrSize);
-            if (connectBlackAddrSize == 0) {
-                total.setSpeedBlackAddrDownLoadAvg(0);
-            } else {
-                total.setSpeedBlackAddrDownLoadAvg(1.0f * blackAddrSpeedAvgSum / connectBlackAddrSize);
-            }
-        }
-        total.setCurServerCount(whiteAddrSize + blackAddrSize);
     }
 
 

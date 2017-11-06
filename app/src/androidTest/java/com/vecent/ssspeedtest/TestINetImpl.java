@@ -2,10 +2,9 @@ package com.vecent.ssspeedtest;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
-import android.util.Log;
 
-import com.vecent.ssspeedtest.model.INet;
-import com.vecent.ssspeedtest.model.INetImpl;
+import com.vecent.ssspeedtest.model.net.INet;
+import com.vecent.ssspeedtest.model.net.INetImplDefault;
 import com.vecent.ssspeedtest.model.bean.Server;
 import com.vecent.ssspeedtest.model.bean.SpeedTestResult;
 
@@ -29,7 +28,7 @@ public class TestINetImpl {
 
     @Test
     public void testINetImplHttpRequestWhiteListAddr() {
-        INet iNetForTest = new INetImpl();
+        INet iNetForTest = new INetImplDefault();
         Server test = new Server();
         test.setType("w");
         test.setWeb("http://taobao.com/");
@@ -49,7 +48,7 @@ public class TestINetImpl {
 
     @Test
     public void testINetImplPingBlackListAddr() {
-        INet iNetForTest = new INetImpl();
+        INet iNetForTest = new INetImplDefault();
         Server test = new Server();
         test.setType("w");
         test.setWeb("https://www.google.com.hk");
@@ -69,7 +68,7 @@ public class TestINetImpl {
 
     @Test
     public void testINetImplHtpRequestRedirectAddr() {
-        INet iNetForTest = new INetImpl();
+        INet iNetForTest = new INetImplDefault();
         Server test = new Server();
         test.setType("w");
         test.setWeb("http://www.baidu.com");
