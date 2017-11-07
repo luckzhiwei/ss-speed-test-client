@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="8dp">
+
+    <TextView
+        android:id="@+id/ss_server_address"
+        style="@style/textViewMiddle"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true" />
+
+    <TextView
+        android:id="@+id/ss_server_port"
+        style="@style/textViewMiddle"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="3dp"
+        android:layout_toRightOf="@id/ss_server_address" />
+
+    <TextView
+        android:id="@+id/ss_encrpyted_method"
+        style="@style/textViewMiddle"
+        android:layout_alignLeft="@id/ss_server_address"
+        android:layout_below="@id/ss_server_address"
+        android:layout_marginTop="3dp" />
+
+    <ImageView
+        android:id="@+id/edit_setting_imgview"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:src="@mipmap/edit" />
+</RelativeLayout>

@@ -10,11 +10,6 @@ import com.vecent.ssspeedtest.R;
 import com.vecent.ssspeedtest.dao.DaoManager;
 import com.vecent.ssspeedtest.dao.SSServer;
 import com.vecent.ssspeedtest.greendao.DaoSession;
-import com.vecent.ssspeedtest.model.GuradProcess;
-import com.vecent.ssspeedtest.util.LogUtil;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by zhiwei on 2017/11/6.
@@ -28,7 +23,6 @@ public class InputSSServerSettingActivity extends Activity {
     private EditText ssServerPasswordEditText;
     private EditText ssEncryptMethodEditText;
     private Button ensureSettingBtn;
-    private GuradProcess guradProcess;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

@@ -1,21 +1,25 @@
 package com.vecent.ssspeedtest;
 
-import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
-import android.widget.Button;
+import android.widget.ListView;
 
-import com.vecent.ssspeedtest.controller.InputSSServerSettingActivity;
-import com.vecent.ssspeedtest.controller.TestSSLocalActivity;
+import com.vecent.ssspeedtest.adpater.SSServerAdapter;
+import com.vecent.ssspeedtest.dao.DaoManager;
+import com.vecent.ssspeedtest.dao.SSServer;
 import com.vecent.ssspeedtest.greendao.DaoSession;
+
+import java.util.List;
+
 
 public class MainActivity extends AppCompatActivity {
 
-    private Button testSpeedBtn;
-    private Button predictBtn;
-    private DaoSession daoSession;
+
+    private ListView serverList;
+    private Handler mHandler;
+    private SSServerAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,20 +29,33 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initView() {
-        this.testSpeedBtn = (Button) this.findViewById(R.id.main_test_speed_btn);
-        this.predictBtn = (Button) this.findViewById(R.id.predict_btn);
-        this.testSpeedBtn.setOnClickListener(new View.OnClickListener() {
+        this.serverList = (ListView) this.findViewById(R.id.common_list_view);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (mHandler == null) mHandler = new Handler(Looper.getMainLooper());
+        lodaData();
+    }
+
+    private void lodaData() {
+        new Thread(new Runnable() {
             @Override
-            public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), InputSSServerSettingActivity.class));
+            public void run() {
+                DaoSession daoSession = DaoManager.getInstance(getApplicationContext()).getDaoSession();
+                final List<SSServer> ssServerList = daoSession.getSSServerDao().loadAll();
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        adapter = new SSServerAdapter(getApplicationContext(),
+                                R.layout.ss_server_item_layout, ssServerList);
+                        serverList.setAdapter(adapter);
+
+                    }
+                });
             }
-        });
-        this.predictBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), TestSSLocalActivity.class));
-            }
-        });
+        }).start();
     }
 
     @Override
