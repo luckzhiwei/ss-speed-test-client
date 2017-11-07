@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
                 mHandler.post(new Runnable() {
                     @Override
                     public void run() {
-                        adapter = new SSServerAdapter(getApplicationContext(),
+                        adapter = new SSServerAdapter(MainActivity.this,
                                 R.layout.ss_server_item_layout, ssServerList);
                         serverList.setAdapter(adapter);
 
