@@ -7,7 +7,11 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.vecent.ssspeedtest.R;
+import com.vecent.ssspeedtest.dao.DaoManager;
+import com.vecent.ssspeedtest.dao.SSServer;
+import com.vecent.ssspeedtest.greendao.DaoSession;
 import com.vecent.ssspeedtest.model.GuradProcess;
+import com.vecent.ssspeedtest.util.LogUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +47,13 @@ public class InputSSServerSettingActivity extends Activity {
         this.ensureSettingBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                SSServer ssServer = new SSServer();
+                ssServer.setServerAddr(ssServerAddrEditText.getText().toString());
+                ssServer.setServerSort(Integer.parseInt(ssServerRemotePortEditText.getText().toString()));
+                ssServer.setPassword(ssServerPasswordEditText.getText().toString());
+                ssServer.setMethod(ssEncryptMethodEditText.getText().toString());
+                DaoSession daoSession = DaoManager.getInstance(getApplicationContext()).getDaoSession();
+                daoSession.getSSServerDao().insert(ssServer);
             }
         });
 
