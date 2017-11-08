@@ -43,5 +43,5 @@
     <string name="ss_password">密码</string>
     <string name="ss_encrypt_method">加密方式</string>
     <string name="store_setting">确定设置</string>
-    <string name="default_port">0</string>
+    <string name="input_ss_server_setting_invaild">输入设置有空值或者端口不合法</string>
 </resources>

@@ -1,12 +1,16 @@
 package com.vecent.ssspeedtest;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.vecent.ssspeedtest.adpater.SSServerAdapter;
+import com.vecent.ssspeedtest.controller.InputSSServerSettingActivity;
 import com.vecent.ssspeedtest.dao.DaoManager;
 import com.vecent.ssspeedtest.dao.SSServer;
 import com.vecent.ssspeedtest.greendao.DaoSession;
@@ -19,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ListView serverList;
     private Handler mHandler;
+    private ImageView addServerImg;
     private SSServerAdapter adapter;
 
     @Override
@@ -30,6 +35,13 @@ public class MainActivity extends AppCompatActivity {
 
     private void initView() {
         this.serverList = (ListView) this.findViewById(R.id.common_list_view);
+        this.addServerImg = (ImageView) this.findViewById(R.id.add_ss_server_img);
+        this.addServerImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(), InputSSServerSettingActivity.class));
+            }
+        });
     }
 
     @Override

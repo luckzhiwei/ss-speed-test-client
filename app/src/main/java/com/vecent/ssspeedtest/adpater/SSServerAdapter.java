@@ -2,6 +2,7 @@ package com.vecent.ssspeedtest.adpater;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -44,10 +45,13 @@ public class SSServerAdapter extends CommonAdapter<SSServer> {
 
     private void goToEdit(SSServer server) {
         Intent intent = new Intent();
-        intent.putExtra("serverAddrName", server.getServerAddr());
-        intent.putExtra("serverPort", server.getServerSort());
-        intent.putExtra("serverMethod", server.getMethod());
-        intent.putExtra("serverPassword", server.getPassword());
+        Bundle bundle = new Bundle();
+        bundle.putString("serverAddrName", server.getServerAddr());
+        bundle.putInt("serverPort", server.getServerSort());
+        bundle.putString("serverMethod", server.getMethod());
+        bundle.putString("serverPassword", server.getPassword());
+        bundle.putLong("ssserverId", server.getId());
+        intent.putExtras(bundle);
         intent.setClass(mContext, InputSSServerSettingActivity.class);
         mContext.startActivity(intent);
     }

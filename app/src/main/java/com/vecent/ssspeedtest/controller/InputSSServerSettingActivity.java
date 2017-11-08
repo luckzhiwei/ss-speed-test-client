@@ -1,17 +1,19 @@
 package com.vecent.ssspeedtest.controller;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.vecent.ssspeedtest.R;
 import com.vecent.ssspeedtest.dao.DaoManager;
 import com.vecent.ssspeedtest.dao.SSServer;
 import com.vecent.ssspeedtest.greendao.DaoSession;
 import com.vecent.ssspeedtest.util.LogUtil;
+
+import java.util.regex.Pattern;
 
 /**
  * Created by zhiwei on 2017/11/6.
@@ -24,6 +26,7 @@ public class InputSSServerSettingActivity extends Activity {
     private EditText ssServerPasswordEditText;
     private EditText ssEncryptMethodEditText;
     private Button ensureSettingBtn;
+    private long serverId = -1;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -42,24 +45,56 @@ public class InputSSServerSettingActivity extends Activity {
         this.ensureSettingBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SSServer ssServer = new SSServer();
-                ssServer.setServerAddr(ssServerAddrEditText.getText().toString());
-                ssServer.setServerSort(Integer.parseInt(ssServerRemotePortEditText.getText().toString()));
-                ssServer.setPassword(ssServerPasswordEditText.getText().toString());
-                ssServer.setMethod(ssEncryptMethodEditText.getText().toString());
-                DaoSession daoSession = DaoManager.getInstance(getApplicationContext()).getDaoSession();
-                daoSession.getSSServerDao().insert(ssServer);
+                if (vaildation()) {
+                    SSServer ssServer = new SSServer();
+                    ssServer.setServerAddr(ssServerAddrEditText.getText().toString());
+                    ssServer.setServerSort(Integer.parseInt(ssServerRemotePortEditText.getText().toString()));
+                    ssServer.setPassword(ssServerPasswordEditText.getText().toString());
+                    ssServer.setMethod(ssEncryptMethodEditText.getText().toString());
+                    DaoSession daoSession = DaoManager.getInstance(getApplicationContext()).getDaoSession();
+                    if (serverId == -1) {
+                        daoSession.getSSServerDao().insert(ssServer);
+                    } else {
+                        ssServer.setId(serverId);
+                        daoSession.getSSServerDao().update(ssServer);
+                    }
+                    finish();
+                } else {
+                    Toast.makeText(getApplicationContext(), R.string.input_ss_server_setting_invaild, Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
 
+    private boolean vaildation() {
+        if (ssEncryptMethodEditText.getText().toString() == null) {
+            return false;
+        }
+        if (ssServerPasswordEditText.getText().toString() == null) {
+            return false;
+        }
+        if (ssEncryptMethodEditText.getText().toString() == null) {
+            return false;
+        }
+        String port = ssServerRemotePortEditText.getText().toString();
+        if (port == null) {
+            return false;
+        }
+        String regex = "^([1-9]|[1-9]\\d{3}|[1-6][0-5][0-5][0-3][0-5])$";
+        if (!Pattern.matches(regex, port)) {
+            return false;
+        }
+        return true;
+    }
+
     private void initData() {
-        Intent intent = getIntent();
-        if (intent != null) {
-            this.ssServerAddrEditText.setText(intent.getStringExtra("serverAddrName"));
-            this.ssServerRemotePortEditText.setText(intent.getIntExtra("serverPort", 0) + "");
-            this.ssEncryptMethodEditText.setText(intent.getStringExtra("serverMethod"));
-            this.ssServerPasswordEditText.setText(intent.getStringExtra("serverPassword"));
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            this.ssServerAddrEditText.setText(bundle.getString("serverAddrName"));
+            this.ssServerRemotePortEditText.setText(bundle.getInt("serverPort", 0) + "");
+            this.ssEncryptMethodEditText.setText(bundle.getString("serverMethod"));
+            this.ssServerPasswordEditText.setText(bundle.getString("serverPassword"));
+            this.serverId = bundle.getLong("ssserverId");
         }
     }
 
