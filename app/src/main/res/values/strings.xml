@@ -43,4 +43,5 @@
     <string name="ss_password">密码</string>
     <string name="ss_encrypt_method">加密方式</string>
     <string name="store_setting">确定设置</string>
+    <string name="default_port">0</string>
 </resources>

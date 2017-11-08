@@ -23,8 +23,7 @@
             android:id="@+id/ss_server_address_edit_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/ss_server_address"
-            android:text="hk-01.flashss.win" />
+            android:layout_below="@id/ss_server_address" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -41,27 +40,9 @@
             android:id="@+id/ss_remote_port_edit_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/ss_remote_port"
-            android:text="49414" />
+            android:layout_below="@id/ss_remote_port" />
     </RelativeLayout>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="8dp">
-
-        <TextView
-            android:id="@+id/ss_server_local_port"
-            style="@style/textViewMiddle"
-            android:text="@string/ss_local_port" />
-
-        <EditText
-            android:id="@+id/ss_local_port_edit_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/ss_server_local_port"
-            android:text="1080" />
-    </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -75,10 +56,10 @@
 
         <EditText
             android:id="@+id/ss_server_password_edit_text"
+            android:inputType="textPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/ss_server_password"
-            android:text="Ln120190201" />
+            android:layout_below="@id/ss_server_password" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -95,8 +76,7 @@
             android:id="@+id/ss_server_encrypt_method_edit_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/ss_server_encrypt_method"
-            android:text="aes-256-cfb" />
+            android:layout_below="@id/ss_server_encrypt_method" />
     </RelativeLayout>
 
     <Button
@@ -108,12 +88,4 @@
         android:text="@string/store_setting"
         android:textColor="@color/colorWhite" />
 
-    <Button
-        android:id="@+id/stop_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:background="@color/colorPrimaryDark"
-        android:text="停止"
-        android:textColor="@color/colorWhite" />
 </LinearLayout>

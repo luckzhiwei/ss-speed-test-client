@@ -1,6 +1,7 @@
 package com.vecent.ssspeedtest.controller;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -10,6 +11,7 @@ import com.vecent.ssspeedtest.R;
 import com.vecent.ssspeedtest.dao.DaoManager;
 import com.vecent.ssspeedtest.dao.SSServer;
 import com.vecent.ssspeedtest.greendao.DaoSession;
+import com.vecent.ssspeedtest.util.LogUtil;
 
 /**
  * Created by zhiwei on 2017/11/6.
@@ -19,7 +21,6 @@ public class InputSSServerSettingActivity extends Activity {
 
     private EditText ssServerAddrEditText;
     private EditText ssServerRemotePortEditText;
-    private EditText ssServerLocalPortEditText;
     private EditText ssServerPasswordEditText;
     private EditText ssEncryptMethodEditText;
     private Button ensureSettingBtn;
@@ -29,12 +30,12 @@ public class InputSSServerSettingActivity extends Activity {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.input_ss_server_seting_layout);
         initView();
+        initData();
     }
 
     private void initView() {
         this.ssServerAddrEditText = this.findViewById(R.id.ss_server_address_edit_text);
         this.ssServerRemotePortEditText = this.findViewById(R.id.ss_remote_port_edit_text);
-        this.ssServerLocalPortEditText = this.findViewById(R.id.ss_local_port_edit_text);
         this.ssServerPasswordEditText = this.findViewById(R.id.ss_server_password_edit_text);
         this.ssEncryptMethodEditText = this.findViewById(R.id.ss_server_encrypt_method_edit_text);
         this.ensureSettingBtn = this.findViewById(R.id.store_setting_btn);
@@ -50,7 +51,16 @@ public class InputSSServerSettingActivity extends Activity {
                 daoSession.getSSServerDao().insert(ssServer);
             }
         });
+    }
 
+    private void initData() {
+        Intent intent = getIntent();
+        if (intent != null) {
+            this.ssServerAddrEditText.setText(intent.getStringExtra("serverAddrName"));
+            this.ssServerRemotePortEditText.setText(intent.getIntExtra("serverPort", 0) + "");
+            this.ssEncryptMethodEditText.setText(intent.getStringExtra("serverMethod"));
+            this.ssServerPasswordEditText.setText(intent.getStringExtra("serverPassword"));
+        }
     }
 
 

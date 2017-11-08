@@ -20,11 +20,9 @@ import java.util.List;
 
 public class SSServerAdapter extends CommonAdapter<SSServer> {
 
-    private Context context;
 
     public SSServerAdapter(Context context, final int layoutId, List<SSServer> data) {
         super(context, layoutId, data);
-        this.context = context;
     }
 
     @Override
@@ -49,6 +47,7 @@ public class SSServerAdapter extends CommonAdapter<SSServer> {
         intent.putExtra("serverAddrName", server.getServerAddr());
         intent.putExtra("serverPort", server.getServerSort());
         intent.putExtra("serverMethod", server.getMethod());
+        intent.putExtra("serverPassword", server.getPassword());
         intent.setClass(mContext, InputSSServerSettingActivity.class);
         mContext.startActivity(intent);
     }
