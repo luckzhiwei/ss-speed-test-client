@@ -39,7 +39,7 @@ public class SSServerAdapter extends CommonAdapter<SSServer> {
             }
         });
         serverMethodTextView.setText(server.getMethod());
-        serverPortTextView.setText(server.getServerSort() + "");
+        serverPortTextView.setText(server.getServerPort() + "");
         serverNameTextView.setText(server.getServerAddr() + ":");
     }
 
@@ -47,7 +47,7 @@ public class SSServerAdapter extends CommonAdapter<SSServer> {
         Intent intent = new Intent();
         Bundle bundle = new Bundle();
         bundle.putString("serverAddrName", server.getServerAddr());
-        bundle.putInt("serverPort", server.getServerSort());
+        bundle.putInt("serverPort", server.getServerPort());
         bundle.putString("serverMethod", server.getMethod());
         bundle.putString("serverPassword", server.getPassword());
         bundle.putLong("ssserverId", server.getId());

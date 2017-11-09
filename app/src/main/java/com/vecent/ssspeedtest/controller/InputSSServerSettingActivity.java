@@ -11,7 +11,6 @@ import com.vecent.ssspeedtest.R;
 import com.vecent.ssspeedtest.dao.DaoManager;
 import com.vecent.ssspeedtest.dao.SSServer;
 import com.vecent.ssspeedtest.greendao.DaoSession;
-import com.vecent.ssspeedtest.util.LogUtil;
 
 import java.util.regex.Pattern;
 
@@ -48,7 +47,7 @@ public class InputSSServerSettingActivity extends Activity {
                 if (vaildation()) {
                     SSServer ssServer = new SSServer();
                     ssServer.setServerAddr(ssServerAddrEditText.getText().toString());
-                    ssServer.setServerSort(Integer.parseInt(ssServerRemotePortEditText.getText().toString()));
+                    ssServer.setServerPort(Integer.parseInt(ssServerRemotePortEditText.getText().toString()));
                     ssServer.setPassword(ssServerPasswordEditText.getText().toString());
                     ssServer.setMethod(ssEncryptMethodEditText.getText().toString());
                     DaoSession daoSession = DaoManager.getInstance(getApplicationContext()).getDaoSession();

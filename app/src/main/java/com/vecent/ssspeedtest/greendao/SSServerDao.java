@@ -26,7 +26,7 @@ public class SSServerDao extends AbstractDao<SSServer, Long> {
     public static class Properties {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
         public final static Property ServerAddr = new Property(1, String.class, "serverAddr", false, "serverAddr");
-        public final static Property ServerSort = new Property(2, int.class, "serverSort", false, "serverPort");
+        public final static Property ServerPort = new Property(2, int.class, "serverPort", false, "serverPort");
         public final static Property Password = new Property(3, String.class, "password", false, "password");
         public final static Property Method = new Property(4, String.class, "method", false, "method");
     }
@@ -46,7 +46,7 @@ public class SSServerDao extends AbstractDao<SSServer, Long> {
         db.execSQL("CREATE TABLE " + constraint + "\"SSSERVER\" (" + //
                 "\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT ," + // 0: id
                 "\"serverAddr\" TEXT NOT NULL ," + // 1: serverAddr
-                "\"serverPort\" INTEGER NOT NULL ," + // 2: serverSort
+                "\"serverPort\" INTEGER NOT NULL ," + // 2: serverPort
                 "\"password\" TEXT NOT NULL ," + // 3: password
                 "\"method\" TEXT NOT NULL );"); // 4: method
     }
@@ -66,7 +66,7 @@ public class SSServerDao extends AbstractDao<SSServer, Long> {
             stmt.bindLong(1, id);
         }
         stmt.bindString(2, entity.getServerAddr());
-        stmt.bindLong(3, entity.getServerSort());
+        stmt.bindLong(3, entity.getServerPort());
         stmt.bindString(4, entity.getPassword());
         stmt.bindString(5, entity.getMethod());
     }
@@ -80,7 +80,7 @@ public class SSServerDao extends AbstractDao<SSServer, Long> {
             stmt.bindLong(1, id);
         }
         stmt.bindString(2, entity.getServerAddr());
-        stmt.bindLong(3, entity.getServerSort());
+        stmt.bindLong(3, entity.getServerPort());
         stmt.bindString(4, entity.getPassword());
         stmt.bindString(5, entity.getMethod());
     }
@@ -95,7 +95,7 @@ public class SSServerDao extends AbstractDao<SSServer, Long> {
         SSServer entity = new SSServer( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
             cursor.getString(offset + 1), // serverAddr
-            cursor.getInt(offset + 2), // serverSort
+            cursor.getInt(offset + 2), // serverPort
             cursor.getString(offset + 3), // password
             cursor.getString(offset + 4) // method
         );
@@ -106,7 +106,7 @@ public class SSServerDao extends AbstractDao<SSServer, Long> {
     public void readEntity(Cursor cursor, SSServer entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
         entity.setServerAddr(cursor.getString(offset + 1));
-        entity.setServerSort(cursor.getInt(offset + 2));
+        entity.setServerPort(cursor.getInt(offset + 2));
         entity.setPassword(cursor.getString(offset + 3));
         entity.setMethod(cursor.getString(offset + 4));
      }

@@ -1,5 +1,8 @@
 package com.vecent.ssspeedtest.dao;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.NotNull;
@@ -11,7 +14,7 @@ import org.greenrobot.greendao.annotation.Generated;
  */
 
 @Entity
-public class SSServer {
+public class SSServer implements Parcelable {
 
     @Id(autoincrement = true)
     private Long id;
@@ -22,7 +25,7 @@ public class SSServer {
 
     @Property(nameInDb = "serverPort")
     @NotNull
-    private int serverSort;
+    private int serverPort;
 
     @Property(nameInDb = "password")
     @NotNull
@@ -31,20 +34,6 @@ public class SSServer {
     @Property(nameInDb = "method")
     @NotNull
     private String method;
-
-    @Generated(hash = 1731999373)
-    public SSServer(Long id, @NotNull String serverAddr, int serverSort,
-            @NotNull String password, @NotNull String method) {
-        this.id = id;
-        this.serverAddr = serverAddr;
-        this.serverSort = serverSort;
-        this.password = password;
-        this.method = method;
-    }
-
-    @Generated(hash = 1471507233)
-    public SSServer() {
-    }
 
     public Long getId() {
         return this.id;
@@ -62,12 +51,12 @@ public class SSServer {
         this.serverAddr = serverAddr;
     }
 
-    public int getServerSort() {
-        return this.serverSort;
+    public int getServerPort() {
+        return this.serverPort;
     }
 
-    public void setServerSort(int serverSort) {
-        this.serverSort = serverSort;
+    public void setServerPort(int serverPort) {
+        this.serverPort = serverPort;
     }
 
     public String getPassword() {
@@ -89,4 +78,48 @@ public class SSServer {
     public void setId(Long id) {
         this.id = id;
     }
+
+    public static final Parcelable.Creator<SSServer> CREATOR = new Parcelable.Creator<SSServer>() {
+        public SSServer createFromParcel(Parcel in) {
+            return new SSServer(in);
+        }
+
+        public SSServer[] newArray(int size) {
+            return new SSServer[size];
+        }
+    };
+
+    @Generated(hash = 653072287)
+    public SSServer(Long id, @NotNull String serverAddr, int serverPort, @NotNull String password,
+                    @NotNull String method) {
+        this.id = id;
+        this.serverAddr = serverAddr;
+        this.serverPort = serverPort;
+        this.password = password;
+        this.method = method;
+    }
+
+    @Generated(hash = 1471507233)
+    public SSServer() {
+    }
+
+    public int describeContents() {
+        //几乎所有情况都返回0，仅在当前对象中存在文件描述符时返回1
+        return 0;
+    }
+
+    public void writeToParcel(Parcel out, int flags) {
+        out.writeString(serverAddr);
+        out.writeInt(serverPort);
+        out.writeString(password);
+        out.writeString(method);
+    }
+
+    protected SSServer(Parcel in) {
+        this.serverAddr = in.readString();
+        this.serverPort = in.readInt();
+        this.password = in.readString();
+        this.method = in.readString();
+    }
+
 }

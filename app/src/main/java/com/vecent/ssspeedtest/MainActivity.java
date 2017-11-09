@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.vecent.ssspeedtest.adpater.SSServerAdapter;
 import com.vecent.ssspeedtest.controller.InputSSServerSettingActivity;
+import com.vecent.ssspeedtest.controller.SpeedTestActivity;
 import com.vecent.ssspeedtest.dao.DaoManager;
 import com.vecent.ssspeedtest.dao.SSServer;
 import com.vecent.ssspeedtest.greendao.DaoSession;
@@ -55,6 +56,15 @@ public class MainActivity extends AppCompatActivity {
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
                 deleteServer(ssServerList.get(i));
                 return true;
+            }
+        });
+        this.contentListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent = new Intent();
+                intent.putExtra("ssServer", ssServerList.get(i));
+                intent.setClass(getApplicationContext(), SpeedTestActivity.class);
+                startActivity(intent);
             }
         });
     }
