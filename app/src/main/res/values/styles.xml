@@ -55,5 +55,9 @@
         <item name="android:textColor">@color/colorGreen</item>
     </style>
 
+    <style name="textViewLarge.Primary">
+        <item name="android:textColor">@color/colorPrimary</item>
+    </style>
+
 
 </resources>
