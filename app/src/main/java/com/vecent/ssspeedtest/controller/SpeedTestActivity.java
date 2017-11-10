@@ -3,8 +3,11 @@ package com.vecent.ssspeedtest.controller;
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 
 import com.vecent.ssspeedtest.R;
 import com.vecent.ssspeedtest.adpater.SpeedTestAdapter;
@@ -29,6 +32,7 @@ public class SpeedTestActivity extends Activity {
     private TotalSpeedTestResult mResult;
     private int totalSize;
     private Handler mHandler;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,7 +99,6 @@ public class SpeedTestActivity extends Activity {
         mResult.setTotalTimeUsed(timeUsed);
         mResultLayout.update(mResult);
     }
-
 
     @Override
     protected void onDestroy() {

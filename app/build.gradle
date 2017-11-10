@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'org.greenrobot.greendao'
 import org.gradle.internal.os.OperatingSystem;
 
 android {
@@ -42,7 +43,11 @@ android {
     tasks.withType(JavaCompile) {
         compileTask -> compileTask.dependsOn ndkBuild
     }
-    sourceSets { main { assets.srcDirs = ['src/main/assets', 'src/androidTest/assets/'] } }
+    sourceSets {
+        main {
+            assets.srcDirs = ['src/main/assets', 'src/androidTest/assets/', 'src/main/java-gen']
+        }
+    }
 }
 
 
@@ -58,4 +63,15 @@ dependencies {
     androidTestCompile 'org.mockito:mockito-android:2.9.0'
     compile 'com.zhy:base-adapter:3.0.3'
     compile 'com.alibaba:fastjson:1.1.63.android'
+    compile 'org.greenrobot:greendao:3.2.2'
+}
+
+greendao {
+
+    schemaVersion 1
+
+    daoPackage 'com.vecent.ssspeedtest.greendao'
+
+    targetGenDir 'src/main/java'//设置DaoMaster、DaoSession、Dao目录
+
 }

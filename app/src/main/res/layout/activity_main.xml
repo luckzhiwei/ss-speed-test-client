@@ -1,23 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/contianer"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/main_test_speed_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <include layout="@layout/listview_common" />
+
+    <ImageView
+        android:id="@+id/plead_add_img"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
         android:layout_centerInParent="true"
-        android:background="@color/colorPrimaryDark"
-        android:text="@string/test_speed"
-        android:textColor="@color/colorWhite" />
+        android:src="@mipmap/pleaase_add"
+        android:visibility="gone" />
 
-    <Button
-        android:id="@+id/predict_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/main_test_speed_btn"
-        android:layout_centerHorizontal="true"
-        android:text="预研" />
+    <TextView
+        android:id="@+id/plead_add_textview"
+        style="@style/textViewLarge.Primary"
+        android:layout_below="@id/plead_add_img"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="8dp"
+        android:text="@string/please_add"
+        android:visibility="gone" />
 
+    <ImageView
+        android:id="@+id/add_ss_server_img"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="32dp"
+        android:layout_marginRight="32dp"
+        android:src="@mipmap/add" />
 </RelativeLayout>

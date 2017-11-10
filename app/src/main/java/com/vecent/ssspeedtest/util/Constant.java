@@ -14,6 +14,8 @@ public class Constant {
     public static int READ_TIME_OUT = 3000;
     public static String SOCKS_SERVER_ADDR = "127.0.0.1";
     public static int SOCKS_SERVER_PORT = 1080;
+    public static int MIN_THREAD_POOL_SIZE = 100;
+    public static int MAX_THREAD_POOL_SIZE = 100;
 
 
 }

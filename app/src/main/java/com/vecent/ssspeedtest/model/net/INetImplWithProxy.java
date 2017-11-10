@@ -15,11 +15,12 @@ import java.net.URL;
  * Created by zhiwei on 2017/11/2.
  */
 
-public class INetImplWithProxy {
+public class INetImplWithProxy extends INetImplDefault {
 
+    @Override
     protected HttpURLConnection getConnection(String server) throws
             MalformedURLException, ProtocolException, IOException {
-        SocketAddress addr = InetSocketAddress.createUnresolved("127.0.0.1", 1080);
+        SocketAddress addr = InetSocketAddress.createUnresolved(Constant.SOCKS_SERVER_ADDR, Constant.SOCKS_SERVER_PORT);
         Proxy proxy = new Proxy(Proxy.Type.SOCKS, addr);
         URL url = new URL(server);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection(proxy);

@@ -27,8 +27,6 @@ cache:
 ### todo docker image 缓存设置
 before_install:
   - cd ./script && docker build -t gfwlist_img . && cd ..
-  - ls -al ./obj/local/
-  - ls -al ./android-ndk-r15b/
   - ./script/downloadndk.sh
   - export ANDROID_NDK_HOME=$PWD/android-ndk-r15b/
   - export PATH=$ANDROID_NDK_HOME:$PATH
