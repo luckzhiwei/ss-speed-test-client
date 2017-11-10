@@ -9,12 +9,16 @@ import android.widget.ProgressBar;
 import com.vecent.ssspeedtest.R;
 import com.vecent.ssspeedtest.adpater.SpeedTestAdapter;
 import com.vecent.ssspeedtest.dao.SSServer;
+import com.vecent.ssspeedtest.model.ProxyGuradProcess;
 import com.vecent.ssspeedtest.model.net.INetImplDefault;
 import com.vecent.ssspeedtest.model.Servers;
 import com.vecent.ssspeedtest.model.SpeedTest;
 import com.vecent.ssspeedtest.model.bean.SpeedTestResult;
 import com.vecent.ssspeedtest.model.bean.TotalSpeedTestResult;
 import com.vecent.ssspeedtest.view.ResultLayout;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by zhiwei on 2017/9/9.
@@ -98,7 +102,9 @@ public class SpeedTestActivity extends Activity {
     }
 
     private void startTestWithProxy() {
-         this.mResultLayout.setProxyServerInfo(mProxyServer);
+        this.mResultLayout.setProxyServerInfo(mProxyServer);
+        ProxyGuradProcess guradProcess = new ProxyGuradProcess(mProxyServer, this);
+        guradProcess.startProcess();
     }
 
 
