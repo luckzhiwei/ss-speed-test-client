@@ -42,6 +42,14 @@
             android:layout_marginRight="8dp"
             android:layout_toLeftOf="@id/img_view_close"
             android:src="@mipmap/refresh" />
+
+        <TextView
+            android:id="@+id/test_server_setting"
+            style="@style/textViewMiddle.Gray"
+            android:text="@string/no_proxy"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="16dp"
+            android:layout_toLeftOf="@id/img_view_refresh" />
     </RelativeLayout>
 
     <LinearLayout

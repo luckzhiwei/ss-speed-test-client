@@ -13,6 +13,7 @@ public class GuradProcess {
 
     private Thread ssLocalThread;
 
+
     public void startProcess(final List<String> cmd) {
         if (this.ssLocalThread == null) {
             this.ssLocalThread = new Thread(new Runnable() {
