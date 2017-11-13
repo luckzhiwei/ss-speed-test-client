@@ -130,19 +130,10 @@ public class SpeedTestActivity extends Activity {
 
     @Override
     public void onBackPressed() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                mSpeedTest.cancel(new ThreadPool.OnThreadPoolCloseListener() {
-                    @Override
-                    public void OnShutDwon() {
-                        if (mProxyServer != null) {
-                            mGuradProcess.destory();
-                        }
-                    }
-                });
-            }
-        }).start();
+        mSpeedTest.cancel();
+        if (mProxyServer != null) {
+            mGuradProcess.destory();
+        }
         finish();
     }
 

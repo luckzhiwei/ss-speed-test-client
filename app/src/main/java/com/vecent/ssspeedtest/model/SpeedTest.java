@@ -81,8 +81,7 @@ public class SpeedTest {
         this.mRequestCallBack = callback;
     }
 
-    public void cancel(ThreadPool.OnThreadPoolCloseListener listener) {
-        this.mThreadPool.setOnThreadPoolCloseListener(listener);
+    public void cancel() {
         this.mThreadPool.stopNow();
     }
 

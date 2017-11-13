@@ -42,16 +42,6 @@ public class ThreadPool {
 
     public void stopNow() {
         this.mExecutor.shutdownNow();
-        try {
-            while (!mExecutor.awaitTermination(1, TimeUnit.SECONDS)) {
-                LogUtil.logDebug(getClass().getName(), "线程池没有关闭");
-            }
-            if (mOnThreadPoolListener != null) {
-                mOnThreadPoolListener.OnShutDwon();
-            }
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 
     public void stopAddTask() {
