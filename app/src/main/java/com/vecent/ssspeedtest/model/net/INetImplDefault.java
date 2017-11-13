@@ -4,6 +4,7 @@ import com.vecent.ssspeedtest.model.bean.Server;
 import com.vecent.ssspeedtest.model.bean.SpeedTestResult;
 import com.vecent.ssspeedtest.model.net.INet;
 import com.vecent.ssspeedtest.util.Constant;
+import com.vecent.ssspeedtest.util.LogUtil;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -29,6 +30,10 @@ public class INetImplDefault implements INet {
         try {
             long startTime = System.currentTimeMillis();
             conn = this.getConnection(server.getWeb());
+            if (conn == null) {
+                LogUtil.logDebug(getClass().getName(), "connection is null");
+                throw new IOException("conn init fail");
+            }
             int responseCode = conn.getResponseCode();
             int countNum = 0;
             while (this.isRedirect(responseCode)) {
@@ -52,6 +57,9 @@ public class INetImplDefault implements INet {
             result.setUrlWrong(true);
             setResultExceptionMsg(result, e.getMessage());
         } catch (IOException e) {
+            result.setTimedOut(true);
+            setResultExceptionMsg(result, e.getMessage());
+        } catch (NullPointerException e) {
             result.setTimedOut(true);
             setResultExceptionMsg(result, e.getMessage());
         } finally {

@@ -1,5 +1,7 @@
 package com.vecent.ssspeedtest.model;
 
+import android.os.Handler;
+
 import com.vecent.ssspeedtest.util.Constant;
 import com.vecent.ssspeedtest.util.LogUtil;
 
@@ -14,6 +16,11 @@ import java.util.concurrent.TimeUnit;
 public class ThreadPool {
 
     private ThreadPoolExecutor mExecutor;
+    private OnThreadPoolCloseListener mOnThreadPoolListener;
+
+    public interface OnThreadPoolCloseListener {
+        public void OnShutDwon();
+    }
 
 
     public ThreadPool() {
@@ -45,5 +52,12 @@ public class ThreadPool {
         mExecutor.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
     }
 
+    public boolean isShutDown() {
+        return mExecutor.isShutdown();
+    }
+
+    public void setOnThreadPoolCloseListener(OnThreadPoolCloseListener listener) {
+        this.mOnThreadPoolListener = listener;
+    }
 
 }

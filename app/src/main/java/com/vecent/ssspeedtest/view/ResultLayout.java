@@ -18,6 +18,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.vecent.ssspeedtest.R;
+import com.vecent.ssspeedtest.dao.SSServer;
 import com.vecent.ssspeedtest.model.bean.TotalSpeedTestResult;
 import com.vecent.ssspeedtest.util.LogUtil;
 
@@ -40,6 +41,7 @@ public class ResultLayout extends LinearLayout {
     private ImageView mImageClose;
     private ImageView mImageRefresh;
     private float lastYUserTouch;
+    private TextView mTextViewServerInfo;
     private int mTouchSlop;
     private int onlyShowTitleCoordinateY;
     private int showAllContentCoordinateY;
@@ -89,6 +91,7 @@ public class ResultLayout extends LinearLayout {
         this.mTextViewTotalSize = this.findViewById(R.id.textview_total_server_count);
         this.mImageClose = this.findViewById(R.id.img_view_close);
         this.mImageRefresh = this.findViewById(R.id.img_view_refresh);
+        this.mTextViewServerInfo = this.findViewById(R.id.test_server_setting);
         this.showAll = false;
         this.mImageClose.setOnClickListener(new OnClickListener() {
             @Override
@@ -130,6 +133,10 @@ public class ResultLayout extends LinearLayout {
         this.mTextViewTotalTimeUsed.setText(this.curTimeUsed + totalResult.getTotalTimeUsed() + this.timeUnit);
         this.mTextViewWhiteAddrSpeedAvg.setText(this.whiteSpeedAvg + totalResult.getSpeedWhiteAddrDownLoadAvg() + this.speedUnit);
         this.mTextViewBlackAddrSpeedAvg.setText(this.blackSpeedAvg + totalResult.getSpeedBlackAddrDownLoadAvg() + this.speedUnit);
+    }
+
+    public void setProxyServerInfo(SSServer server) {
+        this.mTextViewServerInfo.setText(server.getServerAddr() + ":" + server.getServerPort());
     }
 
     /**

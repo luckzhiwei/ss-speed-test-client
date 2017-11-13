@@ -25,11 +25,21 @@
 
     <ImageView
         android:id="@+id/add_ss_server_img"
-        android:layout_width="64dp"
-        android:layout_height="64dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_marginBottom="32dp"
         android:layout_marginRight="32dp"
         android:src="@mipmap/add" />
+
+    <ImageView
+        android:id="@+id/test_sapmle_img"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginBottom="32dp"
+        android:layout_marginLeft="32dp"
+        android:src="@mipmap/test_speed_sample" />
 </RelativeLayout>

@@ -11,6 +11,7 @@ import com.vecent.ssspeedtest.R;
 import com.vecent.ssspeedtest.dao.DaoManager;
 import com.vecent.ssspeedtest.dao.SSServer;
 import com.vecent.ssspeedtest.greendao.DaoSession;
+import com.vecent.ssspeedtest.util.LogUtil;
 
 import java.util.regex.Pattern;
 
@@ -79,8 +80,12 @@ public class InputSSServerSettingActivity extends Activity {
         if (port == null) {
             return false;
         }
-        String regex = "^([1-9]|[1-9]\\d{3}|[1-6][0-5][0-5][0-3][0-5])$";
+        String regex = "[0-9]+";
         if (!Pattern.matches(regex, port)) {
+            return false;
+        }
+        int num = Integer.parseInt(port);
+        if (num < 0 || num > 65535) {
             return false;
         }
         return true;
@@ -96,6 +101,7 @@ public class InputSSServerSettingActivity extends Activity {
             this.serverId = bundle.getLong("ssserverId");
         }
     }
+
 
 
 }

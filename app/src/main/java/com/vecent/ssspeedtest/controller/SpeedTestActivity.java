@@ -3,19 +3,20 @@ package com.vecent.ssspeedtest.controller;
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 
 import com.vecent.ssspeedtest.R;
 import com.vecent.ssspeedtest.adpater.SpeedTestAdapter;
+import com.vecent.ssspeedtest.dao.SSServer;
+import com.vecent.ssspeedtest.model.ProxyGuradProcess;
+import com.vecent.ssspeedtest.model.ThreadPool;
 import com.vecent.ssspeedtest.model.net.INetImplDefault;
 import com.vecent.ssspeedtest.model.Servers;
 import com.vecent.ssspeedtest.model.SpeedTest;
 import com.vecent.ssspeedtest.model.bean.SpeedTestResult;
 import com.vecent.ssspeedtest.model.bean.TotalSpeedTestResult;
+import com.vecent.ssspeedtest.model.net.INetImplWithProxy;
 import com.vecent.ssspeedtest.view.ResultLayout;
 
 /**
@@ -32,6 +33,8 @@ public class SpeedTestActivity extends Activity {
     private TotalSpeedTestResult mResult;
     private int totalSize;
     private Handler mHandler;
+    private SSServer mProxyServer;
+    private ProxyGuradProcess mGuradProcess;
 
 
     @Override
@@ -39,7 +42,7 @@ public class SpeedTestActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.speed_test_layout);
         this.initView();
-        this.initData();
+        this.initModel();
     }
 
     private void initView() {
@@ -55,7 +58,7 @@ public class SpeedTestActivity extends Activity {
         this.mProgressBar.setMax(100);
     }
 
-    private void initData() {
+    private void initModel() {
         mResult = new TotalSpeedTestResult();
         this.mAdapter = new SpeedTestAdapter(getApplicationContext(),
                 R.layout.speed_test_item_layout, mResult.getResultList());
@@ -65,6 +68,7 @@ public class SpeedTestActivity extends Activity {
         this.mSpeedTest = new SpeedTest(servers2Test.getServers(), this.mHandler);
         this.totalSize = servers2Test.getServers().size();
         mResult.setTotalServerSize(this.totalSize);
+        this.mProxyServer = getIntent().getParcelableExtra("ssServer");
         this.startSpeedTest();
     }
 
@@ -79,8 +83,19 @@ public class SpeedTestActivity extends Activity {
             @Override
             public void onAllRequestFinishListener(float timeUsed, int totalReqSize) {
                 setResultView(timeUsed);
+                if (mProxyServer != null) {
+                    mGuradProcess.destory();
+                }
             }
         });
+        if (mProxyServer != null) {
+            startTestWithProxy();
+        } else {
+            startTestWithoutProxy();
+        }
+    }
+
+    private void startTestWithoutProxy() {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -88,6 +103,19 @@ public class SpeedTestActivity extends Activity {
             }
         }).start();
     }
+
+    private void startTestWithProxy() {
+        this.mResultLayout.setProxyServerInfo(mProxyServer);
+        mGuradProcess = new ProxyGuradProcess(mProxyServer, this);
+        mGuradProcess.start();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                mSpeedTest.startTest(new INetImplWithProxy());
+            }
+        }).start();
+    }
+
 
     private void updateView() {
         mAdapter.notifyDataSetChanged();
@@ -101,9 +129,13 @@ public class SpeedTestActivity extends Activity {
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        this.mSpeedTest.cancel();
+    public void onBackPressed() {
+        mSpeedTest.cancel();
+        if (mProxyServer != null) {
+            mGuradProcess.destory();
+        }
+        finish();
     }
+
 
 }

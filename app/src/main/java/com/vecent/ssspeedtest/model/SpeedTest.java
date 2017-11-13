@@ -28,7 +28,7 @@ public class SpeedTest {
         void onOneRequestFinishListener(SpeedTestResult result);
     }
 
-    public SpeedTest(List<Server> serversForTest, Handler handler) {
+    public SpeedTest(List<Server> serversForTest, final Handler handler) {
         this.mServers2Test = serversForTest;
         mThreadPool = new ThreadPool();
         this.mHandler = handler;

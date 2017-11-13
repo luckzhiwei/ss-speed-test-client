@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
     private List<SSServer> ssServerList;
     private TextView pleaseAddTextView;
     private ImageView pleaseAddImageView;
-
+    private ImageView testSampleImageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
         this.addServerImg = (ImageView) this.findViewById(R.id.add_ss_server_img);
         this.pleaseAddTextView = (TextView) this.findViewById(R.id.plead_add_textview);
         this.pleaseAddImageView = (ImageView) this.findViewById(R.id.plead_add_img);
+        this.testSampleImageView = (ImageView) this.findViewById(R.id.test_sapmle_img);
         this.addServerImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -67,6 +68,14 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        this.testSampleImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent();
+                intent.setClass(getApplicationContext(), SpeedTestActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -82,7 +91,6 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 DaoSession daoSession = DaoManager.getInstance(getApplicationContext()).getDaoSession();
                 ssServerList = daoSession.getSSServerDao().loadAll();
-
                 mHandler.post(new Runnable() {
                     @Override
                     public void run() {
