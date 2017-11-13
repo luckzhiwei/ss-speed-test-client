@@ -18,6 +18,7 @@ public class ProxyGuradProcess {
 
     private Thread ssLocalThread;
     private List<String> cmds;
+    private Process process;
 
     public ProxyGuradProcess(SSServer ssServer, Context context) {
         this.cmds = new ArrayList<>();
@@ -37,16 +38,16 @@ public class ProxyGuradProcess {
         cmds.add(ssServer.getPassword());
     }
 
-    public void startProcess() {
+    public void start() {
         if (this.ssLocalThread == null) {
             this.ssLocalThread = new Thread(new Runnable() {
                 @Override
                 public void run() {
                     try {
                         ProcessBuilder processBuilder = new ProcessBuilder().command(cmds);
-                        Process p = processBuilder.start();
+                        process = processBuilder.start();
                         LogUtil.logDebug(getClass().getName(), "startsslocal");
-                        LogUtil.logDebug(getClass().getName(), "RET IS " + p.waitFor() + "");
+                        LogUtil.logDebug(getClass().getName(), "RET IS " + process.waitFor() + "");
                     } catch (IOException e) {
 
                     } catch (InterruptedException e) {
@@ -59,8 +60,9 @@ public class ProxyGuradProcess {
         this.ssLocalThread.start();
     }
 
-    public void destoryProcess() {
+    public void destory() {
         this.ssLocalThread.interrupt();
+        process.destroy();
     }
 
 

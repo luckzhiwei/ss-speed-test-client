@@ -10,15 +10,14 @@ import com.vecent.ssspeedtest.R;
 import com.vecent.ssspeedtest.adpater.SpeedTestAdapter;
 import com.vecent.ssspeedtest.dao.SSServer;
 import com.vecent.ssspeedtest.model.ProxyGuradProcess;
+import com.vecent.ssspeedtest.model.ThreadPool;
 import com.vecent.ssspeedtest.model.net.INetImplDefault;
 import com.vecent.ssspeedtest.model.Servers;
 import com.vecent.ssspeedtest.model.SpeedTest;
 import com.vecent.ssspeedtest.model.bean.SpeedTestResult;
 import com.vecent.ssspeedtest.model.bean.TotalSpeedTestResult;
+import com.vecent.ssspeedtest.model.net.INetImplWithProxy;
 import com.vecent.ssspeedtest.view.ResultLayout;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by zhiwei on 2017/9/9.
@@ -35,6 +34,7 @@ public class SpeedTestActivity extends Activity {
     private int totalSize;
     private Handler mHandler;
     private SSServer mProxyServer;
+    private ProxyGuradProcess mGuradProcess;
 
 
     @Override
@@ -83,6 +83,9 @@ public class SpeedTestActivity extends Activity {
             @Override
             public void onAllRequestFinishListener(float timeUsed, int totalReqSize) {
                 setResultView(timeUsed);
+                if (mProxyServer != null) {
+                    mGuradProcess.destory();
+                }
             }
         });
         if (mProxyServer != null) {
@@ -103,8 +106,14 @@ public class SpeedTestActivity extends Activity {
 
     private void startTestWithProxy() {
         this.mResultLayout.setProxyServerInfo(mProxyServer);
-        ProxyGuradProcess guradProcess = new ProxyGuradProcess(mProxyServer, this);
-        guradProcess.startProcess();
+        mGuradProcess = new ProxyGuradProcess(mProxyServer, this);
+        mGuradProcess.start();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                mSpeedTest.startTest(new INetImplWithProxy());
+            }
+        }).start();
     }
 
 
@@ -120,9 +129,22 @@ public class SpeedTestActivity extends Activity {
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        this.mSpeedTest.cancel();
+    public void onBackPressed() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                mSpeedTest.cancel(new ThreadPool.OnThreadPoolCloseListener() {
+                    @Override
+                    public void OnShutDwon() {
+                        if (mProxyServer != null) {
+                            mGuradProcess.destory();
+                        }
+                    }
+                });
+            }
+        }).start();
+        finish();
     }
+
 
 }
