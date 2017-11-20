@@ -45,7 +45,7 @@ android {
     }
     sourceSets {
         main {
-            assets.srcDirs = ['src/main/assets', 'src/androidTest/assets/', 'src/main/java-gen']
+            assets.srcDirs = ['src/main/assets', 'src/androidTest/assets/', 'src/main/java-gen',]
         }
     }
 }

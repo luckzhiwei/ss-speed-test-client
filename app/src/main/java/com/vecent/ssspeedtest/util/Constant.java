@@ -15,6 +15,7 @@ public class Constant {
     public static int SOCKS_SERVER_LOCAL_PORT = 1080;
     public static int MIN_THREAD_POOL_SIZE = 100;
     public static int MAX_THREAD_POOL_SIZE = 100;
+    public static int SERVICE_WAIT_INTERNAL = 2 * 60 * 1000;
 
 
 }

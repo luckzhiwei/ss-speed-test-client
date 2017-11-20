@@ -44,14 +44,13 @@ public class ProxyGuradProcess {
                 @Override
                 public void run() {
                     try {
+                        LogUtil.logDebug(getClass().getName(), "start proxy");
                         ProcessBuilder processBuilder = new ProcessBuilder().command(cmds);
                         process = processBuilder.start();
-                        LogUtil.logDebug(getClass().getName(), "startsslocal");
                         LogUtil.logDebug(getClass().getName(), "RET IS " + process.waitFor() + "");
                     } catch (IOException e) {
 
                     } catch (InterruptedException e) {
-                        LogUtil.logDebug(getClass().getName(), "exit ss local");
                         return;
                     }
                 }
@@ -63,6 +62,7 @@ public class ProxyGuradProcess {
     public void destory() {
         this.ssLocalThread.interrupt();
         process.destroy();
+        LogUtil.logDebug(getClass().getName(), "destory the proxy");
     }
 
 

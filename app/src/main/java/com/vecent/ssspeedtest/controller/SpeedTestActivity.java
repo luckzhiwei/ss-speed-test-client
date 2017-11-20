@@ -17,6 +17,7 @@ import com.vecent.ssspeedtest.model.SpeedTest;
 import com.vecent.ssspeedtest.model.bean.SpeedTestResult;
 import com.vecent.ssspeedtest.model.bean.TotalSpeedTestResult;
 import com.vecent.ssspeedtest.model.net.INetImplWithProxy;
+import com.vecent.ssspeedtest.util.LogUtil;
 import com.vecent.ssspeedtest.view.ResultLayout;
 
 /**
@@ -63,7 +64,7 @@ public class SpeedTestActivity extends Activity {
         this.mAdapter = new SpeedTestAdapter(getApplicationContext(),
                 R.layout.speed_test_item_layout, mResult.getResultList());
         this.mContentListView.setAdapter(this.mAdapter);
-        Servers servers2Test = new Servers(this.getApplicationContext());
+        Servers servers2Test = new Servers(this.getApplicationContext(), "test.txt");
         this.mHandler = new Handler(getMainLooper());
         this.mSpeedTest = new SpeedTest(servers2Test.getServers(), this.mHandler);
         this.totalSize = servers2Test.getServers().size();
@@ -82,6 +83,7 @@ public class SpeedTestActivity extends Activity {
 
             @Override
             public void onAllRequestFinishListener(float timeUsed, int totalReqSize) {
+                LogUtil.logDebug(getClass().getName(), "call back finish");
                 setResultView(timeUsed);
                 if (mProxyServer != null) {
                     mGuradProcess.destory();
@@ -112,6 +114,12 @@ public class SpeedTestActivity extends Activity {
             @Override
             public void run() {
                 mSpeedTest.startTest(new INetImplWithProxy());
+                try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
             }
         }).start();
     }

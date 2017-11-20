@@ -109,6 +109,7 @@ public class SSServer implements Parcelable {
     }
 
     public void writeToParcel(Parcel out, int flags) {
+        out.writeLong(id);
         out.writeString(serverAddr);
         out.writeInt(serverPort);
         out.writeString(password);
@@ -116,6 +117,7 @@ public class SSServer implements Parcelable {
     }
 
     protected SSServer(Parcel in) {
+        this.id = in.readLong();
         this.serverAddr = in.readString();
         this.serverPort = in.readInt();
         this.password = in.readString();

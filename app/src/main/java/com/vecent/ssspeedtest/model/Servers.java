@@ -21,8 +21,8 @@ public class Servers {
 
     private List<Server> mServers;
 
-    public Servers(Context context) {
-        byte[] content = getContentFromResFile(context);
+    public Servers(Context context, String configFilePath) {
+        byte[] content = getContentFromResFile(context, configFilePath);
         if (content != null) {
             mServers = JSON.parseArray(new String(content), Server.class);
         }
@@ -32,11 +32,11 @@ public class Servers {
         return this.mServers;
     }
 
-    private byte[] getContentFromResFile(Context context) {
+    private byte[] getContentFromResFile(Context context, String configFilePath) {
         BufferedInputStream stream = null;
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         try {
-            stream = new BufferedInputStream(context.getAssets().open("gfwlistOutput.txt"));
+            stream = new BufferedInputStream(context.getAssets().open(configFilePath));
             byte[] buf = new byte[512];
             int len = -1;
             while ((len = stream.read(buf)) != -1) {

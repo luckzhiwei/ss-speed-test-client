@@ -1,22 +1,31 @@
 package com.vecent.ssspeedtest;
 
+import android.content.ComponentName;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.IBinder;
 import android.os.Looper;
+import android.os.RemoteException;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.vecent.ssspeedtest.adpater.SSServerAdapter;
+import com.vecent.ssspeedtest.aidl.ISpeedTestInterface;
+import com.vecent.ssspeedtest.aidl.ITestFinishListener;
 import com.vecent.ssspeedtest.controller.InputSSServerSettingActivity;
 import com.vecent.ssspeedtest.controller.SpeedTestActivity;
 import com.vecent.ssspeedtest.dao.DaoManager;
 import com.vecent.ssspeedtest.dao.SSServer;
 import com.vecent.ssspeedtest.greendao.DaoSession;
+import com.vecent.ssspeedtest.service.SpeedTestService;
+import com.vecent.ssspeedtest.util.LogUtil;
 
 import java.util.List;
 
@@ -32,12 +41,47 @@ public class MainActivity extends AppCompatActivity {
     private TextView pleaseAddTextView;
     private ImageView pleaseAddImageView;
     private ImageView testSampleImageView;
+    private ISpeedTestInterface iSpeedTestInterface;
+    private ITestFinishListener iTestFinishListener = new ITestFinishListenerImpl();
+
+
+    private ServiceConnection speedTestServiceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+            iSpeedTestInterface = ISpeedTestInterface.Stub.asInterface(iBinder);
+            try {
+                iSpeedTestInterface.startTest();
+                iSpeedTestInterface.setOnTestFinishListener(iTestFinishListener);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName componentName) {
+            iSpeedTestInterface = null;
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initView();
+        initService();
+    }
+
+    private void initService() {
+        Intent intent = new Intent().setClass(getApplicationContext(), SpeedTestService.class);
+        startService(intent);
+        bindService(new Intent().setClass(getApplicationContext(), SpeedTestService.class), speedTestServiceConnection, BIND_AUTO_CREATE);
+    }
+
+    private class ITestFinishListenerImpl extends ITestFinishListener.Stub {
+        @Override
+        public void onTestFinish() throws RemoteException {
+            Toast.makeText(getApplicationContext(), "完成测试", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void initView() {
@@ -120,6 +164,5 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
     }
-
 
 }
