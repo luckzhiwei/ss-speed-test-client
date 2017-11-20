@@ -44,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
     private ISpeedTestInterface iSpeedTestInterface;
     private ITestFinishListener iTestFinishListener = new ITestFinishListenerImpl();
 
-
     private ServiceConnection speedTestServiceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
@@ -80,7 +79,13 @@ public class MainActivity extends AppCompatActivity {
     private class ITestFinishListenerImpl extends ITestFinishListener.Stub {
         @Override
         public void onTestFinish() throws RemoteException {
-            Toast.makeText(getApplicationContext(), "完成测试", Toast.LENGTH_SHORT).show();
+            LogUtil.logDebug(getClass().getName(), "finish the test");
+            mHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(getApplicationContext(), "完成测试", Toast.LENGTH_SHORT).show();
+                }
+            });
         }
     }
 

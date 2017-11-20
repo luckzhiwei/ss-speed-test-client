@@ -3,7 +3,10 @@ package com.vecent.ssspeedtest.service;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.RemoteException;
+import android.widget.Toast;
 
+import com.vecent.ssspeedtest.aidl.ITestFinishListener;
 import com.vecent.ssspeedtest.dao.DaoManager;
 import com.vecent.ssspeedtest.dao.SSServer;
 import com.vecent.ssspeedtest.greendao.DaoSession;
@@ -13,11 +16,13 @@ import com.vecent.ssspeedtest.model.bean.Server;
 import com.vecent.ssspeedtest.model.bean.SpeedTestResult;
 import com.vecent.ssspeedtest.model.bean.TotalSpeedTestResult;
 import com.vecent.ssspeedtest.model.net.INetImplWithProxy;
+import com.vecent.ssspeedtest.util.Constant;
 import com.vecent.ssspeedtest.util.LogUtil;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by zhiwei on 2017/11/20.
@@ -25,7 +30,6 @@ import java.util.List;
 
 public class GuradSpeedTester extends Thread {
 
-    private DaoSession daoSession;
 
     private Handler mHandler;
 
@@ -37,10 +41,10 @@ public class GuradSpeedTester extends Thread {
 
     private Context mContext;
 
+    private ITestFinishListener mTestFinishListener;
+
+
     public GuradSpeedTester(List<Server> servers2Test, Context context) {
-        this.daoSession = DaoManager.getInstance(context.getApplicationContext()).getDaoSession();
-        List<SSServer> proxyServers = daoSession.getSSServerDao().loadAll();
-        mIterator = proxyServers.iterator();
         this.servers2Test = servers2Test;
         this.mContext = context;
         this.results = new ArrayList<>();
@@ -48,20 +52,22 @@ public class GuradSpeedTester extends Thread {
 
     @Override
     public void run() {
-        Looper.prepare();
+        if (Looper.myLooper() == null) {
+            Looper.prepare();
+        }
         mHandler = new Handler(Looper.myLooper());
+        LogUtil.logDebug(getClass().getName(), "start test");
+        readSSProxyServerFromDB();
         runTest();
         Looper.loop();
     }
 
 
     public void runTest() {
-        LogUtil.logDebug(getClass().getName(), mIterator.hasNext() + "");
         if (mIterator.hasNext()) {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    LogUtil.logDebug(getClass().getName(), "start test");
                     final TotalSpeedTestResult curResult = new TotalSpeedTestResult();
                     SSServer proxySSServer = mIterator.next();
                     final ProxyGuradProcess proxyGuradProcess = new ProxyGuradProcess(proxySSServer, mContext);
@@ -72,26 +78,60 @@ public class GuradSpeedTester extends Thread {
                         public void onAllRequestFinishListener(float timeUsed, int totalReqSize) {
                             results.add(curResult);
                             proxyGuradProcess.destory();
-                            LogUtil.logDebug(getClass().getName(), "finish and next");
                             runTest();
                         }
 
                         @Override
                         public void onOneRequestFinishListener(SpeedTestResult result) {
-                            LogUtil.logDebug(getClass().getName(), "call back " + result.getRequestServer());
                             curResult.addResult2List(result);
+                            LogUtil.logDebug(getClass().getName(), result.isExceptionOccured() + "");
                         }
                     });
                     speedTest.startTest(new INetImplWithProxy());
                 }
             }).start();
         } else {
-            LogUtil.logDebug(getClass().getName(), "finish all");
+            LogUtil.logDebug(getClass().getName(), "end test");
+            finishSpeedTest();
         }
     }
 
 
+    private void finishSpeedTest() {
+        try {
+            if (mTestFinishListener != null && results.size() != 0) {
+                mTestFinishListener.onTestFinish();
+            }
+            this.results = new ArrayList<>();
+            Thread.sleep(Constant.SERVICE_WAIT_INTERNAL);
+            readSSProxyServerFromDB();
+            mHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    LogUtil.logDebug(getClass().getName(), "start test");
+                    runTest();
+                }
+            });
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void readSSProxyServerFromDB() {
+        DaoSession daoSession = DaoManager.getInstance(mContext.getApplicationContext()).getDaoSession();
+        List<SSServer> proxyServers = daoSession.getSSServerDao().loadAll();
+        mIterator = proxyServers.iterator();
+    }
+
     public List<TotalSpeedTestResult> getResult() {
         return this.results;
     }
+
+    public void setTestFinishListener(ITestFinishListener listener) {
+        this.mTestFinishListener = listener;
+    }
+
+
 }

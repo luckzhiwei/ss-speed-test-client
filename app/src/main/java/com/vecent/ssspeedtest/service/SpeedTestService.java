@@ -2,13 +2,13 @@ package com.vecent.ssspeedtest.service;
 
 import android.app.Service;
 import android.content.Intent;
+import android.os.Handler;
 import android.os.IBinder;
 import android.os.RemoteException;
 
 import com.vecent.ssspeedtest.aidl.ISpeedTestInterface;
 import com.vecent.ssspeedtest.aidl.ITestFinishListener;
 import com.vecent.ssspeedtest.model.Servers;
-import com.vecent.ssspeedtest.util.Constant;
 import com.vecent.ssspeedtest.util.LogUtil;
 
 
@@ -20,9 +20,9 @@ public class SpeedTestService extends Service {
 
 
     private ISpeedTestInterfaceImpl iSpeedTestInterfaceImpl;
-    private ITestFinishListener mTestFinishListener;
     private Servers servers2Test;
     private GuradSpeedTester mGuradSpeedTester;
+    private Handler mHandler;
 
     public class ISpeedTestInterfaceImpl extends ISpeedTestInterface.Stub {
 
@@ -38,7 +38,7 @@ public class SpeedTestService extends Service {
 
         @Override
         public void setOnTestFinishListener(ITestFinishListener listener) throws RemoteException {
-            mTestFinishListener = listener;
+            mGuradSpeedTester.setTestFinishListener(listener);
         }
 
     }
@@ -71,6 +71,5 @@ public class SpeedTestService extends Service {
             mGuradSpeedTester.start();
         }
     }
-
 
 }
