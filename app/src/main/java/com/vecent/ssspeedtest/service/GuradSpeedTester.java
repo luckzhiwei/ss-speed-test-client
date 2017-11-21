@@ -68,7 +68,7 @@ public class GuradSpeedTester extends Thread {
                 public void run() {
                     final TotalSpeedTestResult curResult = new TotalSpeedTestResult();
                     SSServer proxySSServer = mIterator.next();
-                    final ProxyGuradProcess proxyGuradProcess = new ProxyGuradProcess(proxySSServer, mContext);
+                    final ProxyGuradProcess proxyGuradProcess = new ProxyGuradProcess(proxySSServer, mContext, Constant.SOCKS_SERVER_LOCAL_PORT_BACK);
                     proxyGuradProcess.start();
                     curResult.setServer2TestAddr(proxySSServer.getServerAddr());
                     SpeedTest speedTest = new SpeedTest(servers2Test, mHandler);
@@ -86,7 +86,7 @@ public class GuradSpeedTester extends Thread {
                             LogUtil.logDebug(getClass().getName(), result.isExceptionOccured() + "");
                         }
                     });
-                    speedTest.startTest(new INetImplWithProxy());
+                    speedTest.startTest(new INetImplWithProxy(Constant.SOCKS_SERVER_LOCAL_PORT_BACK));
                 }
             }).start();
         } else {
