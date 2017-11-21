@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.transform.Result;
+
 import org.greenrobot.greendao.annotation.Generated;
 
 /**
@@ -55,7 +56,10 @@ public class TotalSpeedTestResult implements Parcelable {
 
     @Property(nameInDb = "speedBlackAddrDownLoadAvg")
     private float speedBlackAddrDownLoadAvg = 0;
-    
+
+    @Property(nameInDb = "server2TestAddr")
+    private String server2TestAddr;
+
     @Transient
     private List<SpeedTestResult> mResults;
 
@@ -74,13 +78,14 @@ public class TotalSpeedTestResult implements Parcelable {
         totalByteSize = in.readInt();
         speedWhiteAddrDownLoadAvg = in.readFloat();
         speedBlackAddrDownLoadAvg = in.readFloat();
+        server2TestAddr = in.readString();
     }
 
-    @Generated(hash = 591213309)
+    @Generated(hash = 552862759)
     public TotalSpeedTestResult(Long id, float totalTimeUsed, int whiteAddrServerCount,
-            int blackAddrServerCount, float whiteAddrConnectSuccesRate,
-            float blackAddrConnectSuccesRate, int totalServerSize, int totalByteSize,
-            float speedWhiteAddrDownLoadAvg, float speedBlackAddrDownLoadAvg) {
+                                int blackAddrServerCount, float whiteAddrConnectSuccesRate,
+                                float blackAddrConnectSuccesRate, int totalServerSize, int totalByteSize,
+                                float speedWhiteAddrDownLoadAvg, float speedBlackAddrDownLoadAvg, String server2TestAddr) {
         this.id = id;
         this.totalTimeUsed = totalTimeUsed;
         this.whiteAddrServerCount = whiteAddrServerCount;
@@ -91,9 +96,9 @@ public class TotalSpeedTestResult implements Parcelable {
         this.totalByteSize = totalByteSize;
         this.speedWhiteAddrDownLoadAvg = speedWhiteAddrDownLoadAvg;
         this.speedBlackAddrDownLoadAvg = speedBlackAddrDownLoadAvg;
+        this.server2TestAddr = server2TestAddr;
     }
 
-    
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
@@ -107,6 +112,7 @@ public class TotalSpeedTestResult implements Parcelable {
         dest.writeInt(totalByteSize);
         dest.writeFloat(speedWhiteAddrDownLoadAvg);
         dest.writeFloat(speedBlackAddrDownLoadAvg);
+        dest.writeString(server2TestAddr);
     }
 
     @Override
@@ -272,6 +278,14 @@ public class TotalSpeedTestResult implements Parcelable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getServer2TestAddr() {
+        return this.server2TestAddr;
+    }
+
+    public void setServer2TestAddr(String server2TestAddr) {
+        this.server2TestAddr = server2TestAddr;
     }
 
 

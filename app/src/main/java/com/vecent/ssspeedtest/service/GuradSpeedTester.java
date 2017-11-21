@@ -70,6 +70,7 @@ public class GuradSpeedTester extends Thread {
                     SSServer proxySSServer = mIterator.next();
                     final ProxyGuradProcess proxyGuradProcess = new ProxyGuradProcess(proxySSServer, mContext);
                     proxyGuradProcess.start();
+                    curResult.setServer2TestAddr(proxySSServer.getServerAddr());
                     SpeedTest speedTest = new SpeedTest(servers2Test, mHandler);
                     speedTest.setRequestCallBack(new SpeedTest.RequestCallBack() {
                         @Override

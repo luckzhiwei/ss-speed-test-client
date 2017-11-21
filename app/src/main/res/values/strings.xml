@@ -34,8 +34,8 @@
     <string name="cur_server_count">现在请求的个数</string>
     <string name="connection_progress">连接进度</string>
     <string name="cur_speed">当前速度</string>
-    <string name="white_avg_time">白名单平均速度</string>
-    <string name="black_avg_time">黑名单平均速度</string>
+    <string name="white_avg_speed">白名单平均速度</string>
+    <string name="black_avg_speed">黑名单平均速度</string>
     <string name="server_setting">服务器设置</string>
     <string name="ss_server_address">服务器地址</string>
     <string name="ss_remote_port">远程端口</string>

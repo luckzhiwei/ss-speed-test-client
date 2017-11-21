@@ -28,7 +28,6 @@ import com.vecent.ssspeedtest.model.bean.TotalSpeedTestResult;
 import com.vecent.ssspeedtest.service.SpeedTestService;
 import com.vecent.ssspeedtest.view.HeadBeatImage;
 
-import java.util.ArrayList;
 import java.util.List;
 
 

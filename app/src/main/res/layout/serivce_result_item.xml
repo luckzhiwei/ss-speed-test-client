@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="8dp">
+
+    <TextView
+        android:id="@+id/server_2_test_addr"
+        style="@style/textViewMiddle.Gray"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true" />
+
+    <TextView
+        android:id="@+id/textview_white_server_ratio"
+        style="@style/textViewSmall.Gray"
+        android:layout_alignLeft="@id/server_2_test_addr"
+        android:layout_below="@id/server_2_test_addr"
+        android:layout_marginTop="3dp" />
+
+    <TextView
+        android:id="@+id/textview_white_server_avg_speed"
+        style="@style/textViewSmall.Gray"
+        android:layout_alignTop="@id/textview_white_server_ratio"
+        android:layout_marginLeft="3dp"
+        android:layout_toRightOf="@id/textview_white_server_ratio" />
+
+    <TextView
+        android:id="@+id/textview_black_server_ratio"
+        style="@style/textViewSmall.Gray"
+        android:layout_alignLeft="@id/server_2_test_addr"
+        android:layout_below="@id/textview_white_server_ratio"
+        android:layout_marginTop="3dp" />
+
+    <TextView
+        android:id="@+id/textview_black_speed_avg"
+        style="@style/textViewSmall.Gray"
+        android:layout_alignTop="@id/textview_black_server_ratio"
+        android:layout_marginLeft="3dp"
+        android:layout_toRightOf="@id/textview_black_server_ratio" />
+</RelativeLayout>

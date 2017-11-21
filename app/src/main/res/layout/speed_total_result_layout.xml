@@ -200,7 +200,7 @@
                 style="@style/textViewMiddle.Gray"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="8dp"
-                android:text="@string/white_avg_time" />
+                android:text="@string/white_avg_speed" />
         </LinearLayout>
 
         <View
@@ -295,7 +295,7 @@
                 style="@style/textViewMiddle.Gray"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="8dp"
-                android:text="@string/black_avg_time" />
+                android:text="@string/black_avg_speed" />
         </LinearLayout>
 
         <View

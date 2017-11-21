@@ -34,6 +34,7 @@ public class TotalSpeedTestResultDao extends AbstractDao<TotalSpeedTestResult, L
         public final static Property TotalByteSize = new Property(7, int.class, "totalByteSize", false, "totalByteSize");
         public final static Property SpeedWhiteAddrDownLoadAvg = new Property(8, float.class, "speedWhiteAddrDownLoadAvg", false, "speedWhiteAddrDownLoadAvg");
         public final static Property SpeedBlackAddrDownLoadAvg = new Property(9, float.class, "speedBlackAddrDownLoadAvg", false, "speedBlackAddrDownLoadAvg");
+        public final static Property Server2TestAddr = new Property(10, String.class, "server2TestAddr", false, "server2TestAddr");
     }
 
 
@@ -58,7 +59,8 @@ public class TotalSpeedTestResultDao extends AbstractDao<TotalSpeedTestResult, L
                 "\"totalServerSize\" INTEGER NOT NULL ," + // 6: totalServerSize
                 "\"totalByteSize\" INTEGER NOT NULL ," + // 7: totalByteSize
                 "\"speedWhiteAddrDownLoadAvg\" REAL NOT NULL ," + // 8: speedWhiteAddrDownLoadAvg
-                "\"speedBlackAddrDownLoadAvg\" REAL NOT NULL );"); // 9: speedBlackAddrDownLoadAvg
+                "\"speedBlackAddrDownLoadAvg\" REAL NOT NULL ," + // 9: speedBlackAddrDownLoadAvg
+                "\"server2TestAddr\" TEXT);"); // 10: server2TestAddr
     }
 
     /** Drops the underlying database table. */
@@ -84,6 +86,11 @@ public class TotalSpeedTestResultDao extends AbstractDao<TotalSpeedTestResult, L
         stmt.bindLong(8, entity.getTotalByteSize());
         stmt.bindDouble(9, entity.getSpeedWhiteAddrDownLoadAvg());
         stmt.bindDouble(10, entity.getSpeedBlackAddrDownLoadAvg());
+ 
+        String server2TestAddr = entity.getServer2TestAddr();
+        if (server2TestAddr != null) {
+            stmt.bindString(11, server2TestAddr);
+        }
     }
 
     @Override
@@ -103,6 +110,11 @@ public class TotalSpeedTestResultDao extends AbstractDao<TotalSpeedTestResult, L
         stmt.bindLong(8, entity.getTotalByteSize());
         stmt.bindDouble(9, entity.getSpeedWhiteAddrDownLoadAvg());
         stmt.bindDouble(10, entity.getSpeedBlackAddrDownLoadAvg());
+ 
+        String server2TestAddr = entity.getServer2TestAddr();
+        if (server2TestAddr != null) {
+            stmt.bindString(11, server2TestAddr);
+        }
     }
 
     @Override
@@ -122,7 +134,8 @@ public class TotalSpeedTestResultDao extends AbstractDao<TotalSpeedTestResult, L
             cursor.getInt(offset + 6), // totalServerSize
             cursor.getInt(offset + 7), // totalByteSize
             cursor.getFloat(offset + 8), // speedWhiteAddrDownLoadAvg
-            cursor.getFloat(offset + 9) // speedBlackAddrDownLoadAvg
+            cursor.getFloat(offset + 9), // speedBlackAddrDownLoadAvg
+            cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10) // server2TestAddr
         );
         return entity;
     }
@@ -139,6 +152,7 @@ public class TotalSpeedTestResultDao extends AbstractDao<TotalSpeedTestResult, L
         entity.setTotalByteSize(cursor.getInt(offset + 7));
         entity.setSpeedWhiteAddrDownLoadAvg(cursor.getFloat(offset + 8));
         entity.setSpeedBlackAddrDownLoadAvg(cursor.getFloat(offset + 9));
+        entity.setServer2TestAddr(cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10));
      }
     
     @Override
