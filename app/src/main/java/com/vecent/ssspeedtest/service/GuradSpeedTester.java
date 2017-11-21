@@ -99,7 +99,7 @@ public class GuradSpeedTester extends Thread {
     private void finishSpeedTest() {
         try {
             if (mTestFinishListener != null && results.size() != 0) {
-                mTestFinishListener.onTestFinish();
+                mTestFinishListener.onTestFinish(results);
             }
             this.results = new ArrayList<>();
             Thread.sleep(Constant.SERVICE_WAIT_INTERNAL);

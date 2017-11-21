@@ -65,7 +65,6 @@ public class SpeedTestService extends Service {
             servers2Test = new Servers(getApplicationContext(), "test.txt");
         }
         if (mGuradSpeedTester == null) {
-            LogUtil.logDebug(getClass().getName(), "mGuradSpeedTester");
             mGuradSpeedTester = new GuradSpeedTester(servers2Test.getServers(), getApplicationContext());
             mGuradSpeedTester.start();
         }
