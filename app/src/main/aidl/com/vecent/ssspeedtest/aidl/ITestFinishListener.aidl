@@ -6,5 +6,4 @@ package com.vecent.ssspeedtest.aidl;
 interface ITestFinishListener {
 
     void onTestFinish();
-
 }

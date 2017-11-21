@@ -2,7 +2,6 @@ package com.vecent.ssspeedtest.service;
 
 import android.app.Service;
 import android.content.Intent;
-import android.os.Handler;
 import android.os.IBinder;
 import android.os.RemoteException;
 
@@ -22,7 +21,6 @@ public class SpeedTestService extends Service {
     private ISpeedTestInterfaceImpl iSpeedTestInterfaceImpl;
     private Servers servers2Test;
     private GuradSpeedTester mGuradSpeedTester;
-    private Handler mHandler;
 
     public class ISpeedTestInterfaceImpl extends ISpeedTestInterface.Stub {
 
@@ -33,7 +31,7 @@ public class SpeedTestService extends Service {
 
         @Override
         public void stopTest() throws RemoteException {
-
+            stopSpeedTest();
         }
 
         @Override
@@ -67,8 +65,15 @@ public class SpeedTestService extends Service {
             servers2Test = new Servers(getApplicationContext(), "test.txt");
         }
         if (mGuradSpeedTester == null) {
+            LogUtil.logDebug(getClass().getName(), "mGuradSpeedTester");
             mGuradSpeedTester = new GuradSpeedTester(servers2Test.getServers(), getApplicationContext());
             mGuradSpeedTester.start();
+        }
+    }
+
+    private void stopSpeedTest() {
+        if (mGuradSpeedTester != null) {
+            mGuradSpeedTester.exit();
         }
     }
 

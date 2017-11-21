@@ -26,12 +26,12 @@ import com.vecent.ssspeedtest.dao.SSServer;
 import com.vecent.ssspeedtest.greendao.DaoSession;
 import com.vecent.ssspeedtest.service.SpeedTestService;
 import com.vecent.ssspeedtest.util.LogUtil;
+import com.vecent.ssspeedtest.view.HeadBeatImage;
 
 import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity {
-
 
     private ListView contentListView;
     private Handler mHandler;
@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView pleaseAddTextView;
     private ImageView pleaseAddImageView;
     private ImageView testSampleImageView;
+    private HeadBeatImage heatbeatImageView;
     private ISpeedTestInterface iSpeedTestInterface;
     private ITestFinishListener iTestFinishListener = new ITestFinishListenerImpl();
 
@@ -83,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
             mHandler.post(new Runnable() {
                 @Override
                 public void run() {
-                    Toast.makeText(getApplicationContext(), "完成测试", Toast.LENGTH_SHORT).show();
+                    heatbeatImageView.headBestActive();
                 }
             });
         }
@@ -95,6 +96,7 @@ public class MainActivity extends AppCompatActivity {
         this.pleaseAddTextView = (TextView) this.findViewById(R.id.plead_add_textview);
         this.pleaseAddImageView = (ImageView) this.findViewById(R.id.plead_add_img);
         this.testSampleImageView = (ImageView) this.findViewById(R.id.test_sapmle_img);
+        this.heatbeatImageView = (HeadBeatImage) this.findViewById(R.id.img_view_heat_beat);
         this.addServerImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -120,9 +122,10 @@ public class MainActivity extends AppCompatActivity {
         this.testSampleImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent();
-                intent.setClass(getApplicationContext(), SpeedTestActivity.class);
-                startActivity(intent);
+//                Intent intent = new Intent();
+//                intent.setClass(getApplicationContext(), SpeedTestActivity.class);
+//                startActivity(intent);
+                heatbeatImageView.headBestActive();
             }
         });
     }

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.RemoteException;
-import android.widget.Toast;
 
 import com.vecent.ssspeedtest.aidl.ITestFinishListener;
 import com.vecent.ssspeedtest.dao.DaoManager;
@@ -131,6 +130,10 @@ public class GuradSpeedTester extends Thread {
 
     public void setTestFinishListener(ITestFinishListener listener) {
         this.mTestFinishListener = listener;
+    }
+
+    public void exit() {
+        mHandler.getLooper().quit();
     }
 
 

@@ -1,5 +1,8 @@
 package com.vecent.ssspeedtest.model.bean;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.vecent.ssspeedtest.model.SpeedTest;
 
 import java.util.ArrayList;
@@ -11,7 +14,7 @@ import javax.xml.transform.Result;
  * Created by lzw on 17-10-1.
  */
 
-public class TotalSpeedTestResult {
+public class TotalSpeedTestResult implements Parcelable {
 
     private float totalTimeUsed;
     private int whiteAddrServerCount;
@@ -28,6 +31,50 @@ public class TotalSpeedTestResult {
     public TotalSpeedTestResult() {
         this.mResults = new ArrayList<>();
     }
+
+    protected TotalSpeedTestResult(Parcel in) {
+        totalTimeUsed = in.readFloat();
+        whiteAddrServerCount = in.readInt();
+        blackAddrServerCount = in.readInt();
+        whiteAddrConnectSuccesRate = in.readFloat();
+        blackAddrConnectSuccesRate = in.readFloat();
+        curServerCount = in.readInt();
+        totalServerSize = in.readInt();
+        totalByteSize = in.readInt();
+        speedWhiteAddrDownLoadAvg = in.readFloat();
+        speedBlackAddrDownLoadAvg = in.readFloat();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeFloat(totalTimeUsed);
+        dest.writeInt(whiteAddrServerCount);
+        dest.writeInt(blackAddrServerCount);
+        dest.writeFloat(whiteAddrConnectSuccesRate);
+        dest.writeFloat(blackAddrConnectSuccesRate);
+        dest.writeInt(curServerCount);
+        dest.writeInt(totalServerSize);
+        dest.writeInt(totalByteSize);
+        dest.writeFloat(speedWhiteAddrDownLoadAvg);
+        dest.writeFloat(speedBlackAddrDownLoadAvg);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<TotalSpeedTestResult> CREATOR = new Creator<TotalSpeedTestResult>() {
+        @Override
+        public TotalSpeedTestResult createFromParcel(Parcel in) {
+            return new TotalSpeedTestResult(in);
+        }
+
+        @Override
+        public TotalSpeedTestResult[] newArray(int size) {
+            return new TotalSpeedTestResult[size];
+        }
+    };
 
     public float getSpeedBlackAddrDownLoadAvg() {
         return speedBlackAddrDownLoadAvg;
