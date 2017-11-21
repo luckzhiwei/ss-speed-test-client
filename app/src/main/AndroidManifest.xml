@@ -20,11 +20,11 @@
         <activity android:name=".controller.SpeedTestActivity"></activity>
         <activity android:name=".controller.TestSSLocalActivity"></activity>
         <activity android:name=".controller.InputSSServerSettingActivity"></activity>
+        <activity android:name=".controller.ServiceSpeedResultActivity" />
 
         <service
             android:name=".service.SpeedTestService"
-            android:process=":remote">
-        </service>
+            android:process=":remote"></service>
     </application>
 
 

@@ -5,27 +5,58 @@ import android.os.Parcelable;
 
 import com.vecent.ssspeedtest.model.SpeedTest;
 
+import org.greenrobot.greendao.annotation.Entity;
+import org.greenrobot.greendao.annotation.Id;
+import org.greenrobot.greendao.annotation.Property;
+import org.greenrobot.greendao.annotation.Transient;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.transform.Result;
+import org.greenrobot.greendao.annotation.Generated;
 
 /**
  * Created by lzw on 17-10-1.
  */
-
+@Entity
 public class TotalSpeedTestResult implements Parcelable {
 
+
+    @Id(autoincrement = true)
+    private Long id;
+
+    @Property(nameInDb = "totalTimeUsed")
     private float totalTimeUsed;
+
+    @Property(nameInDb = "whiteAddrServerCount")
     private int whiteAddrServerCount;
+
+    @Property(nameInDb = "blackAddrServerCount")
     private int blackAddrServerCount;
+
+    @Property(nameInDb = "whiteAddrConnectSuccesRate")
     private float whiteAddrConnectSuccesRate;
+
+    @Property(nameInDb = "blackAddrConnectSuccesRate")
     private float blackAddrConnectSuccesRate;
+
+    @Transient
     private int curServerCount;
+
+    @Property(nameInDb = "totalServerSize")
     private int totalServerSize;
+
+    @Property(nameInDb = "totalByteSize")
     private int totalByteSize = 0;
+
+    @Property(nameInDb = "speedWhiteAddrDownLoadAvg")
     private float speedWhiteAddrDownLoadAvg = 0;
+
+    @Property(nameInDb = "speedBlackAddrDownLoadAvg")
     private float speedBlackAddrDownLoadAvg = 0;
+    
+    @Transient
     private List<SpeedTestResult> mResults;
 
     public TotalSpeedTestResult() {
@@ -44,6 +75,25 @@ public class TotalSpeedTestResult implements Parcelable {
         speedWhiteAddrDownLoadAvg = in.readFloat();
         speedBlackAddrDownLoadAvg = in.readFloat();
     }
+
+    @Generated(hash = 591213309)
+    public TotalSpeedTestResult(Long id, float totalTimeUsed, int whiteAddrServerCount,
+            int blackAddrServerCount, float whiteAddrConnectSuccesRate,
+            float blackAddrConnectSuccesRate, int totalServerSize, int totalByteSize,
+            float speedWhiteAddrDownLoadAvg, float speedBlackAddrDownLoadAvg) {
+        this.id = id;
+        this.totalTimeUsed = totalTimeUsed;
+        this.whiteAddrServerCount = whiteAddrServerCount;
+        this.blackAddrServerCount = blackAddrServerCount;
+        this.whiteAddrConnectSuccesRate = whiteAddrConnectSuccesRate;
+        this.blackAddrConnectSuccesRate = blackAddrConnectSuccesRate;
+        this.totalServerSize = totalServerSize;
+        this.totalByteSize = totalByteSize;
+        this.speedWhiteAddrDownLoadAvg = speedWhiteAddrDownLoadAvg;
+        this.speedBlackAddrDownLoadAvg = speedBlackAddrDownLoadAvg;
+    }
+
+    
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
@@ -213,6 +263,15 @@ public class TotalSpeedTestResult implements Parcelable {
             }
         }
         this.setCurServerCount(whiteAddrSize + blackAddrSize);
+    }
+
+    public Long getId() {
+        return this.id;
+    }
+
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
 

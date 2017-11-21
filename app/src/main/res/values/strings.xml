@@ -46,4 +46,5 @@
     <string name="input_ss_server_setting_invaild">输入设置有空值或者端口不合法</string>
     <string name="please_add">还没有设置过的服务器,请按右下角添加</string>
     <string name="no_proxy">无代理</string>
+    <string name="empty_background_result">还没有测试结果，请稍后再来吧</string>
 </resources>

@@ -21,7 +21,6 @@ import com.vecent.ssspeedtest.util.LogUtil;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 /**
  * Created by zhiwei on 2017/11/20.
@@ -99,6 +98,11 @@ public class GuradSpeedTester extends Thread {
     private void finishSpeedTest() {
         try {
             if (mTestFinishListener != null && results.size() != 0) {
+                try {
+                    writeResult2DB();
+                } catch (Exception e) {
+                    LogUtil.logDebug(getName(), e.getMessage());
+                }
                 mTestFinishListener.onTestFinish(results);
             }
             this.results = new ArrayList<>();
@@ -124,6 +128,12 @@ public class GuradSpeedTester extends Thread {
         mIterator = proxyServers.iterator();
     }
 
+    private void writeResult2DB() {
+        DaoSession daoSession = DaoManager.getInstance(mContext.getApplicationContext()).getDaoSession();
+        daoSession.getTotalSpeedTestResultDao().deleteAll();
+        daoSession.getTotalSpeedTestResultDao().insertInTx(results);
+    }
+
     public List<TotalSpeedTestResult> getResult() {
         return this.results;
     }
@@ -135,6 +145,5 @@ public class GuradSpeedTester extends Thread {
     public void exit() {
         mHandler.getLooper().quit();
     }
-
 
 }
