@@ -98,6 +98,7 @@ public class GuradSpeedTester extends Thread {
 
     private void finishSpeedTest() {
         try {
+            rmDBCached();
             if (mTestFinishListener != null && results.size() != 0) {
                 try {
                     writeResult2DB();
@@ -129,9 +130,13 @@ public class GuradSpeedTester extends Thread {
         mIterator = proxyServers.iterator();
     }
 
-    private void writeResult2DB() {
+    private void rmDBCached(){
         DaoSession daoSession = DaoManager.getInstance(mContext.getApplicationContext()).getDaoSession();
         daoSession.getTotalSpeedTestResultDao().deleteAll();
+    }
+
+    private void writeResult2DB() {
+        DaoSession daoSession = DaoManager.getInstance(mContext.getApplicationContext()).getDaoSession();
         daoSession.getTotalSpeedTestResultDao().insertInTx(results);
     }
 

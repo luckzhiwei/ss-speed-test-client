@@ -51,7 +51,14 @@ public class SpeedTestService extends Service {
         if (iSpeedTestInterfaceImpl == null) {
             iSpeedTestInterfaceImpl = new ISpeedTestInterfaceImpl();
         }
+        LogUtil.logDebug(getClass().getName(), "onbind");
         return iSpeedTestInterfaceImpl;
+    }
+
+    @Override
+    public void onRebind(Intent intent) {
+        super.onRebind(intent);
+        LogUtil.logDebug(getClass().getName(), "onrebind");
     }
 
     @Override
@@ -75,5 +82,12 @@ public class SpeedTestService extends Service {
             mGuradSpeedTester.exit();
         }
     }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        LogUtil.logDebug(getClass().getName(), "onstartcommand");
+        return super.onStartCommand(intent, flags, startId);
+    }
+
 
 }
