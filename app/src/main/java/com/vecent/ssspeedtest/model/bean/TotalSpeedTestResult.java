@@ -1,33 +1,136 @@
 package com.vecent.ssspeedtest.model.bean;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.vecent.ssspeedtest.model.SpeedTest;
+
+import org.greenrobot.greendao.annotation.Entity;
+import org.greenrobot.greendao.annotation.Id;
+import org.greenrobot.greendao.annotation.Property;
+import org.greenrobot.greendao.annotation.Transient;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.transform.Result;
 
+import org.greenrobot.greendao.annotation.Generated;
+
 /**
  * Created by lzw on 17-10-1.
  */
+@Entity
+public class TotalSpeedTestResult implements Parcelable {
 
-public class TotalSpeedTestResult {
 
+    @Id(autoincrement = true)
+    private Long id;
+
+    @Property(nameInDb = "totalTimeUsed")
     private float totalTimeUsed;
+
+    @Property(nameInDb = "whiteAddrServerCount")
     private int whiteAddrServerCount;
+
+    @Property(nameInDb = "blackAddrServerCount")
     private int blackAddrServerCount;
+
+    @Property(nameInDb = "whiteAddrConnectSuccesRate")
     private float whiteAddrConnectSuccesRate;
+
+    @Property(nameInDb = "blackAddrConnectSuccesRate")
     private float blackAddrConnectSuccesRate;
+
+    @Transient
     private int curServerCount;
+
+    @Property(nameInDb = "totalServerSize")
     private int totalServerSize;
+
+    @Property(nameInDb = "totalByteSize")
     private int totalByteSize = 0;
+
+    @Property(nameInDb = "speedWhiteAddrDownLoadAvg")
     private float speedWhiteAddrDownLoadAvg = 0;
+
+    @Property(nameInDb = "speedBlackAddrDownLoadAvg")
     private float speedBlackAddrDownLoadAvg = 0;
+
+    @Property(nameInDb = "server2TestAddr")
+    private String server2TestAddr;
+
+    @Transient
     private List<SpeedTestResult> mResults;
 
     public TotalSpeedTestResult() {
         this.mResults = new ArrayList<>();
     }
+
+    protected TotalSpeedTestResult(Parcel in) {
+        totalTimeUsed = in.readFloat();
+        whiteAddrServerCount = in.readInt();
+        blackAddrServerCount = in.readInt();
+        whiteAddrConnectSuccesRate = in.readFloat();
+        blackAddrConnectSuccesRate = in.readFloat();
+        curServerCount = in.readInt();
+        totalServerSize = in.readInt();
+        totalByteSize = in.readInt();
+        speedWhiteAddrDownLoadAvg = in.readFloat();
+        speedBlackAddrDownLoadAvg = in.readFloat();
+        server2TestAddr = in.readString();
+    }
+
+    @Generated(hash = 552862759)
+    public TotalSpeedTestResult(Long id, float totalTimeUsed, int whiteAddrServerCount,
+                                int blackAddrServerCount, float whiteAddrConnectSuccesRate,
+                                float blackAddrConnectSuccesRate, int totalServerSize, int totalByteSize,
+                                float speedWhiteAddrDownLoadAvg, float speedBlackAddrDownLoadAvg, String server2TestAddr) {
+        this.id = id;
+        this.totalTimeUsed = totalTimeUsed;
+        this.whiteAddrServerCount = whiteAddrServerCount;
+        this.blackAddrServerCount = blackAddrServerCount;
+        this.whiteAddrConnectSuccesRate = whiteAddrConnectSuccesRate;
+        this.blackAddrConnectSuccesRate = blackAddrConnectSuccesRate;
+        this.totalServerSize = totalServerSize;
+        this.totalByteSize = totalByteSize;
+        this.speedWhiteAddrDownLoadAvg = speedWhiteAddrDownLoadAvg;
+        this.speedBlackAddrDownLoadAvg = speedBlackAddrDownLoadAvg;
+        this.server2TestAddr = server2TestAddr;
+    }
+
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeFloat(totalTimeUsed);
+        dest.writeInt(whiteAddrServerCount);
+        dest.writeInt(blackAddrServerCount);
+        dest.writeFloat(whiteAddrConnectSuccesRate);
+        dest.writeFloat(blackAddrConnectSuccesRate);
+        dest.writeInt(curServerCount);
+        dest.writeInt(totalServerSize);
+        dest.writeInt(totalByteSize);
+        dest.writeFloat(speedWhiteAddrDownLoadAvg);
+        dest.writeFloat(speedBlackAddrDownLoadAvg);
+        dest.writeString(server2TestAddr);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<TotalSpeedTestResult> CREATOR = new Creator<TotalSpeedTestResult>() {
+        @Override
+        public TotalSpeedTestResult createFromParcel(Parcel in) {
+            return new TotalSpeedTestResult(in);
+        }
+
+        @Override
+        public TotalSpeedTestResult[] newArray(int size) {
+            return new TotalSpeedTestResult[size];
+        }
+    };
 
     public float getSpeedBlackAddrDownLoadAvg() {
         return speedBlackAddrDownLoadAvg;
@@ -166,6 +269,23 @@ public class TotalSpeedTestResult {
             }
         }
         this.setCurServerCount(whiteAddrSize + blackAddrSize);
+    }
+
+    public Long getId() {
+        return this.id;
+    }
+
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getServer2TestAddr() {
+        return this.server2TestAddr;
+    }
+
+    public void setServer2TestAddr(String server2TestAddr) {
+        this.server2TestAddr = server2TestAddr;
     }
 
 

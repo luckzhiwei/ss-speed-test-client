@@ -10,13 +10,14 @@ import com.vecent.ssspeedtest.R;
 import com.vecent.ssspeedtest.adpater.SpeedTestAdapter;
 import com.vecent.ssspeedtest.dao.SSServer;
 import com.vecent.ssspeedtest.model.ProxyGuradProcess;
-import com.vecent.ssspeedtest.model.ThreadPool;
 import com.vecent.ssspeedtest.model.net.INetImplDefault;
 import com.vecent.ssspeedtest.model.Servers;
 import com.vecent.ssspeedtest.model.SpeedTest;
 import com.vecent.ssspeedtest.model.bean.SpeedTestResult;
 import com.vecent.ssspeedtest.model.bean.TotalSpeedTestResult;
 import com.vecent.ssspeedtest.model.net.INetImplWithProxy;
+import com.vecent.ssspeedtest.util.Constant;
+import com.vecent.ssspeedtest.util.LogUtil;
 import com.vecent.ssspeedtest.view.ResultLayout;
 
 /**
@@ -63,7 +64,7 @@ public class SpeedTestActivity extends Activity {
         this.mAdapter = new SpeedTestAdapter(getApplicationContext(),
                 R.layout.speed_test_item_layout, mResult.getResultList());
         this.mContentListView.setAdapter(this.mAdapter);
-        Servers servers2Test = new Servers(this.getApplicationContext());
+        Servers servers2Test = new Servers(this.getApplicationContext(), "gfwlistOutput.txt");
         this.mHandler = new Handler(getMainLooper());
         this.mSpeedTest = new SpeedTest(servers2Test.getServers(), this.mHandler);
         this.totalSize = servers2Test.getServers().size();
@@ -106,12 +107,18 @@ public class SpeedTestActivity extends Activity {
 
     private void startTestWithProxy() {
         this.mResultLayout.setProxyServerInfo(mProxyServer);
-        mGuradProcess = new ProxyGuradProcess(mProxyServer, this);
+        mGuradProcess = new ProxyGuradProcess(mProxyServer, this, Constant.SOCKS_SERVER_LOCAL_PORT_FONT);
         mGuradProcess.start();
         new Thread(new Runnable() {
             @Override
             public void run() {
-                mSpeedTest.startTest(new INetImplWithProxy());
+                mSpeedTest.startTest(new INetImplWithProxy(Constant.SOCKS_SERVER_LOCAL_PORT_FONT));
+                try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
             }
         }).start();
     }

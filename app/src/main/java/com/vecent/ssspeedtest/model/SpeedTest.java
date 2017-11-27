@@ -72,7 +72,9 @@ public class SpeedTest {
         this.mHandler.post(new Runnable() {
             @Override
             public void run() {
-                mRequestCallBack.onAllRequestFinishListener(1.0f * (endTime - startTime) / 1000, mServers2Test.size());
+                if (mRequestCallBack != null) {
+                    mRequestCallBack.onAllRequestFinishListener(1.0f * (endTime - startTime) / 1000, mServers2Test.size());
+                }
             }
         });
     }
@@ -84,7 +86,6 @@ public class SpeedTest {
     public void cancel() {
         this.mThreadPool.stopNow();
     }
-
 
     public long getTimeStart() {
         return startTime;

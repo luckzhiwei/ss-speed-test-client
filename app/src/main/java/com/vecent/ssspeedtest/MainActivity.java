@@ -1,9 +1,13 @@
 package com.vecent.ssspeedtest;
 
+import android.content.ComponentName;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.IBinder;
 import android.os.Looper;
+import android.os.RemoteException;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
@@ -12,17 +16,21 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.vecent.ssspeedtest.adpater.SSServerAdapter;
+import com.vecent.ssspeedtest.aidl.ISpeedTestInterface;
+import com.vecent.ssspeedtest.aidl.ITestFinishListener;
 import com.vecent.ssspeedtest.controller.InputSSServerSettingActivity;
+import com.vecent.ssspeedtest.controller.ServiceSpeedResultActivity;
 import com.vecent.ssspeedtest.controller.SpeedTestActivity;
 import com.vecent.ssspeedtest.dao.DaoManager;
 import com.vecent.ssspeedtest.dao.SSServer;
 import com.vecent.ssspeedtest.greendao.DaoSession;
-
+import com.vecent.ssspeedtest.model.bean.TotalSpeedTestResult;
+import com.vecent.ssspeedtest.service.SpeedTestService;
+import com.vecent.ssspeedtest.view.HeadBeatImage;
 import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity {
-
 
     private ListView contentListView;
     private Handler mHandler;
@@ -32,12 +40,52 @@ public class MainActivity extends AppCompatActivity {
     private TextView pleaseAddTextView;
     private ImageView pleaseAddImageView;
     private ImageView testSampleImageView;
+    private HeadBeatImage heatbeatImageView;
+    private ISpeedTestInterface iSpeedTestInterface;
+    private ITestFinishListener iTestFinishListener = new ITestFinishListenerImpl();
+
+    private ServiceConnection speedTestServiceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+            iSpeedTestInterface = ISpeedTestInterface.Stub.asInterface(iBinder);
+            try {
+                iSpeedTestInterface.startTest();
+                iSpeedTestInterface.setOnTestFinishListener(iTestFinishListener);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName componentName) {
+            iSpeedTestInterface = null;
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initView();
+        initService();
+    }
+
+    private void initService() {
+        Intent intent = new Intent().setClass(getApplicationContext(), SpeedTestService.class);
+        startService(intent);
+        bindService(new Intent().setClass(getApplicationContext(), SpeedTestService.class), speedTestServiceConnection, BIND_AUTO_CREATE);
+    }
+
+    private class ITestFinishListenerImpl extends ITestFinishListener.Stub {
+        @Override
+        public void onTestFinish(List<TotalSpeedTestResult> results) throws RemoteException {
+            mHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    heatbeatImageView.headBestActive();
+                }
+            });
+        }
     }
 
     private void initView() {
@@ -46,6 +94,7 @@ public class MainActivity extends AppCompatActivity {
         this.pleaseAddTextView = (TextView) this.findViewById(R.id.plead_add_textview);
         this.pleaseAddImageView = (ImageView) this.findViewById(R.id.plead_add_img);
         this.testSampleImageView = (ImageView) this.findViewById(R.id.test_sapmle_img);
+        this.heatbeatImageView = (HeadBeatImage) this.findViewById(R.id.img_view_heat_beat);
         this.addServerImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -76,6 +125,18 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        this.heatbeatImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                goBackGroundResult();
+            }
+        });
+    }
+
+    private void goBackGroundResult() {
+        Intent intent = new Intent();
+        intent.setClass(getApplicationContext(), ServiceSpeedResultActivity.class);
+        startActivity(intent);
     }
 
     @Override
@@ -120,6 +181,5 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
     }
-
 
 }

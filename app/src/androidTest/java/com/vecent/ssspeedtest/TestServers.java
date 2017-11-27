@@ -28,7 +28,7 @@ public class TestServers {
 
     @Test
     public void testReadFromAssert() {
-        Servers test = new Servers(this.appContext);
+        Servers test = new Servers(this.appContext,"gfwlistOutput.txt");
         List<Server> ret = test.getServers();
         Assert.assertNotEquals(null, ret);
         Assert.assertEquals(40, ret.size());

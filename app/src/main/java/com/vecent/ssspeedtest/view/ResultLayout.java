@@ -20,7 +20,6 @@ import android.widget.TextView;
 import com.vecent.ssspeedtest.R;
 import com.vecent.ssspeedtest.dao.SSServer;
 import com.vecent.ssspeedtest.model.bean.TotalSpeedTestResult;
-import com.vecent.ssspeedtest.util.LogUtil;
 
 /**
  * Created by lzw on 17-10-1.
@@ -118,8 +117,8 @@ public class ResultLayout extends LinearLayout {
         this.curTimeUsed = res.getString(R.string.time_used) + " ";
         this.speedUnit = res.getString(R.string.kb_by_second);
         this.timeUnit = res.getString(R.string.unit_second);
-        this.whiteSpeedAvg = res.getString(R.string.white_avg_time) + " ";
-        this.blackSpeedAvg = res.getString(R.string.black_avg_time) + " ";
+        this.whiteSpeedAvg = res.getString(R.string.white_avg_speed) + " ";
+        this.blackSpeedAvg = res.getString(R.string.black_avg_speed) + " ";
     }
 
 

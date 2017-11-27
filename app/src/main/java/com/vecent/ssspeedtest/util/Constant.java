@@ -12,9 +12,11 @@ public class Constant {
     public static int CONNECTION_TIME_OUT = 10000;
     public static int READ_TIME_OUT = 10000;
     public static String SOCKS_SERVER_LOCAL_ADDR = "127.0.0.1";
-    public static int SOCKS_SERVER_LOCAL_PORT = 1080;
+    public static int SOCKS_SERVER_LOCAL_PORT_FONT = 1088;
+    public static int SOCKS_SERVER_LOCAL_PORT_BACK = 1089;
     public static int MIN_THREAD_POOL_SIZE = 100;
     public static int MAX_THREAD_POOL_SIZE = 100;
+    public static int SERVICE_WAIT_INTERNAL = 2 * 60 * 1000;
 
 
 }
