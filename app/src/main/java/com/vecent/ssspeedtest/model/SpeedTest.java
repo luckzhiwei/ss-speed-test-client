@@ -28,7 +28,7 @@ public class SpeedTest {
         void onOneRequestFinishListener(SpeedTestResult result);
     }
 
-    public SpeedTest(List<Server> serversForTest, final Handler handler) {
+    public SpeedTest(List<Server> serversForTest, Handler handler) {
         this.mServers2Test = serversForTest;
         mThreadPool = new ThreadPool();
         this.mHandler = handler;
@@ -50,12 +50,12 @@ public class SpeedTest {
             mThreadPool.execTask(new Runnable() {
                 @Override
                 public void run() {
-                    final SpeedTestResult pingResult = httpSpeedTest(net, server);
-                    if (pingResult != null) {
+                    final SpeedTestResult requestResult = httpSpeedTest(net, server);
+                    if (requestResult != null) {
                         mHandler.post(new Runnable() {
                             @Override
                             public void run() {
-                                mRequestCallBack.onOneRequestFinishListener(pingResult);
+                                mRequestCallBack.onOneRequestFinishListener(requestResult);
                             }
                         });
                     }

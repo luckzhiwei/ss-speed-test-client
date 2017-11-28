@@ -12,6 +12,7 @@ import com.vecent.ssspeedtest.adpater.ServiceResultAdapter;
 import com.vecent.ssspeedtest.dao.DaoManager;
 import com.vecent.ssspeedtest.greendao.DaoSession;
 import com.vecent.ssspeedtest.model.bean.TotalSpeedTestResult;
+import com.vecent.ssspeedtest.util.LogUtil;
 
 import java.util.List;
 
@@ -58,5 +59,9 @@ public class ServiceSpeedResultActivity extends Activity {
             }
         }
     }
+
+
+
+
 
 }

@@ -37,13 +37,60 @@ public class SpeedTestActivity extends Activity {
     private SSServer mProxyServer;
     private ProxyGuradProcess mGuradProcess;
 
+    private SpeedTest.RequestCallBack callBack = new SpeedTest.RequestCallBack() {
+        @Override
+        public void onAllRequestFinishListener(float timeUsed, int totalReqSize) {
+            setResultView(timeUsed);
+            if (mProxyServer != null) {
+                mGuradProcess.destory();
+            }
+        }
+
+        @Override
+        public void onOneRequestFinishListener(SpeedTestResult result) {
+            mResult.addResult2List(result);
+            updateView();
+        }
+    };
+
+
+    private static class ModelHodler {
+        public Handler mSaveHandler;
+        public SSServer mSavedProxyServer;
+        public int mSavedTotalSize;
+        public TotalSpeedTestResult mSaveResult;
+        public SpeedTestAdapter mSaveAdapter;
+        public SpeedTest mSaveSpeedTest;
+        public ProxyGuradProcess mSaveGuradProcess;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.speed_test_layout);
-        this.initView();
-        this.initModel();
+
+        ModelHodler hodler = (ModelHodler) this.getLastNonConfigurationInstance();
+        if (hodler == null) {
+            this.initView();
+            this.initModel();
+        } else {
+            this.initView();
+            this.continueView(hodler);
+        }
+    }
+
+
+    private void continueView(ModelHodler hodler) {
+        this.mAdapter = hodler.mSaveAdapter;
+        this.mSpeedTest = hodler.mSaveSpeedTest;
+        this.mHandler = hodler.mSaveHandler;
+        this.mGuradProcess = hodler.mSaveGuradProcess;
+        this.mResult = hodler.mSaveResult;
+        this.totalSize = hodler.mSavedTotalSize;
+        this.mProxyServer = hodler.mSavedProxyServer;
+        this.mContentListView.setAdapter(this.mAdapter);
+        this.mSpeedTest.setRequestCallBack(callBack);
+        this.updateView();
     }
 
     private void initView() {
@@ -74,21 +121,7 @@ public class SpeedTestActivity extends Activity {
     }
 
     private void startSpeedTest() {
-        this.mSpeedTest.setRequestCallBack(new SpeedTest.RequestCallBack() {
-            @Override
-            public void onOneRequestFinishListener(SpeedTestResult result) {
-                mResult.addResult2List(result);
-                updateView();
-            }
-
-            @Override
-            public void onAllRequestFinishListener(float timeUsed, int totalReqSize) {
-                setResultView(timeUsed);
-                if (mProxyServer != null) {
-                    mGuradProcess.destory();
-                }
-            }
-        });
+        this.mSpeedTest.setRequestCallBack(callBack);
         if (mProxyServer != null) {
             startTestWithProxy();
         } else {
@@ -142,6 +175,26 @@ public class SpeedTestActivity extends Activity {
             mGuradProcess.destory();
         }
         finish();
+    }
+
+    @Override
+    public void onRestoreInstanceState(Bundle bundle) {
+        super.onRestoreInstanceState(bundle);
+        LogUtil.logDebug(getClass().getName(), "restore instance");
+    }
+
+
+    @Override
+    public Object onRetainNonConfigurationInstance() {
+        ModelHodler holder = new ModelHodler();
+        holder.mSaveSpeedTest = mSpeedTest;
+        holder.mSaveAdapter = mAdapter;
+        holder.mSavedProxyServer = mProxyServer;
+        holder.mSaveResult = mResult;
+        holder.mSavedTotalSize = totalSize;
+        holder.mSaveHandler = mHandler;
+        holder.mSaveGuradProcess = mGuradProcess;
+        return holder;
     }
 
 
