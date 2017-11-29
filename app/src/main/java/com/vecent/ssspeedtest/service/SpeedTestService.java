@@ -69,7 +69,7 @@ public class SpeedTestService extends Service {
 
     private void startSpeedTest() {
         if (servers2Test == null) {
-            servers2Test = new Servers(getApplicationContext(), "test.txt");
+            servers2Test = new Servers(getApplicationContext(), "alexa.json");
         }
         if (mGuradSpeedTester == null) {
             mGuradSpeedTester = new GuradSpeedTester(servers2Test.getServers(), getApplicationContext());
