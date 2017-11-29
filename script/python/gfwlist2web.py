@@ -299,8 +299,6 @@ class gfwlist2web:
         print("------json文件已生成------")
 
 if __name__ == '__main__':
-    
-
     gfwlist_file = None
     json_file = None
     proxy = None
@@ -321,6 +319,7 @@ if __name__ == '__main__':
             print("-p 不输入默认代理不设置")
             print("-o 不输入默认该目录下的gfwweb.json")
             print("-a 不输入默认不输出Alexa排名")
+            exit() 
         if name in ("-i","--input"):
             gfwlist_file = value
             print("使用输入文件", value)
