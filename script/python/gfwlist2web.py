@@ -17,6 +17,7 @@ import json
 import sys, getopt
 import base64
 import time
+from bs4 import BeautifulSoup
 
 # 取消验证ssl中域名与证书一致
 # https://stackoverflow.com/questions/28768530/certificateerror-hostname-doesnt-match
@@ -264,27 +265,62 @@ class gfwlist2web:
             json_list.append(_dict)
         with open(file, "w") as f:
             f.write(json.dumps(json_list, indent=4))    
-        print("------json文件已生成------")    
+        print("------json文件已生成------") 
+
+    @staticmethod
+    def alexaSpider(alexaweb):
+        json_list=list()
+        opener = urllib.request.build_opener()
+        response = opener.open(alexaweb, timeout=6)
+        raw = response.read().decode('utf-8')
+        soup = BeautifulSoup(raw, "lxml")
+        tags = soup.find_all('div', class_="rowbox")
+        for tag in tags:
+            alla = tag.find_all('a')
+            for a in alla:
+                if 'chinaz' not in a['href']:
+                    _dict = dict()
+                    _dict["type"] = 'b' 
+                    _dict["web"] = a['href']
+                    json_list.append(_dict)
+                    print(a['href'])
+        return json_list
+
+    def writeAlexaJson(self, file = None):
+        if file is None:
+            return
+        print("-----开始获取Alexa排名-----")
+        json_list = self.alexaSpider("http://alexa.chinaz.com/Country/index_US.html")
+        json_list += self.alexaSpider("http://alexa.chinaz.com/Country/index_US_2.html")
+        json_list += self.alexaSpider("http://alexa.chinaz.com/Country/index_US_3.html")
+        json_list += self.alexaSpider("http://alexa.chinaz.com/Country/index_US_4.html")
+        with open(file, "w") as f:
+            f.write(json.dumps(json_list, indent=4))    
+        print("------json文件已生成------")
 
 if __name__ == '__main__':
+    
+
     gfwlist_file = None
     json_file = None
     proxy = None
     testCount = None
     thread = None
-    print("使用方法 -i 输入文件 -o 输出文件 -p 代理端口 -c 输出数量 -t 线程数量")
+    alexa = None
+    print("参数 -i 输入文件 -o 输出文件 -p 代理端口 -c 输出数量 -t 线程数量 -h 帮助 -a 输出Alexa排名文件")
     try:
-        options,args = getopt.getopt(sys.argv[1:],"hi:o:p:c:t:", ["help","input=","output="])
+        options,args = getopt.getopt(sys.argv[1:],"hi:o:p:c:t:a:", ["help","input=","output="])
     except getopt.GetoptError:
         sys.exit()
     for name,value in options:
         if name in ("-h","--help"):
             print("示例：gfwlist2web.py -i ./gfwlist -o ./json")
             print("-i 不输入默认使用网络gfwlist，无法下载则使用本地gfwlist")
-            print("-c 默认输出所有http")
-            print("-t 默认线程数量500")
-            print("-p 默认代理不设置")
-            print("-o 默认该目录下的gfwweb.json")
+            print("-c 不输入默认输出所有http")
+            print("-t 不输入默认线程数量256")
+            print("-p 不输入默认代理不设置")
+            print("-o 不输入默认该目录下的gfwweb.json")
+            print("-a 不输入默认不输出Alexa排名")
         if name in ("-i","--input"):
             gfwlist_file = value
             print("使用输入文件", value)
@@ -301,8 +337,13 @@ if __name__ == '__main__':
         if name in ("-t"):
             thread = int(value)
             print("线程数量设置为%d个" % thread)
+        if name in ("-a"):
+            alexa = value
+            print("Alexa排名文件路径%s" % alexa)
+        
 
     g = gfwlist2web(gfwlist_file = gfwlist_file, proxy = proxy)
+    g.writeAlexaJson(alexa)
     g.createDatabase()
     g.readGfwlistToDatabase()
     g.directGuessFromDatabase()
