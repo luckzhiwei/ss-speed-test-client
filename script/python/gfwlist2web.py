@@ -367,11 +367,11 @@ if __name__ == '__main__':
 
     g = gfwlist2web(gfwlist_file = gfwlist_file, proxy = proxy)
     g.writeAlexaJson(alexa)
-    # g.createDatabase()
-    # g.readGfwlistToDatabase()
-    # g.directGuessFromDatabase()
-    # g.testConnect(max_count = testCount, max_thread = thread)
-    # g.setVerifyToDatabase()
-    # g.writeJsonFromDatabase(json_file)
+    g.createDatabase()
+    g.readGfwlistToDatabase()
+    g.directGuessFromDatabase()
+    g.testConnect(max_count = testCount, max_thread = thread)
+    g.setVerifyToDatabase()
+    g.writeJsonFromDatabase(json_file)
 
     os.remove(g.gfwlist_db)
