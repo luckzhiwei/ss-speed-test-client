@@ -97,11 +97,17 @@ class gfwlist2web:
         print("create database")
         self.conn.commit()
 
-    def addHttp(self, url):
+    def addHttp(self, url, raw):
         if "www" in url:
-            return "http://" + url
+            if "https" in raw:
+                return "https://" + url
+            else:
+                return "http://" + url
         else :
-            return "http://www." + url
+            if "https" in raw:
+                return "https://www." + url
+            else:
+                return "http://www." + url
 
     def insertBasicInfo(self, RAW, IF_ONELINE, IF_TWOLINE, IF_AT, IF_STAR):
         self.conn.execute("INSERT INTO GFWLIST (ID, RAW, IF_ONELINE, IF_TWOLINE, IF_AT, IF_STAR) \
@@ -118,11 +124,11 @@ class gfwlist2web:
             if IF_TWOLINE == 1:
                 url_match = self.pattern.search(RAW[2:])
                 if url_match:
-                    self.conn.execute("UPDATE GFWLIST set DIRECTGUESS = '%s' where ID=%d" % (self.addHttp(url_match.group()), ID) )
+                    self.conn.execute("UPDATE GFWLIST set DIRECTGUESS = '%s' where ID=%d" % (self.addHttp(url_match.group(), RAW), ID) )
             if IF_ONELINE == 0 and IF_TWOLINE ==0:
                 url_match = self.pattern.search(RAW)
                 if url_match:
-                    self.conn.execute("UPDATE GFWLIST set DIRECTGUESS = '%s' where ID=%d" % (self.addHttp(url_match.group()), ID) )
+                    self.conn.execute("UPDATE GFWLIST set DIRECTGUESS = '%s' where ID=%d" % (self.addHttp(url_match.group(), RAW), ID) )
         # self.conn.commit()
         # 处理非* 白名单
         c = self.conn.execute("SELECT ID, RAW, IF_ONELINE, IF_TWOLINE from GFWLIST WHERE IF_STAR IS 0 AND IF_AT IS 1")
@@ -131,11 +137,11 @@ class gfwlist2web:
             if IF_ONELINE == 1:
                 url_match = self.pattern.search(RAW[3:])
                 if url_match:
-                    self.conn.execute("UPDATE GFWLIST set DIRECTGUESS = '%s' where ID=%d" % (self.addHttp(url_match.group()), ID) )
+                    self.conn.execute("UPDATE GFWLIST set DIRECTGUESS = '%s' where ID=%d" % (self.addHttp(url_match.group(), RAW), ID) )
             if IF_TWOLINE == 1:
                 url_match = self.pattern.search(RAW[4:])
                 if url_match:
-                    self.conn.execute("UPDATE GFWLIST set DIRECTGUESS = '%s' where ID=%d" % (self.addHttp(url_match.group()), ID) )
+                    self.conn.execute("UPDATE GFWLIST set DIRECTGUESS = '%s' where ID=%d" % (self.addHttp(url_match.group(), RAW), ID) )
         self.conn.commit()  
 
     def readGfwlistToDatabase(self, gfwlist_file = None):
@@ -268,7 +274,22 @@ class gfwlist2web:
         print("------json文件已生成------") 
 
     @staticmethod
-    def alexaSpider(alexaweb):
+    def alexaSpider(alexaweb, type):
+        def bypass(web, type):
+            if type == 'w':
+                if 'google' in web:
+                    return True
+                if 'youtube' in web:
+                    return True
+                return False
+            if type == 'b':
+                if  'baidu' in web:
+                    return True
+                if 'bing' in web:
+                    return True
+                if 'apple' in web:
+                    return True
+                return False
         json_list=list()
         opener = urllib.request.build_opener()
         response = opener.open(alexaweb, timeout=6)
@@ -279,8 +300,10 @@ class gfwlist2web:
             alla = tag.find_all('a')
             for a in alla:
                 if 'chinaz' not in a['href']:
+                    if bypass(a['href'], type):
+                        continue 
                     _dict = dict()
-                    _dict["type"] = 'b' 
+                    _dict["type"] = type
                     _dict["web"] = a['href']
                     json_list.append(_dict)
                     print(a['href'])
@@ -290,10 +313,11 @@ class gfwlist2web:
         if file is None:
             return
         print("-----开始获取Alexa排名-----")
-        json_list = self.alexaSpider("http://alexa.chinaz.com/Country/index_US.html")
-        json_list += self.alexaSpider("http://alexa.chinaz.com/Country/index_US_2.html")
-        json_list += self.alexaSpider("http://alexa.chinaz.com/Country/index_US_3.html")
-        json_list += self.alexaSpider("http://alexa.chinaz.com/Country/index_US_4.html")
+        json_list = self.alexaSpider("http://alexa.chinaz.com/Country/index_US.html", 'b')
+        json_list += self.alexaSpider("http://alexa.chinaz.com/Country/index_US_2.html", 'b')
+        json_list += self.alexaSpider("http://alexa.chinaz.com/Country/index_US_3.html", 'b')
+        json_list += self.alexaSpider("http://alexa.chinaz.com/Country/index_US_4.html", 'b')
+        json_list += self.alexaSpider("http://alexa.chinaz.com/Country/index_CN.html", 'w')
         with open(file, "w") as f:
             f.write(json.dumps(json_list, indent=4))    
         print("------json文件已生成------")
