@@ -274,7 +274,22 @@ class gfwlist2web:
         print("------json文件已生成------") 
 
     @staticmethod
-    def alexaSpider(alexaweb):
+    def alexaSpider(alexaweb, type):
+        def bypass(web, type):
+            if type == 'w':
+                if 'google' in web:
+                    return True
+                if 'youtube' in web:
+                    return True
+                return False
+            if type == 'b':
+                if  'baidu' in web:
+                    return True
+                if 'bing' in web:
+                    return True
+                if 'apple' in web:
+                    return True
+                return False
         json_list=list()
         opener = urllib.request.build_opener()
         response = opener.open(alexaweb, timeout=6)
@@ -285,8 +300,10 @@ class gfwlist2web:
             alla = tag.find_all('a')
             for a in alla:
                 if 'chinaz' not in a['href']:
+                    if bypass(a['href'], type):
+                        continue 
                     _dict = dict()
-                    _dict["type"] = 'b' 
+                    _dict["type"] = type
                     _dict["web"] = a['href']
                     json_list.append(_dict)
                     print(a['href'])
@@ -296,10 +313,11 @@ class gfwlist2web:
         if file is None:
             return
         print("-----开始获取Alexa排名-----")
-        json_list = self.alexaSpider("http://alexa.chinaz.com/Country/index_US.html")
-        json_list += self.alexaSpider("http://alexa.chinaz.com/Country/index_US_2.html")
-        json_list += self.alexaSpider("http://alexa.chinaz.com/Country/index_US_3.html")
-        json_list += self.alexaSpider("http://alexa.chinaz.com/Country/index_US_4.html")
+        json_list = self.alexaSpider("http://alexa.chinaz.com/Country/index_US.html", 'b')
+        json_list += self.alexaSpider("http://alexa.chinaz.com/Country/index_US_2.html", 'b')
+        json_list += self.alexaSpider("http://alexa.chinaz.com/Country/index_US_3.html", 'b')
+        json_list += self.alexaSpider("http://alexa.chinaz.com/Country/index_US_4.html", 'b')
+        json_list += self.alexaSpider("http://alexa.chinaz.com/Country/index_CN.html", 'w')
         with open(file, "w") as f:
             f.write(json.dumps(json_list, indent=4))    
         print("------json文件已生成------")
@@ -349,11 +367,11 @@ if __name__ == '__main__':
 
     g = gfwlist2web(gfwlist_file = gfwlist_file, proxy = proxy)
     g.writeAlexaJson(alexa)
-    g.createDatabase()
-    g.readGfwlistToDatabase()
-    g.directGuessFromDatabase()
-    g.testConnect(max_count = testCount, max_thread = thread)
-    g.setVerifyToDatabase()
-    g.writeJsonFromDatabase(json_file)
+    # g.createDatabase()
+    # g.readGfwlistToDatabase()
+    # g.directGuessFromDatabase()
+    # g.testConnect(max_count = testCount, max_thread = thread)
+    # g.setVerifyToDatabase()
+    # g.writeJsonFromDatabase(json_file)
 
     os.remove(g.gfwlist_db)
