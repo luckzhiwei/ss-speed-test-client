@@ -18,9 +18,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".controller.SpeedTestActivity"></activity>
-        <activity android:name=".controller.TestSSLocalActivity"></activity>
+        <service android:name=".service.TestService"></service>
         <activity android:name=".controller.InputSSServerSettingActivity"></activity>
-        <activity android:name=".controller.ServiceSpeedResultActivity" />
+        <activity android:name=".controller.ServiceSpeedResultActivity"/>
 
         <service
             android:name=".service.SpeedTestService"

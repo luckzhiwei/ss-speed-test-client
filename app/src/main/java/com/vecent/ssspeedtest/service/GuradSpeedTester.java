@@ -83,14 +83,13 @@ public class GuradSpeedTester extends Thread {
                         @Override
                         public void onOneRequestFinishListener(SpeedTestResult result) {
                             curResult.addResult2List(result);
-                            LogUtil.logDebug(getClass().getName(), result.isExceptionOccured() + "");
                         }
                     });
                     speedTest.startTest(new INetImplWithProxy(Constant.SOCKS_SERVER_LOCAL_PORT_BACK));
                 }
             }).start();
         } else {
-            LogUtil.logDebug(getClass().getName(), "end test");
+//            LogUtil.logDebug(getClass().getName(), "end test");
             finishSpeedTest();
         }
     }
@@ -100,11 +99,7 @@ public class GuradSpeedTester extends Thread {
         try {
             rmDBCached();
             if (mTestFinishListener != null && results.size() != 0) {
-                try {
-                    writeResult2DB();
-                } catch (Exception e) {
-                    LogUtil.logDebug(getName(), e.getMessage());
-                }
+                writeResult2DB();
                 mTestFinishListener.onTestFinish(results);
             }
             this.results = new ArrayList<>();
@@ -113,7 +108,7 @@ public class GuradSpeedTester extends Thread {
             mHandler.post(new Runnable() {
                 @Override
                 public void run() {
-                    LogUtil.logDebug(getClass().getName(), "start test");
+//                    LogUtil.logDebug(getClass().getName(), "start test");
                     runTest();
                 }
             });
@@ -130,7 +125,7 @@ public class GuradSpeedTester extends Thread {
         mIterator = proxyServers.iterator();
     }
 
-    private void rmDBCached(){
+    private void rmDBCached() {
         DaoSession daoSession = DaoManager.getInstance(mContext.getApplicationContext()).getDaoSession();
         daoSession.getTotalSpeedTestResultDao().deleteAll();
     }
