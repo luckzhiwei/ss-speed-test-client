@@ -26,6 +26,7 @@ import com.vecent.ssspeedtest.dao.SSServer;
 import com.vecent.ssspeedtest.greendao.DaoSession;
 import com.vecent.ssspeedtest.model.bean.TotalSpeedTestResult;
 import com.vecent.ssspeedtest.service.SpeedTestService;
+import com.vecent.ssspeedtest.util.LogUtil;
 import com.vecent.ssspeedtest.view.HeadBeatImage;
 import java.util.List;
 
@@ -181,5 +182,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
     }
+
+    @Override
+    public void onRestoreInstanceState(Bundle bundle) {
+        super.onRestoreInstanceState(bundle);
+        LogUtil.logDebug(getClass().getName(), "restore instance");
+    }
+
 
 }

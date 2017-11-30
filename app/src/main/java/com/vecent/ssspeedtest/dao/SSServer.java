@@ -8,7 +8,6 @@ import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.NotNull;
 import org.greenrobot.greendao.annotation.Property;
 import org.greenrobot.greendao.annotation.Generated;
-
 /**
  * Created by zhiwei on 2017/11/7.
  */
