@@ -5,6 +5,7 @@ import android.content.Context;
 import com.vecent.ssspeedtest.MainActivity;
 import com.vecent.ssspeedtest.greendao.DaoMaster;
 import com.vecent.ssspeedtest.greendao.DaoSession;
+import com.vecent.ssspeedtest.util.LogUtil;
 
 /**
  * Created by zhiwei on 2017/11/7.
@@ -13,14 +14,12 @@ import com.vecent.ssspeedtest.greendao.DaoSession;
 public class DaoManager {
 
     private DaoMaster daoMaster;
-    private DaoSession daoSession;
     private static volatile DaoManager mInstance = null;
 
     private DaoManager(Context context) {
         DaoMaster.DevOpenHelper devOpenHelper = new
                 DaoMaster.DevOpenHelper(context, "user.db");
         daoMaster = new DaoMaster(devOpenHelper.getWritableDatabase());
-        daoSession = daoMaster.newSession();
     }
 
     public static DaoManager getInstance(Context context) {
@@ -35,7 +34,7 @@ public class DaoManager {
     }
 
     public DaoSession getDaoSession() {
-        return daoSession;
+        return daoMaster.newSession();
     }
 
 

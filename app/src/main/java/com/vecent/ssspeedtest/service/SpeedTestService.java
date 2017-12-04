@@ -7,8 +7,13 @@ import android.os.RemoteException;
 
 import com.vecent.ssspeedtest.aidl.ISpeedTestInterface;
 import com.vecent.ssspeedtest.aidl.ITestFinishListener;
+import com.vecent.ssspeedtest.dao.DaoManager;
+import com.vecent.ssspeedtest.dao.SSServer;
+import com.vecent.ssspeedtest.greendao.DaoSession;
 import com.vecent.ssspeedtest.model.Servers;
 import com.vecent.ssspeedtest.util.LogUtil;
+
+import java.util.List;
 
 
 /**
@@ -51,15 +56,9 @@ public class SpeedTestService extends Service {
         if (iSpeedTestInterfaceImpl == null) {
             iSpeedTestInterfaceImpl = new ISpeedTestInterfaceImpl();
         }
-        LogUtil.logDebug(getClass().getName(), "onbind");
         return iSpeedTestInterfaceImpl;
     }
 
-    @Override
-    public void onRebind(Intent intent) {
-        super.onRebind(intent);
-        LogUtil.logDebug(getClass().getName(), "onrebind");
-    }
 
     @Override
     public void onDestroy() {
@@ -69,7 +68,7 @@ public class SpeedTestService extends Service {
 
     private void startSpeedTest() {
         if (servers2Test == null) {
-            servers2Test = new Servers(getApplicationContext(), "test.txt");
+            servers2Test = new Servers(getApplicationContext(), "alexa.json");
         }
         if (mGuradSpeedTester == null) {
             mGuradSpeedTester = new GuradSpeedTester(servers2Test.getServers(), getApplicationContext());
@@ -83,11 +82,6 @@ public class SpeedTestService extends Service {
         }
     }
 
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        LogUtil.logDebug(getClass().getName(), "onstartcommand");
-        return super.onStartCommand(intent, flags, startId);
-    }
 
 
 }
