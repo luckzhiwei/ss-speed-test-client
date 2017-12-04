@@ -77,10 +77,6 @@
     },
     {
         "type": "b",
-        "web": "http://bing.com"
-    },
-    {
-        "type": "b",
         "web": "http://t.co"
     },
     {
@@ -102,10 +98,6 @@
     {
         "type": "b",
         "web": "http://paypal.com"
-    },
-    {
-        "type": "b",
-        "web": "http://apple.com"
     },
     {
         "type": "b",
@@ -269,10 +261,6 @@
     },
     {
         "type": "b",
-        "web": "http://baidu.com"
-    },
-    {
-        "type": "b",
         "web": "http://bestbuy.com"
     },
     {
@@ -386,5 +374,93 @@
     {
         "type": "b",
         "web": "http://reddituploads.com"
+    },
+    {
+        "type": "w",
+        "web": "http://baidu.com"
+    },
+    {
+        "type": "w",
+        "web": "http://qq.com"
+    },
+    {
+        "type": "w",
+        "web": "http://taobao.com"
+    },
+    {
+        "type": "w",
+        "web": "http://sohu.com"
+    },
+    {
+        "type": "w",
+        "web": "http://hao123.com"
+    },
+    {
+        "type": "w",
+        "web": "http://360.cn"
+    },
+    {
+        "type": "w",
+        "web": "http://sina.com.cn"
+    },
+    {
+        "type": "w",
+        "web": "http://weibo.com"
+    },
+    {
+        "type": "w",
+        "web": "http://tmall.com"
+    },
+    {
+        "type": "w",
+        "web": "http://soso.com"
+    },
+    {
+        "type": "w",
+        "web": "http://gmw.cn"
+    },
+    {
+        "type": "w",
+        "web": "http://cnzz.com"
+    },
+    {
+        "type": "w",
+        "web": "http://youku.com"
+    },
+    {
+        "type": "w",
+        "web": "http://xinhuanet.com"
+    },
+    {
+        "type": "w",
+        "web": "http://tianya.cn"
+    },
+    {
+        "type": "w",
+        "web": "http://people.com.cn"
+    },
+    {
+        "type": "w",
+        "web": "http://360.com"
+    },
+    {
+        "type": "w",
+        "web": "http://haosou.com"
+    },
+    {
+        "type": "w",
+        "web": "http://so.com"
+    },
+    {
+        "type": "w",
+        "web": "http://youth.cn"
+    },
+    {
+        "type": "w",
+        "web": "http://china.com.cn"
+    },
+    {
+        "type": "w",
+        "web": "http://zhihu.com"
     }
 ]

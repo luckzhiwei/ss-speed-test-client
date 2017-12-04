@@ -33,15 +33,15 @@
     },
     {
         "type": "b",
+        "web": "http://www.boysmaster.com"
+    },
+    {
+        "type": "b",
         "web": "http://www.darpa.mil"
     },
     {
         "type": "b",
         "web": "http://www.deezer.com"
-    },
-    {
-        "type": "b",
-        "web": "http://dingchin.com.tw"
     },
     {
         "type": "b",
@@ -52,12 +52,12 @@
         "web": "http://www.dm530.net"
     },
     {
-        "type": "b",
-        "web": "http://www.dmm.co.jp"
+        "type": "w",
+        "web": "https://share.dmhy.org"
     },
     {
         "type": "b",
-        "web": "http://www.eesti.ee"
+        "web": "http://www.dmm.co.jp"
     },
     {
         "type": "b",
@@ -69,7 +69,7 @@
     },
     {
         "type": "b",
-        "web": "http://www.fxnetworks.com"
+        "web": "http://www.flipboard.com"
     },
     {
         "type": "b",
@@ -93,6 +93,10 @@
     },
     {
         "type": "b",
+        "web": "http://www.hybrid-analysis.com"
+    },
+    {
+        "type": "b",
         "web": "http://imgur.com/upload"
     },
     {
@@ -102,6 +106,10 @@
     {
         "type": "b",
         "web": "http://www.javhub.net"
+    },
+    {
+        "type": "b",
+        "web": "http://www.juliepost.com"
     },
     {
         "type": "b",
@@ -117,15 +125,7 @@
     },
     {
         "type": "b",
-        "web": "http://www.lovetvshow.com"
-    },
-    {
-        "type": "b",
         "web": "http://www.m-sport.co.uk"
-    },
-    {
-        "type": "b",
-        "web": "http://www.macgamestore.com"
     },
     {
         "type": "b",
@@ -137,7 +137,7 @@
     },
     {
         "type": "b",
-        "web": "http://www.matome-plus.net"
+        "web": "http://www.matome-plus.com"
     },
     {
         "type": "b",
@@ -153,11 +153,19 @@
     },
     {
         "type": "b",
-        "web": "http://www.netflix.com"
+        "web": "http://www.nbc.com/live"
     },
     {
         "type": "b",
         "web": "http://www.nottinghampost.com"
+    },
+    {
+        "type": "b",
+        "web": "http://www.nusatrip.com"
+    },
+    {
+        "type": "b",
+        "web": "http://www.omni7.jp"
     },
     {
         "type": "b",
@@ -193,10 +201,6 @@
     },
     {
         "type": "b",
-        "web": "http://www.rdio.com"
-    },
-    {
-        "type": "b",
         "web": "https://riseup.net"
     },
     {
@@ -209,7 +213,15 @@
     },
     {
         "type": "b",
+        "web": "http://www.spotify.com"
+    },
+    {
+        "type": "b",
         "web": "http://www.spreadshirt.es"
+    },
+    {
+        "type": "b",
+        "web": "http://www.springboardplatform.com"
     },
     {
         "type": "b",
@@ -221,11 +233,15 @@
     },
     {
         "type": "b",
+        "web": "http://superokayama.com"
+    },
+    {
+        "type": "b",
         "web": "http://www.thebodyshop-usa.com"
     },
     {
         "type": "b",
-        "web": "http://www.vevo.com"
+        "web": "http://www.twerkingbutt.com"
     },
     {
         "type": "b",
@@ -249,10 +265,6 @@
     },
     {
         "type": "b",
-        "web": "http://www.xfinity.com"
-    },
-    {
-        "type": "b",
         "web": "http://www.zattoo.com"
     },
     {
@@ -273,39 +285,19 @@
     },
     {
         "type": "b",
+        "web": "http://www.search.aol.com"
+    },
+    {
+        "type": "b",
         "web": "http://www.avmoo.pw"
     },
     {
         "type": "b",
-        "web": "http://itaiwan.gov.tw"
-    },
-    {
-        "type": "w",
-        "web": "http://kmseh.gov.tw"
-    },
-    {
-        "type": "w",
-        "web": "http://www.northguan-nsa.gov.tw"
+        "web": "http://5maodang.com"
     },
     {
         "type": "b",
-        "web": "http://www.030buy.com"
-    },
-    {
-        "type": "b",
-        "web": "http://www.18board.info"
-    },
-    {
-        "type": "b",
-        "web": "http://2000fun.com/bbs"
-    },
-    {
-        "type": "b",
-        "web": "http://24hrs.ca"
-    },
-    {
-        "type": "b",
-        "web": "http://89-64.org"
+        "web": "http://85cc.net"
     },
     {
         "type": "b",
@@ -321,7 +313,7 @@
     },
     {
         "type": "b",
-        "web": "http://www.alasbarricadas.org"
+        "web": "http://www.akiba-online.com"
     },
     {
         "type": "b",
@@ -329,35 +321,15 @@
     },
     {
         "type": "b",
-        "web": "http://ameblo.jp"
-    },
-    {
-        "type": "b",
         "web": "http://www.andfaraway.net"
     },
     {
         "type": "b",
-        "web": "http://www.android-x86.org"
+        "web": "http://www.angularjs.org"
     },
     {
         "type": "b",
         "web": "http://www.anobii.com"
-    },
-    {
-        "type": "b",
-        "web": "http://www.apiary.io"
-    },
-    {
-        "type": "b",
-        "web": "http://www.archives.gov"
-    },
-    {
-        "type": "b",
-        "web": "http://www.army.mil"
-    },
-    {
-        "type": "b",
-        "web": "http://www.asacp.org"
     },
     {
         "type": "b",
@@ -369,7 +341,11 @@
     },
     {
         "type": "b",
-        "web": "http://www.askstudent.com"
+        "web": "http://www.avidemux.org"
+    },
+    {
+        "type": "b",
+        "web": "http://www.baidu.jp"
     },
     {
         "type": "b",
@@ -381,51 +357,31 @@
     },
     {
         "type": "b",
-        "web": "http://calgarychinese.net"
+        "web": "http://catholic.org.tw"
     },
     {
         "type": "b",
-        "web": "http://blog.calibre-ebook.com"
+        "web": "http://www.chinese-hermit.net"
     },
     {
         "type": "b",
-        "web": "http://cari.com.my"
+        "web": "http://digiland.tw/"
     },
     {
         "type": "b",
-        "web": "http://www.chinalawtranslate.com"
+        "web": "http://domain.club.tw"
     },
     {
         "type": "b",
-        "web": "http://www.chinesedailynews.com"
+        "web": "http://www.dropbooks.tv"
     },
     {
         "type": "b",
-        "web": "http://www.codeskulptor.org"
+        "web": "http://www.dtic.mil"
     },
     {
         "type": "b",
-        "web": "http://delcamp.net"
-    },
-    {
-        "type": "b",
-        "web": "http://desc.se"
-    },
-    {
-        "type": "b",
-        "web": "http://dl-laby.jp"
-    },
-    {
-        "type": "b",
-        "web": "http://drgan.net"
-    },
-    {
-        "type": "b",
-        "web": "http://www.duihuahrjournal.org"
-    },
-    {
-        "type": "b",
-        "web": "http://www.duplicati.com"
+        "web": "http://www.duckmylife.com"
     },
     {
         "type": "b",
@@ -433,11 +389,7 @@
     },
     {
         "type": "b",
-        "web": "http://www.e-classical.com.tw"
-    },
-    {
-        "type": "b",
-        "web": "http://www.e-gold.com"
+        "web": "http://www.ebookee.com"
     },
     {
         "type": "b",
@@ -445,7 +397,7 @@
     },
     {
         "type": "b",
-        "web": "http://www.electionsmeter.com"
+        "web": "http://www.eic-av.com"
     },
     {
         "type": "b",
@@ -461,23 +413,35 @@
     },
     {
         "type": "b",
-        "web": "http://www.etvonline.hk"
+        "web": "http://franklc.com"
     },
     {
         "type": "b",
-        "web": "http://www.exblog.jp"
+        "web": "http://freakshare.com"
     },
     {
         "type": "b",
-        "web": "http://www.gamebase.com.tw"
+        "web": "http://freakshare.com"
     },
     {
         "type": "b",
-        "web": "http://wiki.gamerp.jp"
+        "web": "http://free.fr/adsl"
     },
     {
         "type": "b",
-        "web": "http://gamez.com.tw"
+        "web": "http://kineox.free.fr"
+    },
+    {
+        "type": "b",
+        "web": "http://frommel.net"
+    },
+    {
+        "type": "b",
+        "web": "http://fscked.org"
+    },
+    {
+        "type": "b",
+        "web": "http://fuyin.net"
     },
     {
         "type": "b",
@@ -493,27 +457,27 @@
     },
     {
         "type": "b",
-        "web": "http://gmhz.org"
+        "web": "http://www.gohappy.com.tw"
     },
     {
         "type": "b",
-        "web": "http://www.goofind.com"
+        "web": "http://www.goldbetsports.com"
     },
     {
         "type": "b",
-        "web": "http://www.gotw.ca"
+        "web": "http://www.goldwave.com"
     },
     {
         "type": "b",
-        "web": "http://www.graphql.org"
+        "web": "http://www.great-firewall.com"
     },
     {
         "type": "b",
-        "web": "http://www.hakkatv.org.tw"
+        "web": "http://www.gs-discuss.com"
     },
     {
         "type": "b",
-        "web": "http://ae.hao123.com"
+        "web": "http://www.gtricks.com"
     },
     {
         "type": "b",
@@ -525,10 +489,6 @@
     },
     {
         "type": "b",
-        "web": "http://ma.hao123.com"
-    },
-    {
-        "type": "b",
         "web": "http://sa.hao123.com"
     },
     {
@@ -536,16 +496,32 @@
         "web": "http://www.happy-vpn.com"
     },
     {
+        "type": "w",
+        "web": "http://www.haygo.com"
+    },
+    {
         "type": "b",
         "web": "http://www.heartyit.com"
     },
     {
         "type": "b",
-        "web": "http://cdn.helixstudios.net"
+        "web": "http://hungerstrikeforaids.org"
     },
     {
         "type": "b",
-        "web": "http://ibiblio.org/pub/packages/ccic"
+        "web": "http://huyandex.com"
+    },
+    {
+        "type": "b",
+        "web": "http://hwayue.org.tw"
+    },
+    {
+        "type": "b",
+        "web": "http://i818hk.com"
+    },
+    {
+        "type": "b",
+        "web": "http://identi.ca"
     },
     {
         "type": "b",
@@ -553,27 +529,27 @@
     },
     {
         "type": "b",
-        "web": "http://illusionfactory.com"
+        "web": "http://imlive.com"
     },
     {
         "type": "b",
-        "web": "http://ilove80.be"
+        "web": "http://www.insidevoa.com"
     },
     {
         "type": "b",
-        "web": "http://imageshack.us"
+        "web": "http://www.internetdefenseleague.org"
     },
     {
         "type": "b",
-        "web": "http://imagezilla.net"
+        "web": "http://www.internetpopculture.com"
     },
     {
         "type": "b",
-        "web": "http://www.iphonetaiwan.org"
+        "web": "http://www.iphone4hongkong.com"
     },
     {
         "type": "b",
-        "web": "http://www.iphonix.fr"
+        "web": "http://www.iphonehacks.com"
     },
     {
         "type": "b",
@@ -581,11 +557,15 @@
     },
     {
         "type": "b",
-        "web": "http://www.ironpython.net"
+        "web": "http://www.iptvbin.com"
     },
     {
         "type": "b",
-        "web": "http://www.ismaelan.com"
+        "web": "http://www.isohunt.com"
+    },
+    {
+        "type": "b",
+        "web": "http://www.jgoodies.com"
     },
     {
         "type": "b",
@@ -593,27 +573,11 @@
     },
     {
         "type": "b",
-        "web": "http://hk.jiepang.com"
+        "web": "http://cdn.assets.lfpcontent.com"
     },
     {
         "type": "b",
-        "web": "http://zhao.jinhai.de"
-    },
-    {
-        "type": "b",
-        "web": "http://www.jitouch.com"
-    },
-    {
-        "type": "b",
-        "web": "http://www.jma.go.jp"
-    },
-    {
-        "type": "b",
-        "web": "http://www.journalofdemocracy.org"
-    },
-    {
-        "type": "b",
-        "web": "http://www.junauza.com"
+        "web": "http://lingvodics.com"
     },
     {
         "type": "b",
@@ -621,7 +585,11 @@
     },
     {
         "type": "b",
-        "web": "http://manicur4ik.ru"
+        "web": "http://www.martau.com"
+    },
+    {
+        "type": "b",
+        "web": "http://blog.martinoei.com"
     },
     {
         "type": "b",
@@ -629,7 +597,23 @@
     },
     {
         "type": "b",
-        "web": "http://marxist.net"
+        "web": "http://www.marxist.net"
+    },
+    {
+        "type": "b",
+        "web": "http://www.matainja.com"
+    },
+    {
+        "type": "b",
+        "web": "http://www.mathable.io"
+    },
+    {
+        "type": "b",
+        "web": "http://www.matsushimakaede.com"
+    },
+    {
+        "type": "b",
+        "web": "http://www.mcfog.com"
     },
     {
         "type": "b",
@@ -637,31 +621,19 @@
     },
     {
         "type": "b",
-        "web": "http://www.mobatek.net"
+        "web": "http://www.mizzmona.com"
     },
     {
         "type": "b",
-        "web": "http://www.monlamit.org"
+        "web": "http://nokogiri.org"
     },
     {
         "type": "b",
-        "web": "http://moroneta.com"
+        "web": "http://nokola.com"
     },
     {
         "type": "b",
-        "web": "http://www.moztw.org"
-    },
-    {
-        "type": "b",
-        "web": "http://www.multiply.com"
-    },
-    {
-        "type": "b",
-        "web": "http://www.mx981.com"
-    },
-    {
-        "type": "b",
-        "web": "http://nurgo-software.com"
+        "web": "http://nownews.com"
     },
     {
         "type": "b",
@@ -673,11 +645,19 @@
     },
     {
         "type": "b",
-        "web": "http://openid.net"
+        "web": "http://omgili.com"
     },
     {
         "type": "b",
-        "web": "http://openid.net"
+        "web": "http://omnitalk.org"
+    },
+    {
+        "type": "b",
+        "web": "http://www.oxid.it"
+    },
+    {
+        "type": "b",
+        "web": "http://www.paper.li"
     },
     {
         "type": "b",
@@ -685,35 +665,27 @@
     },
     {
         "type": "b",
+        "web": "http://www.peeasian.com"
+    },
+    {
+        "type": "b",
+        "web": "http://www.penthouse.com"
+    },
+    {
+        "type": "b",
+        "web": "http://www.peopo.org"
+    },
+    {
+        "type": "b",
+        "web": "http://www.peopo.org"
+    },
+    {
+        "type": "b",
         "web": "http://www.philly.com"
     },
     {
         "type": "b",
-        "web": "http://www.pinterest.at"
-    },
-    {
-        "type": "b",
-        "web": "http://www.pinterest.co.kr"
-    },
-    {
-        "type": "b",
-        "web": "http://www.pinterest.co.uk"
-    },
-    {
-        "type": "b",
-        "web": "http://www.pinterest.de"
-    },
-    {
-        "type": "b",
-        "web": "http://www.pinterest.dk"
-    },
-    {
-        "type": "b",
-        "web": "http://www.pinterest.fr"
-    },
-    {
-        "type": "b",
-        "web": "http://www.pinterest.jp"
+        "web": "http://www.phuquocservices.com"
     },
     {
         "type": "b",
@@ -721,87 +693,67 @@
     },
     {
         "type": "b",
-        "web": "http://www.pixelqi.com"
+        "web": "http://rapidgator.net/"
     },
     {
         "type": "b",
-        "web": "http://pictures.playboy.com"
+        "web": "http://roc-taiwan.org"
     },
     {
         "type": "b",
-        "web": "http://www.playboy.com"
+        "web": "http://roodo.com"
     },
     {
         "type": "b",
-        "web": "http://www.po2b.com"
+        "web": "http://www.savemedia.com"
     },
     {
         "type": "b",
-        "web": "http://www.podictionary.com"
+        "web": "http://www.sethwklein.net"
     },
     {
         "type": "b",
-        "web": "http://www.pokerstars.net"
+        "web": "http://www.shixiao.org"
     },
     {
         "type": "b",
-        "web": "http://nf.id.au"
+        "web": "http://stoneip.info"
     },
     {
         "type": "b",
-        "web": "http://rtalabel.org"
+        "web": "http://storagenewsletter.com"
     },
     {
         "type": "b",
-        "web": "http://rutube.ru"
+        "web": "http://streamingthe.net"
     },
     {
         "type": "b",
-        "web": "http://savemedia.com"
+        "web": "http://sunmedia.ca"
     },
     {
         "type": "b",
-        "web": "http://savetibet.fr"
+        "web": "http://swift-tools.net"
     },
     {
         "type": "b",
-        "web": "http://www.sino-monthly.com"
+        "web": "http://www.taolun.info"
     },
     {
         "type": "b",
-        "web": "http://www.site90.net"
+        "web": "http://www.taolun.info"
     },
     {
         "type": "b",
-        "web": "http://www.sitebro.tw"
+        "web": "http://blog.taragana.com"
     },
     {
         "type": "b",
-        "web": "http://slinkset.com"
+        "web": "http://www.thebcomplex.com"
     },
     {
         "type": "b",
-        "web": "http://sysresccd.org"
-    },
-    {
-        "type": "b",
-        "web": "http://tablesgenerator.com/"
-    },
-    {
-        "type": "b",
-        "web": "http://taiwantoday.tw"
-    },
-    {
-        "type": "b",
-        "web": "http://taolun.info"
-    },
-    {
-        "type": "b",
-        "web": "http://taolun.info"
-    },
-    {
-        "type": "b",
-        "web": "http://www.thetrotskymovie.com"
+        "web": "http://www.therock.net.nz"
     },
     {
         "type": "b",
@@ -809,31 +761,19 @@
     },
     {
         "type": "b",
-        "web": "http://www.tibet.to"
+        "web": "http://www.throughnightsfire.com"
     },
     {
         "type": "b",
-        "web": "http://www.tibetgermany.de"
+        "web": "http://www.tianlawoffice.com"
     },
     {
         "type": "b",
-        "web": "http://www.tibetwrites.org"
+        "web": "http://tweetedtimes.com"
     },
     {
         "type": "b",
-        "web": "http://www.blog.tiney.com"
-    },
-    {
-        "type": "b",
-        "web": "http://www.tintuc101.com"
-    },
-    {
-        "type": "b",
-        "web": "http://www.tinypaste.com"
-    },
-    {
-        "type": "b",
-        "web": "http://www.tkcs-collins.com"
+        "web": "http://twgreatdaily.com"
     },
     {
         "type": "b",
@@ -841,39 +781,23 @@
     },
     {
         "type": "b",
-        "web": "http://twilog.org"
+        "web": "http://www.tweepguide.com"
     },
     {
         "type": "b",
-        "web": "http://twindexx.com"
+        "web": "http://www.uderzo.it"
     },
     {
         "type": "b",
-        "web": "http://twitcause.com"
+        "web": "http://www.uncyclomedia.org"
     },
     {
         "type": "b",
-        "web": "http://twittertim.es"
+        "web": "http://www.underwoodammo.com"
     },
     {
         "type": "b",
-        "web": "http://typepad.com"
-    },
-    {
-        "type": "w",
-        "web": "http://static.typepad.com"
-    },
-    {
-        "type": "b",
-        "web": "http://blogs.tampabay.com"
-    },
-    {
-        "type": "b",
-        "web": "http://cldr.unicode.org"
-    },
-    {
-        "type": "b",
-        "web": "http://www.upload4u.info"
+        "web": "http://www.unholyknight.com"
     },
     {
         "type": "b",
@@ -881,39 +805,59 @@
     },
     {
         "type": "b",
-        "web": "http://www.usmc.mil"
+        "web": "http://hkcoc.weather.com.hk"
     },
     {
         "type": "b",
-        "web": "http://tsdr.uspto.gov"
+        "web": "http://web2project.net"
     },
     {
         "type": "b",
-        "web": "http://www.vcf-online.org"
+        "web": "http://wetpussygames.com"
     },
     {
         "type": "b",
-        "web": "http://www.venbbs.com"
+        "web": "http://wheelockslatin.com"
     },
     {
         "type": "b",
-        "web": "http://www.videomo.com"
+        "web": "http://whippedass.com"
     },
     {
         "type": "b",
-        "web": "http://www.vinniev.com"
+        "web": "http://whylover.com"
     },
     {
         "type": "b",
-        "web": "http://www.vmixcore.com"
+        "web": "http://wikileaks.eu"
     },
     {
         "type": "b",
-        "web": "http://wtfpeople.com"
+        "web": "http://www.workatruna.com"
     },
     {
         "type": "b",
-        "web": "http://www.xjtravelguide.com"
+        "web": "http://www.workersthebig.net"
+    },
+    {
+        "type": "b",
+        "web": "http://www.wtfpeople.com"
+    },
+    {
+        "type": "b",
+        "web": "http://www.xcritic.com"
+    },
+    {
+        "type": "b",
+        "web": "http://www.xiaobaiwu.com"
+    },
+    {
+        "type": "b",
+        "web": "http://www.xiaohexie.com"
+    },
+    {
+        "type": "b",
+        "web": "http://www.xiaohexie.com"
     },
     {
         "type": "b",
@@ -921,11 +865,7 @@
     },
     {
         "type": "b",
-        "web": "http://www.xmovies.com"
-    },
-    {
-        "type": "b",
-        "web": "http://www.xpud.org"
+        "web": "http://www.xuchao.net"
     },
     {
         "type": "b",
@@ -933,22 +873,14 @@
     },
     {
         "type": "b",
+        "web": "http://www.yakbutterblues.com"
+    },
+    {
+        "type": "b",
         "web": "http://www.yam.com"
     },
     {
         "type": "b",
-        "web": "http://www.youxu.info"
-    },
-    {
-        "type": "b",
-        "web": "http://www.yousendit.com"
-    },
-    {
-        "type": "b",
-        "web": "http://topic.youthwant.com.tw"
-    },
-    {
-        "type": "b",
-        "web": "http://www.youtubecn.com"
+        "web": "http://www.yam.com"
     }
 ]

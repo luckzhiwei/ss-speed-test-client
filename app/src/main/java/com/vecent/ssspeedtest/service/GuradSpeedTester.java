@@ -89,7 +89,7 @@ public class GuradSpeedTester extends Thread {
                 }
             }).start();
         } else {
-//            LogUtil.logDebug(getClass().getName(), "end test");
+            LogUtil.logDebug(getClass().getName(), "end test");
             finishSpeedTest();
         }
     }

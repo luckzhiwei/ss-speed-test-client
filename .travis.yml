@@ -35,7 +35,6 @@ before_install:
 install:
 - echo yes | sdkmanager "extras;m2repository;com;android;support;constraint;constraint-layout;1.0.2"
 - echo yes | sdkmanager "extras;m2repository;com;android;support;constraint;constraint-layout-solver;1.0.2"
-### todo 考虑把这个步骤放入gradle中
 - cd ./script && docker run -it --dns=8.8.8.8  -v $PWD/out/:/out/ gfwlist_img && cp -r ./out/* ../app/src/main/assets/ && cd ..
 
 before_script:

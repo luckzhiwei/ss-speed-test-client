@@ -26,7 +26,6 @@ public class DaoManager {
         if (mInstance == null) {
             synchronized (DaoManager.class) {
                 if (mInstance == null) {
-                    LogUtil.logDebug("speedtest", "initial the dao manager");
                     mInstance = new DaoManager(context);
                 }
             }
