@@ -83,7 +83,7 @@ public class ResultLayout extends LinearLayout {
         this.mTextViewWhiteListServerCount = this.findViewById(R.id.textview_white_server_count);
         this.mTextViewBlackListServerRatio = this.findViewById(R.id.textview_black_server_ratio);
         this.mTextViewBlackListServerCount = this.findViewById(R.id.textview_black_server_count);
-        this.mTextViewWhiteAddrSpeedAvg = this.findViewById(R.id.textview_white_server_avg_speed);
+        this.mTextViewWhiteAddrSpeedAvg = this.findViewById(R.id.textview_white_server_speed_avg);
         this.mTextViewBlackAddrSpeedAvg = this.findViewById(R.id.textview_black_add_speed_avg);
         this.mTextViewCurServerCount = this.findViewById(R.id.textview_cur_server_count);
         this.mTextViewTotalTimeUsed = this.findViewById(R.id.textview_total_time_used);

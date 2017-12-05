@@ -19,23 +19,23 @@
         android:layout_marginTop="3dp" />
 
     <TextView
-        android:id="@+id/textview_white_server_avg_speed"
+        android:id="@+id/textview_white_server_speed_avg"
         style="@style/textViewSmall.Gray"
-        android:layout_alignTop="@id/textview_white_server_ratio"
-        android:layout_marginLeft="3dp"
-        android:layout_toRightOf="@id/textview_white_server_ratio" />
+        android:layout_alignLeft="@id/textview_white_server_ratio"
+        android:layout_below="@id/textview_white_server_ratio"
+        android:layout_marginTop="3dp" />
 
     <TextView
         android:id="@+id/textview_black_server_ratio"
         style="@style/textViewSmall.Gray"
         android:layout_alignLeft="@id/server_2_test_addr"
-        android:layout_below="@id/textview_white_server_ratio"
+        android:layout_below="@id/textview_white_server_speed_avg"
         android:layout_marginTop="3dp" />
 
     <TextView
         android:id="@+id/textview_black_speed_avg"
         style="@style/textViewSmall.Gray"
-        android:layout_alignTop="@id/textview_black_server_ratio"
-        android:layout_marginLeft="3dp"
-        android:layout_toRightOf="@id/textview_black_server_ratio" />
+        android:layout_alignLeft="@id/textview_black_server_ratio"
+        android:layout_below="@id/textview_black_server_ratio"
+        android:layout_marginTop="3dp" />
 </RelativeLayout>

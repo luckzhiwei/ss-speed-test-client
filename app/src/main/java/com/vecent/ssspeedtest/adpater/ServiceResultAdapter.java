@@ -6,7 +6,6 @@ import android.widget.TextView;
 
 import com.vecent.ssspeedtest.R;
 import com.vecent.ssspeedtest.model.bean.TotalSpeedTestResult;
-import com.vecent.ssspeedtest.view.ResultLayout;
 import com.zhy.adapter.abslistview.CommonAdapter;
 import com.zhy.adapter.abslistview.ViewHolder;
 
@@ -27,13 +26,13 @@ public class ServiceResultAdapter extends CommonAdapter<TotalSpeedTestResult> {
         TextView addr2Test = viewHolder.getView(R.id.server_2_test_addr);
         TextView whiteAddrSuccessRatio = viewHolder.getView(R.id.textview_white_server_ratio);
         TextView blackAddrSuccessRatio = viewHolder.getView(R.id.textview_black_server_ratio);
-        TextView whiteAddrSpeedAvg = viewHolder.getView(R.id.textview_white_server_avg_speed);
+        TextView whiteAddrSpeedAvg = viewHolder.getView(R.id.textview_white_server_speed_avg);
         TextView blackAddrSpeedAvg = viewHolder.getView(R.id.textview_black_speed_avg);
         Resources res = mContext.getResources();
         addr2Test.setText(item.getServer2TestAddr());
-        whiteAddrSuccessRatio.setText(res.getString(R.string.white_list_success_rate) + " : " + item.getWhiteAddrConnectSuccesRate());
-        whiteAddrSpeedAvg.setText(res.getString(R.string.white_avg_speed) + " : " + item.getSpeedWhiteAddrDownLoadAvg() + res.getString(R.string.kb_by_second));
-        blackAddrSuccessRatio.setText(res.getString(R.string.black_list_success_rate) + " : " + item.getBlackAddrConnectSuccesRate());
-        blackAddrSpeedAvg.setText(res.getString(R.string.black_avg_speed) + " : " + item.getSpeedBlackAddrDownLoadAvg() + res.getString(R.string.kb_by_second));
+        whiteAddrSuccessRatio.setText(res.getString(R.string.top_100_white_addr_success_ratio) + " : " + item.getWhiteAddrConnectSuccesRate());
+        whiteAddrSpeedAvg.setText(res.getString(R.string.top_100_white_addr_speed_avg) + " : " + item.getSpeedWhiteAddrDownLoadAvg() + res.getString(R.string.kb_by_second));
+        blackAddrSuccessRatio.setText(res.getString(R.string.top_100_black_addr_success_ratio) + " : " + item.getBlackAddrConnectSuccesRate());
+        blackAddrSpeedAvg.setText(res.getString(R.string.top_100_black_addr_speed_avg) + " : " + item.getSpeedBlackAddrDownLoadAvg() + res.getString(R.string.kb_by_second));
     }
 }

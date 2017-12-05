@@ -196,7 +196,7 @@
                 android:src="@mipmap/average" />
 
             <TextView
-                android:id="@+id/textview_white_server_avg_speed"
+                android:id="@+id/textview_white_server_speed_avg"
                 style="@style/textViewMiddle.Gray"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="8dp"

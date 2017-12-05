@@ -56,6 +56,7 @@ public class SpeedTestService extends Service {
         if (iSpeedTestInterfaceImpl == null) {
             iSpeedTestInterfaceImpl = new ISpeedTestInterfaceImpl();
         }
+
         return iSpeedTestInterfaceImpl;
     }
 
