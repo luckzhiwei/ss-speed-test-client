@@ -9,7 +9,7 @@ import android.widget.ProgressBar;
 import com.vecent.ssspeedtest.R;
 import com.vecent.ssspeedtest.adpater.SpeedTestAdapter;
 import com.vecent.ssspeedtest.dao.SSServer;
-import com.vecent.ssspeedtest.model.ProxyGuradProcess;
+import com.vecent.ssspeedtest.model.guradprocess.SSProxyGuradProcess;
 import com.vecent.ssspeedtest.model.net.INetImplDefault;
 import com.vecent.ssspeedtest.model.Servers;
 import com.vecent.ssspeedtest.model.SpeedTest;
@@ -35,7 +35,7 @@ public class SpeedTestActivity extends Activity {
     private int totalSize;
     private Handler mHandler;
     private SSServer mProxyServer;
-    private ProxyGuradProcess mGuradProcess;
+    private SSProxyGuradProcess mGuradProcess;
 
     private SpeedTest.RequestCallBack callBack = new SpeedTest.RequestCallBack() {
         @Override
@@ -61,7 +61,7 @@ public class SpeedTestActivity extends Activity {
         public TotalSpeedTestResult mSaveResult;
         public SpeedTestAdapter mSaveAdapter;
         public SpeedTest mSaveSpeedTest;
-        public ProxyGuradProcess mSaveGuradProcess;
+        public SSProxyGuradProcess mSaveGuradProcess;
     }
 
     @Override
@@ -140,7 +140,7 @@ public class SpeedTestActivity extends Activity {
 
     private void startTestWithProxy() {
         this.mResultLayout.setProxyServerInfo(mProxyServer);
-        mGuradProcess = new ProxyGuradProcess(mProxyServer, this, Constant.SOCKS_SERVER_LOCAL_PORT_FONT);
+        mGuradProcess = new SSProxyGuradProcess(mProxyServer, this, Constant.SOCKS_SERVER_LOCAL_PORT_FONT);
         mGuradProcess.start();
         new Thread(new Runnable() {
             @Override

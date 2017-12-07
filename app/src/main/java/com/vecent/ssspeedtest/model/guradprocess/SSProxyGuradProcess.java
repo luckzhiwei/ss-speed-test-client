@@ -1,4 +1,4 @@
-package com.vecent.ssspeedtest.model;
+package com.vecent.ssspeedtest.model.guradprocess;
 
 import android.content.Context;
 
@@ -13,12 +13,12 @@ import java.util.List;
  * Created by zhiwei on 2017/11/6.
  */
 
-public class ProxyGuradProcess extends GuradProcess {
+public class SSProxyGuradProcess extends GuradProcess {
 
     private int mPort;
     private SSServer mSSServer;
 
-    public ProxyGuradProcess(SSServer ssServer, Context context, int port) {
+    public SSProxyGuradProcess(SSServer ssServer, Context context, int port) {
         super(context);
         this.mSSServer = ssServer;
         this.mPort = port;

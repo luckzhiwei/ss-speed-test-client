@@ -15,7 +15,6 @@ import java.util.List;
 
 public abstract class GuradProcess {
 
-
     protected Thread mProcessThread;
     protected Process mProcess;
     protected List<String> mCmds;
@@ -40,9 +39,8 @@ public abstract class GuradProcess {
                         mProcess = processBuilder.start();
                         LogUtil.logDebug(getClass().getName(), "RET IS " + mProcess.waitFor() + "");
                     } catch (IOException e) {
-
+                        LogUtil.logDebug(getClass().getName(), "io execption" + e.getMessage());
                     } catch (InterruptedException e) {
-                        return;
                     }
                 }
             });

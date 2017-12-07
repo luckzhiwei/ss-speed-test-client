@@ -21,6 +21,7 @@ import com.vecent.ssspeedtest.aidl.ITestFinishListener;
 import com.vecent.ssspeedtest.controller.InputSSServerSettingActivity;
 import com.vecent.ssspeedtest.controller.ServiceSpeedResultActivity;
 import com.vecent.ssspeedtest.controller.SpeedTestActivity;
+import com.vecent.ssspeedtest.controller.TestPrivoxyActivity;
 import com.vecent.ssspeedtest.dao.DaoManager;
 import com.vecent.ssspeedtest.dao.SSServer;
 import com.vecent.ssspeedtest.greendao.DaoSession;
@@ -123,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent();
-                intent.setClass(getApplicationContext(), SpeedTestActivity.class);
+                intent.setClass(getApplicationContext(), TestPrivoxyActivity.class);
                 startActivity(intent);
             }
         });
@@ -176,6 +177,7 @@ public class MainActivity extends AppCompatActivity {
         DaoSession daoSession = DaoManager.getInstance(getApplicationContext()).getDaoSession();
         daoSession.getSSServerDao().delete(server);
         loadData();
+
     }
 
 
@@ -183,12 +185,5 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
     }
-
-    @Override
-    public void onRestoreInstanceState(Bundle bundle) {
-        super.onRestoreInstanceState(bundle);
-        LogUtil.logDebug(getClass().getName(), "restore instance");
-    }
-
 
 }

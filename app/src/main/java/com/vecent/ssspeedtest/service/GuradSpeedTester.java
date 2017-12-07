@@ -9,7 +9,7 @@ import com.vecent.ssspeedtest.aidl.ITestFinishListener;
 import com.vecent.ssspeedtest.dao.DaoManager;
 import com.vecent.ssspeedtest.dao.SSServer;
 import com.vecent.ssspeedtest.greendao.DaoSession;
-import com.vecent.ssspeedtest.model.ProxyGuradProcess;
+import com.vecent.ssspeedtest.model.guradprocess.SSProxyGuradProcess;
 import com.vecent.ssspeedtest.model.SpeedTest;
 import com.vecent.ssspeedtest.model.bean.Server;
 import com.vecent.ssspeedtest.model.bean.SpeedTestResult;
@@ -68,7 +68,7 @@ public class GuradSpeedTester extends Thread {
                 public void run() {
                     final TotalSpeedTestResult curResult = new TotalSpeedTestResult();
                     SSServer proxySSServer = mIterator.next();
-                    final ProxyGuradProcess proxyGuradProcess = new ProxyGuradProcess(proxySSServer, mContext, Constant.SOCKS_SERVER_LOCAL_PORT_BACK);
+                    final SSProxyGuradProcess proxyGuradProcess = new SSProxyGuradProcess(proxySSServer, mContext, Constant.SOCKS_SERVER_LOCAL_PORT_BACK);
                     proxyGuradProcess.start();
                     curResult.setServer2TestAddr(proxySSServer.getServerAddr());
                     SpeedTest speedTest = new SpeedTest(servers2Test, mHandler);
@@ -108,7 +108,7 @@ public class GuradSpeedTester extends Thread {
             mHandler.post(new Runnable() {
                 @Override
                 public void run() {
-//                    LogUtil.logDebug(getClass().getName(), "start test");
+                    LogUtil.logDebug(getClass().getName(), "start test");
                     runTest();
                 }
             });
