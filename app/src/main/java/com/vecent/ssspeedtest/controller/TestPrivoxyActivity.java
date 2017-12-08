@@ -46,7 +46,6 @@ public class TestPrivoxyActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        checkPermission();
         SSServer ssServer = new SSServer();
         ssServer.setServerAddr("118.184.57.38");
         ssServer.setPassword("esecb1307");
@@ -57,7 +56,7 @@ public class TestPrivoxyActivity extends Activity {
         privoxyGuradProcess = new PrivoxyGuradProcess(this, Constant.FRONT_PRIVOXY_CONFIG_FILE_NAME);
         privoxyGuradProcess.start();
         try {
-            Thread.sleep(1000);
+            Thread.sleep(500);
         } catch (InterruptedException e) {
             e.getMessage();
         }
@@ -88,82 +87,6 @@ public class TestPrivoxyActivity extends Activity {
         }).start();
     }
 
-    private File checkFolderIsExist() {
-        File root = Environment.getExternalStorageDirectory();
-        File etcPrioxyFolder = new File(root, "/etc/privoxy");
-        if (!etcPrioxyFolder.exists()) {
-            etcPrioxyFolder.mkdirs();
-        }
-        return etcPrioxyFolder;
-    }
-
-
-    private void copyAssertFolderToTarget(String src, File des) {
-        AssetManager manager = getAssets();
-        try {
-            String[] files = manager.list(src);
-            if (files != null) {
-                for (String file : files) {
-                    File targetFile = new File(des, file);
-                    if (targetFile.exists()) {
-                        continue;
-                    }
-                    InputStream in = null;
-                    OutputStream out = null;
-                    in = manager.open(src + "/" + file);
-                    out = new FileOutputStream(targetFile);
-                    copy(in, out);
-                    out.close();
-                    in.close();
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-
-    private void copy(InputStream in, OutputStream out) throws IOException {
-        byte[] buf = new byte[1024];
-        int len = 0;
-        while ((len = in.read(buf)) != -1) {
-            out.write(buf, 0, len);
-        }
-    }
-
-
-    private void checkPermission() {
-        if (Build.VERSION.SDK_INT >= 23) {
-            boolean hasPermission = (ContextCompat.checkSelfPermission(this,
-                    WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED);
-            if (!hasPermission) {
-                ActivityCompat.requestPermissions(this,
-                        new String[]{WRITE_EXTERNAL_STORAGE}, REQUEST_WRITE_STORAGE);
-            } else {
-                copyAssertFolderToTarget("privoxy/etc", checkFolderIsExist());
-                copyAssertFolderToTarget("privoxy/bin", getFilesDir());
-            }
-        } else {
-            copyAssertFolderToTarget("privoxy/etc", checkFolderIsExist());
-            copyAssertFolderToTarget("privoxy/bin", getFilesDir());
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode) {
-            case REQUEST_WRITE_STORAGE: {
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    copyAssertFolderToTarget("privoxy/etc", checkFolderIsExist());
-                    copyAssertFolderToTarget("privoxy/bin", getFilesDir());
-                } else {
-                    Toast.makeText(this, "The app was not allowed to write to your storage. Hence, it cannot function properly. Please consider granting it this permission", Toast.LENGTH_LONG).show();
-                }
-            }
-        }
-
-    }
 
     @Override
     public void onBackPressed() {

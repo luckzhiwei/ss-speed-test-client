@@ -3,11 +3,15 @@ package com.vecent.ssspeedtest;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
 import android.os.RemoteException;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
@@ -26,11 +30,11 @@ import com.vecent.ssspeedtest.dao.DaoManager;
 import com.vecent.ssspeedtest.dao.SSServer;
 import com.vecent.ssspeedtest.greendao.DaoSession;
 import com.vecent.ssspeedtest.model.bean.TotalSpeedTestResult;
+import com.vecent.ssspeedtest.model.privoxy.PrivoxySetting;
 import com.vecent.ssspeedtest.service.SpeedTestService;
-import com.vecent.ssspeedtest.util.LogUtil;
 import com.vecent.ssspeedtest.view.HeadBeatImage;
-
 import java.util.List;
+
 
 
 public class MainActivity extends AppCompatActivity {
@@ -46,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
     private HeadBeatImage heatbeatImageView;
     private ISpeedTestInterface iSpeedTestInterface;
     private ITestFinishListener iTestFinishListener = new ITestFinishListenerImpl();
+
 
     private ServiceConnection speedTestServiceConnection = new ServiceConnection() {
         @Override
@@ -72,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
         initView();
         initService();
     }
+
 
     private void initService() {
         Intent intent = new Intent().setClass(getApplicationContext(), SpeedTestService.class);
@@ -177,7 +183,6 @@ public class MainActivity extends AppCompatActivity {
         DaoSession daoSession = DaoManager.getInstance(getApplicationContext()).getDaoSession();
         daoSession.getSSServerDao().delete(server);
         loadData();
-
     }
 
 
