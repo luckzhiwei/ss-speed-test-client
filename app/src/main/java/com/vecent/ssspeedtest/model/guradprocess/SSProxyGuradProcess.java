@@ -3,7 +3,6 @@ package com.vecent.ssspeedtest.model.guradprocess;
 import android.content.Context;
 
 import com.vecent.ssspeedtest.dao.SSServer;
-import com.vecent.ssspeedtest.model.guradprocess.GuradProcess;
 import com.vecent.ssspeedtest.util.Constant;
 
 import java.util.ArrayList;
@@ -30,7 +29,7 @@ public class SSProxyGuradProcess extends GuradProcess {
         cmds.add(mContext.getApplicationInfo().nativeLibraryDir + "/libss-local.so");
         cmds.add("-u");
         cmds.add("-b");
-        cmds.add(Constant.SOCKS_SERVER_LOCAL_ADDR + "");
+        cmds.add(Constant.LOCAL_HOST + "");
         cmds.add("-l");
         cmds.add(mPort + "");
         cmds.add("-s");

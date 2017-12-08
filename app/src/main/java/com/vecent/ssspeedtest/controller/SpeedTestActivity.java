@@ -1,6 +1,7 @@
 package com.vecent.ssspeedtest.controller;
 
 import android.app.Activity;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.widget.ListView;
@@ -9,13 +10,15 @@ import android.widget.ProgressBar;
 import com.vecent.ssspeedtest.R;
 import com.vecent.ssspeedtest.adpater.SpeedTestAdapter;
 import com.vecent.ssspeedtest.dao.SSServer;
+import com.vecent.ssspeedtest.model.guradprocess.PrivoxyGuradProcess;
 import com.vecent.ssspeedtest.model.guradprocess.SSProxyGuradProcess;
 import com.vecent.ssspeedtest.model.net.INetImplDefault;
 import com.vecent.ssspeedtest.model.Servers;
 import com.vecent.ssspeedtest.model.SpeedTest;
 import com.vecent.ssspeedtest.model.bean.SpeedTestResult;
 import com.vecent.ssspeedtest.model.bean.TotalSpeedTestResult;
-import com.vecent.ssspeedtest.model.net.INetImplWithProxy;
+import com.vecent.ssspeedtest.model.net.INetImplWithPrivoxy;
+import com.vecent.ssspeedtest.model.net.INetImplWithSSProxy;
 import com.vecent.ssspeedtest.util.Constant;
 import com.vecent.ssspeedtest.util.LogUtil;
 import com.vecent.ssspeedtest.view.ResultLayout;
@@ -36,14 +39,16 @@ public class SpeedTestActivity extends Activity {
     private Handler mHandler;
     private SSServer mProxyServer;
     private SSProxyGuradProcess mGuradProcess;
+    private PrivoxyGuradProcess mPrivoxyProcess;
 
     private SpeedTest.RequestCallBack callBack = new SpeedTest.RequestCallBack() {
         @Override
         public void onAllRequestFinishListener(float timeUsed, int totalReqSize) {
             setResultView(timeUsed);
-            if (mProxyServer != null) {
+            if (mProxyServer != null)
                 mGuradProcess.destory();
-            }
+            if (mPrivoxyProcess != null)
+                mPrivoxyProcess.destory();
         }
 
         @Override
@@ -61,7 +66,8 @@ public class SpeedTestActivity extends Activity {
         public TotalSpeedTestResult mSaveResult;
         public SpeedTestAdapter mSaveAdapter;
         public SpeedTest mSaveSpeedTest;
-        public SSProxyGuradProcess mSaveGuradProcess;
+        public SSProxyGuradProcess mSavedSSGuradProcess;
+        public PrivoxyGuradProcess mSavedPrivoxyProcess;
     }
 
     @Override
@@ -84,7 +90,8 @@ public class SpeedTestActivity extends Activity {
         this.mAdapter = hodler.mSaveAdapter;
         this.mSpeedTest = hodler.mSaveSpeedTest;
         this.mHandler = hodler.mSaveHandler;
-        this.mGuradProcess = hodler.mSaveGuradProcess;
+        this.mGuradProcess = hodler.mSavedSSGuradProcess;
+        this.mPrivoxyProcess = hodler.mSavedPrivoxyProcess;
         this.mResult = hodler.mSaveResult;
         this.totalSize = hodler.mSavedTotalSize;
         this.mProxyServer = hodler.mSavedProxyServer;
@@ -142,16 +149,23 @@ public class SpeedTestActivity extends Activity {
         this.mResultLayout.setProxyServerInfo(mProxyServer);
         mGuradProcess = new SSProxyGuradProcess(mProxyServer, this, Constant.SOCKS_SERVER_LOCAL_PORT_FONT);
         mGuradProcess.start();
+        if (Build.VERSION.SDK_INT < 24) {
+            mPrivoxyProcess = new PrivoxyGuradProcess(this, Constant.FRONT_PRIVOXY_CONFIG_FILE_NAME);
+            mPrivoxyProcess.start();
+        }
         new Thread(new Runnable() {
             @Override
             public void run() {
-                mSpeedTest.startTest(new INetImplWithProxy(Constant.SOCKS_SERVER_LOCAL_PORT_FONT));
+                if (Build.VERSION.SDK_INT < 24) {
+                    mSpeedTest.startTest(new INetImplWithPrivoxy(Constant.PRIVOXY_LOCAL_PORT_FONT));
+                } else {
+                    mSpeedTest.startTest(new INetImplWithSSProxy(Constant.SOCKS_SERVER_LOCAL_PORT_FONT));
+                }
                 try {
-                    Thread.sleep(5000);
+                    Thread.sleep(1000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-
             }
         }).start();
     }
@@ -171,9 +185,10 @@ public class SpeedTestActivity extends Activity {
     @Override
     public void onBackPressed() {
         mSpeedTest.cancel();
-        if (mProxyServer != null) {
+        if (mProxyServer != null)
             mGuradProcess.destory();
-        }
+        if (mPrivoxyProcess != null)
+            mPrivoxyProcess.destory();
         finish();
     }
 
@@ -190,10 +205,12 @@ public class SpeedTestActivity extends Activity {
         holder.mSaveSpeedTest = mSpeedTest;
         holder.mSaveAdapter = mAdapter;
         holder.mSavedProxyServer = mProxyServer;
+        holder.mSavedPrivoxyProcess = mPrivoxyProcess;
         holder.mSaveResult = mResult;
         holder.mSavedTotalSize = totalSize;
         holder.mSaveHandler = mHandler;
-        holder.mSaveGuradProcess = mGuradProcess;
+        holder.mSavedSSGuradProcess = mGuradProcess;
+        holder.mSavedProxyServer = mProxyServer;
         return holder;
     }
 

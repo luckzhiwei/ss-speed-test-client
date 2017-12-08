@@ -11,7 +11,7 @@ public class Constant {
     public static final int MAX_REDIRECT_TIMES = 20;
     public static final int CONNECTION_TIME_OUT = 10000;
     public static final int READ_TIME_OUT = 10000;
-    public static final String SOCKS_SERVER_LOCAL_ADDR = "127.0.0.1";
+    public static final String LOCAL_HOST = "127.0.0.1";
     public static final int SOCKS_SERVER_LOCAL_PORT_FONT = 1088;
     public static final int PRIVOXY_LOCAL_PORT_FONT = 8118;
     public static final int SOCKS_SERVER_LOCAL_PORT_BACK = 1089;

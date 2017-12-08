@@ -1,6 +1,5 @@
 package com.vecent.ssspeedtest.model.privoxy;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.os.Environment;

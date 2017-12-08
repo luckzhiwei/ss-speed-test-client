@@ -15,9 +15,9 @@ import java.net.URL;
  * Created by zhiwei on 2017/11/2.
  */
 
-public class INetImplWithProxy extends INetImplDefault {
+public abstract class INetImplWithProxy extends INetImplDefault {
 
-    private int proxyPort;
+    protected int proxyPort;
 
     public INetImplWithProxy(int port) {
         proxyPort = port;
@@ -26,8 +26,7 @@ public class INetImplWithProxy extends INetImplDefault {
     @Override
     protected HttpURLConnection getConnection(String server) throws
             MalformedURLException, ProtocolException, IOException {
-        SocketAddress addr = InetSocketAddress.createUnresolved(Constant.SOCKS_SERVER_LOCAL_ADDR, proxyPort);
-        Proxy proxy = new Proxy(Proxy.Type.SOCKS, addr);
+        Proxy proxy = getProxy();
         URL url = new URL(server);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection(proxy);
         conn.setRequestMethod("GET");
@@ -36,4 +35,6 @@ public class INetImplWithProxy extends INetImplDefault {
         conn.setReadTimeout(Constant.READ_TIME_OUT);
         return conn;
     }
+
+    protected abstract Proxy getProxy();
 }
