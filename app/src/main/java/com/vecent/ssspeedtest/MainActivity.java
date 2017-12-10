@@ -3,6 +3,8 @@ package com.vecent.ssspeedtest;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -21,12 +23,14 @@ import com.vecent.ssspeedtest.aidl.ITestFinishListener;
 import com.vecent.ssspeedtest.controller.InputSSServerSettingActivity;
 import com.vecent.ssspeedtest.controller.ServiceSpeedResultActivity;
 import com.vecent.ssspeedtest.controller.SpeedTestActivity;
+import com.vecent.ssspeedtest.controller.TestPrivoxyActivity;
 import com.vecent.ssspeedtest.dao.DaoManager;
 import com.vecent.ssspeedtest.dao.SSServer;
 import com.vecent.ssspeedtest.greendao.DaoSession;
+import com.vecent.ssspeedtest.model.SpeedTest;
 import com.vecent.ssspeedtest.model.bean.TotalSpeedTestResult;
+import com.vecent.ssspeedtest.model.privoxy.PrivoxySetting;
 import com.vecent.ssspeedtest.service.SpeedTestService;
-import com.vecent.ssspeedtest.util.LogUtil;
 import com.vecent.ssspeedtest.view.HeadBeatImage;
 
 import java.util.List;
@@ -45,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
     private HeadBeatImage heatbeatImageView;
     private ISpeedTestInterface iSpeedTestInterface;
     private ITestFinishListener iTestFinishListener = new ITestFinishListenerImpl();
+
 
     private ServiceConnection speedTestServiceConnection = new ServiceConnection() {
         @Override
@@ -71,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
         initView();
         initService();
     }
+
 
     private void initService() {
         Intent intent = new Intent().setClass(getApplicationContext(), SpeedTestService.class);
@@ -183,12 +189,5 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
     }
-
-    @Override
-    public void onRestoreInstanceState(Bundle bundle) {
-        super.onRestoreInstanceState(bundle);
-        LogUtil.logDebug(getClass().getName(), "restore instance");
-    }
-
 
 }

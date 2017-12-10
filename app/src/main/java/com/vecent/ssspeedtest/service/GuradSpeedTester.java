@@ -1,6 +1,7 @@
 package com.vecent.ssspeedtest.service;
 
 import android.content.Context;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.RemoteException;
@@ -9,12 +10,15 @@ import com.vecent.ssspeedtest.aidl.ITestFinishListener;
 import com.vecent.ssspeedtest.dao.DaoManager;
 import com.vecent.ssspeedtest.dao.SSServer;
 import com.vecent.ssspeedtest.greendao.DaoSession;
-import com.vecent.ssspeedtest.model.ProxyGuradProcess;
+import com.vecent.ssspeedtest.model.guradprocess.PrivoxyGuradProcess;
+import com.vecent.ssspeedtest.model.guradprocess.SSProxyGuradProcess;
 import com.vecent.ssspeedtest.model.SpeedTest;
 import com.vecent.ssspeedtest.model.bean.Server;
 import com.vecent.ssspeedtest.model.bean.SpeedTestResult;
 import com.vecent.ssspeedtest.model.bean.TotalSpeedTestResult;
+import com.vecent.ssspeedtest.model.net.INetImplWithPrivoxy;
 import com.vecent.ssspeedtest.model.net.INetImplWithProxy;
+import com.vecent.ssspeedtest.model.net.INetImplWithSSProxy;
 import com.vecent.ssspeedtest.util.Constant;
 import com.vecent.ssspeedtest.util.LogUtil;
 
@@ -41,6 +45,8 @@ public class GuradSpeedTester extends Thread {
 
     private ITestFinishListener mTestFinishListener;
 
+    private PrivoxyGuradProcess mPrivoxyGuradProcess;
+
 
     public GuradSpeedTester(List<Server> servers2Test, Context context) {
         this.servers2Test = servers2Test;
@@ -57,6 +63,10 @@ public class GuradSpeedTester extends Thread {
         LogUtil.logDebug(getClass().getName(), "start test");
         readSSProxyServerFromDB();
         runTest();
+        if (Build.VERSION.SDK_INT < 24) {
+            mPrivoxyGuradProcess = new PrivoxyGuradProcess(mContext, Constant.BACK_PRIVOXY_CONFIG_FILE_NAME);
+            mPrivoxyGuradProcess.start();
+        }
         Looper.loop();
     }
 
@@ -68,7 +78,7 @@ public class GuradSpeedTester extends Thread {
                 public void run() {
                     final TotalSpeedTestResult curResult = new TotalSpeedTestResult();
                     SSServer proxySSServer = mIterator.next();
-                    final ProxyGuradProcess proxyGuradProcess = new ProxyGuradProcess(proxySSServer, mContext, Constant.SOCKS_SERVER_LOCAL_PORT_BACK);
+                    final SSProxyGuradProcess proxyGuradProcess = new SSProxyGuradProcess(proxySSServer, mContext, Constant.SOCKS_SERVER_LOCAL_PORT_BACK);
                     proxyGuradProcess.start();
                     curResult.setServer2TestAddr(proxySSServer.getServerAddr());
                     SpeedTest speedTest = new SpeedTest(servers2Test, mHandler);
@@ -85,7 +95,11 @@ public class GuradSpeedTester extends Thread {
                             curResult.addResult2List(result);
                         }
                     });
-                    speedTest.startTest(new INetImplWithProxy(Constant.SOCKS_SERVER_LOCAL_PORT_BACK));
+                    if (Build.VERSION.SDK_INT < 24) {
+                        speedTest.startTest(new INetImplWithPrivoxy(Constant.PRIVOXY_LOCAL_PORT_BACK));
+                    } else {
+                        speedTest.startTest(new INetImplWithSSProxy(Constant.SOCKS_SERVER_LOCAL_PORT_BACK));
+                    }
                 }
             }).start();
         } else {
@@ -108,7 +122,7 @@ public class GuradSpeedTester extends Thread {
             mHandler.post(new Runnable() {
                 @Override
                 public void run() {
-//                    LogUtil.logDebug(getClass().getName(), "start test");
+                    LogUtil.logDebug(getClass().getName(), "start test");
                     runTest();
                 }
             });

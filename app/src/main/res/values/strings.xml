@@ -47,4 +47,8 @@
     <string name="please_add">还没有设置过的服务器,请按右下角添加</string>
     <string name="no_proxy">无代理</string>
     <string name="empty_background_result">还没有测试结果，请稍后再来吧</string>
+    <string name="top_100_white_addr_success_ratio">中国前25网址成功率</string>
+    <string name="top_100_white_addr_speed_avg">中国前25网址平均速度</string>
+    <string name="top_100_black_addr_success_ratio">美国前100网址成功率</string>
+    <string name="top_100_black_addr_speed_avg">美国前100网址平均速度</string>
 </resources>
