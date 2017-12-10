@@ -64,7 +64,6 @@ public class GuradSpeedTester extends Thread {
         readSSProxyServerFromDB();
         runTest();
         if (Build.VERSION.SDK_INT < 24) {
-            LogUtil.logDebug(getClass().getName(), "start privoxy background ");
             mPrivoxyGuradProcess = new PrivoxyGuradProcess(mContext, Constant.BACK_PRIVOXY_CONFIG_FILE_NAME);
             mPrivoxyGuradProcess.start();
         }
@@ -97,10 +96,8 @@ public class GuradSpeedTester extends Thread {
                         }
                     });
                     if (Build.VERSION.SDK_INT < 24) {
-                        LogUtil.logDebug(getClass().getName(), "privoxy back ground");
                         speedTest.startTest(new INetImplWithPrivoxy(Constant.PRIVOXY_LOCAL_PORT_BACK));
                     } else {
-                        LogUtil.logDebug(getClass().getName(), "socks back ground");
                         speedTest.startTest(new INetImplWithSSProxy(Constant.SOCKS_SERVER_LOCAL_PORT_BACK));
                     }
                 }

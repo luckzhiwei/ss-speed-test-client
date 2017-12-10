@@ -10,8 +10,6 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
 import android.os.RemoteException;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
@@ -29,12 +27,13 @@ import com.vecent.ssspeedtest.controller.TestPrivoxyActivity;
 import com.vecent.ssspeedtest.dao.DaoManager;
 import com.vecent.ssspeedtest.dao.SSServer;
 import com.vecent.ssspeedtest.greendao.DaoSession;
+import com.vecent.ssspeedtest.model.SpeedTest;
 import com.vecent.ssspeedtest.model.bean.TotalSpeedTestResult;
 import com.vecent.ssspeedtest.model.privoxy.PrivoxySetting;
 import com.vecent.ssspeedtest.service.SpeedTestService;
 import com.vecent.ssspeedtest.view.HeadBeatImage;
-import java.util.List;
 
+import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -130,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent();
-                intent.setClass(getApplicationContext(), TestPrivoxyActivity.class);
+                intent.setClass(getApplicationContext(), SpeedTestActivity.class);
                 startActivity(intent);
             }
         });
