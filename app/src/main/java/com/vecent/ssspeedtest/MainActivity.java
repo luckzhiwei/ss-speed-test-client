@@ -23,13 +23,10 @@ import com.vecent.ssspeedtest.aidl.ITestFinishListener;
 import com.vecent.ssspeedtest.controller.InputSSServerSettingActivity;
 import com.vecent.ssspeedtest.controller.ServiceSpeedResultActivity;
 import com.vecent.ssspeedtest.controller.SpeedTestActivity;
-import com.vecent.ssspeedtest.controller.TestPrivoxyActivity;
 import com.vecent.ssspeedtest.dao.DaoManager;
 import com.vecent.ssspeedtest.dao.SSServer;
 import com.vecent.ssspeedtest.greendao.DaoSession;
-import com.vecent.ssspeedtest.model.SpeedTest;
 import com.vecent.ssspeedtest.model.bean.TotalSpeedTestResult;
-import com.vecent.ssspeedtest.model.privoxy.PrivoxySetting;
 import com.vecent.ssspeedtest.service.SpeedTestService;
 import com.vecent.ssspeedtest.view.HeadBeatImage;
 
