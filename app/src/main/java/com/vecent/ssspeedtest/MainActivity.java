@@ -8,11 +8,8 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
 import android.os.RemoteException;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -30,7 +27,6 @@ import com.vecent.ssspeedtest.greendao.DaoSession;
 import com.vecent.ssspeedtest.model.bean.TotalSpeedTestResult;
 import com.vecent.ssspeedtest.service.SpeedTestService;
 
-import com.vecent.ssspeedtest.view.HeadBeatImage;
 
 import java.util.List;
 
@@ -44,8 +40,6 @@ public class MainActivity extends AppCompatActivity {
     private List<SSServer> ssServerList;
     private TextView pleaseAddTextView;
     private ImageView pleaseAddImageView;
-    private ImageView testSampleImageView;
-    private HeadBeatImage heatbeatImageView;
     private ISpeedTestInterface iSpeedTestInterface;
     private ITestFinishListener iTestFinishListener = new ITestFinishListenerImpl();
 
@@ -91,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
             mHandler.post(new Runnable() {
                 @Override
                 public void run() {
-                    heatbeatImageView.headBestActive();
+
                 }
             });
         }
@@ -102,8 +96,6 @@ public class MainActivity extends AppCompatActivity {
         this.addServerImg = (ImageView) this.findViewById(R.id.add_ss_server_img);
         this.pleaseAddTextView = (TextView) this.findViewById(R.id.plead_add_textview);
         this.pleaseAddImageView = (ImageView) this.findViewById(R.id.plead_add_img);
-        this.testSampleImageView = (ImageView) this.findViewById(R.id.test_sapmle_img);
-        this.heatbeatImageView = (HeadBeatImage) this.findViewById(R.id.img_view_heat_beat);
         this.addServerImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -124,20 +116,6 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra("ssServer", ssServerList.get(i));
                 intent.setClass(getApplicationContext(), SpeedTestActivity.class);
                 startActivity(intent);
-            }
-        });
-        this.testSampleImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent();
-                intent.setClass(getApplicationContext(), SpeedTestActivity.class);
-                startActivity(intent);
-            }
-        });
-        this.heatbeatImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                goBackGroundResult();
             }
         });
     }
