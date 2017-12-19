@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         getSupportActionBar().setCustomView(R.layout.action_bar_main_activity);
         getSupportActionBar().setDisplayShowCustomEnabled(true);
-        initView();
+//        initView();
 //        initService();
     }
 
@@ -128,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         if (mHandler == null) mHandler = new Handler(Looper.getMainLooper());
-        loadData();
+//        loadData();
     }
 
     private void loadData() {
@@ -153,7 +153,7 @@ public class MainActivity extends AppCompatActivity {
     private void deleteServer(SSServer server) {
         DaoSession daoSession = DaoManager.getInstance(getApplicationContext()).getDaoSession();
         daoSession.getSSServerDao().delete(server);
-        loadData();
+//        loadData();
     }
 
 

@@ -55,4 +55,8 @@
     <string name="grade">评分</string>
     <string name="score">跑分</string>
     <string name="state">状态</string>
+    <string name="about">关于</string>
+    <string name="help">帮助</string>
+    <string name="server_config">服务器设置</string>
+    <string name="app_config">app设置</string>
 </resources>

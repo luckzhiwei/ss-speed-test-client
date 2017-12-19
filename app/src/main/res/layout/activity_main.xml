@@ -1,21 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/contianer"
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/colorGray">
+    android:layout_height="match_parent">
 
-    <include layout="@layout/listview_common" />
+    <include
+        layout="@layout/main_activity_content_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
+    <include
+        layout="@layout/main_activity_menu_layout"
+        android:layout_width="300dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start" />
 
-    <ImageView
-        android:id="@+id/add_ss_server_img"
-        android:layout_width="64dp"
-        android:layout_height="64dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginBottom="32dp"
-        android:layout_marginRight="32dp"
-        android:src="@mipmap/add" />
-
-</RelativeLayout>
+</android.support.v4.widget.DrawerLayout>
