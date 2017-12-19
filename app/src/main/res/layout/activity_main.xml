@@ -2,26 +2,11 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/contianer"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/colorGray">
 
     <include layout="@layout/listview_common" />
 
-    <ImageView
-        android:id="@+id/plead_add_img"
-        android:layout_width="72dp"
-        android:layout_height="72dp"
-        android:layout_centerInParent="true"
-        android:src="@mipmap/pleaase_add"
-        android:visibility="gone" />
-
-    <TextView
-        android:id="@+id/plead_add_textview"
-        style="@style/textViewLarge.Primary"
-        android:layout_below="@id/plead_add_img"
-        android:layout_centerInParent="true"
-        android:layout_marginTop="8dp"
-        android:text="@string/please_add"
-        android:visibility="gone" />
 
     <ImageView
         android:id="@+id/add_ss_server_img"

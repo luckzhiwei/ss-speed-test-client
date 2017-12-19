@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ss小助手</string>
+    <string name="app_name">ss助手</string>
     <string name="test_speed">测速</string>
     <string name="status">ping状态</string>
     <string name="server_address">测试服务器</string>
@@ -7,6 +7,7 @@
     <string name="redirect_address">重定向地址</string>
     <string name="is_url_wrong">url是否错误</string>
     <string name="is_timed_out">请求超时</string>
+    <string name="system_proxy">系统代理</string>
     <string name="yes">是</string>
     <string name="no">否</string>
     <string name="exception_msg">异常信息</string>
@@ -51,4 +52,7 @@
     <string name="top_100_white_addr_speed_avg">中国前25网址平均速度</string>
     <string name="top_100_black_addr_success_ratio">美国前100网址成功率</string>
     <string name="top_100_black_addr_speed_avg">美国前100网址平均速度</string>
+    <string name="grade">评分</string>
+    <string name="score">跑分</string>
+    <string name="state">状态</string>
 </resources>

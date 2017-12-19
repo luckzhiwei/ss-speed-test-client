@@ -13,7 +13,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.vecent.ssspeedtest.adpater.SSServerAdapter;
 import com.vecent.ssspeedtest.aidl.ISpeedTestInterface;
@@ -38,8 +37,9 @@ public class MainActivity extends AppCompatActivity {
     private ImageView addServerImg;
     private SSServerAdapter adapter;
     private List<SSServer> ssServerList;
-    private TextView pleaseAddTextView;
-    private ImageView pleaseAddImageView;
+    private ImageView menuImg;
+    private ImageView getGradeImg;
+
     private ISpeedTestInterface iSpeedTestInterface;
     private ITestFinishListener iTestFinishListener = new ITestFinishListenerImpl();
 
@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setCustomView(R.layout.action_bar_main_activity);
         getSupportActionBar().setDisplayShowCustomEnabled(true);
         initView();
-        initService();
+//        initService();
     }
 
 
@@ -94,8 +94,6 @@ public class MainActivity extends AppCompatActivity {
     private void initView() {
         this.contentListView = (ListView) this.findViewById(R.id.common_list_view);
         this.addServerImg = (ImageView) this.findViewById(R.id.add_ss_server_img);
-        this.pleaseAddTextView = (TextView) this.findViewById(R.id.plead_add_textview);
-        this.pleaseAddImageView = (ImageView) this.findViewById(R.id.plead_add_img);
         this.addServerImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -139,18 +137,13 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 DaoSession daoSession = DaoManager.getInstance(getApplicationContext()).getDaoSession();
                 ssServerList = daoSession.getSSServerDao().loadAll();
+                ssServerList.add(0, new SSServer());
                 mHandler.post(new Runnable() {
                     @Override
                     public void run() {
                         adapter = new SSServerAdapter(MainActivity.this,
                                 R.layout.ss_server_item_layout, ssServerList);
                         contentListView.setAdapter(adapter);
-                        pleaseAddImageView.setVisibility(View.GONE);
-                        pleaseAddTextView.setVisibility(View.GONE);
-                        if (ssServerList.size() == 0) {
-                            pleaseAddImageView.setVisibility(View.VISIBLE);
-                            pleaseAddTextView.setVisibility(View.VISIBLE);
-                        }
                     }
                 });
             }

@@ -28,19 +28,19 @@ public class SSServerAdapter extends CommonAdapter<SSServer> {
 
     @Override
     public void convert(ViewHolder holder, final SSServer server, int post) {
-        TextView serverNameTextView = holder.getView(R.id.ss_server_address);
-        TextView serverPortTextView = holder.getView(R.id.ss_server_port);
-        TextView serverMethodTextView = holder.getView(R.id.ss_encrpyted_method);
-        ImageView editImageView = holder.getView(R.id.edit_setting_imgview);
-        editImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                goToEdit(server);
-            }
-        });
-        serverMethodTextView.setText(server.getMethod());
-        serverPortTextView.setText(server.getServerPort() + "");
-        serverNameTextView.setText(server.getServerAddr() + ":");
+        TextView serverNameTextView = holder.getView(R.id.texview_server_info);
+        if (post == 0) {
+            serverNameTextView.setText(mContext.getText(R.string.system_proxy));
+        } else {
+            serverNameTextView.setText(server.getServerAddr() + ":" + server.getServerPort());
+            ImageView editImageView = holder.getView(R.id.img_edit);
+            editImageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    goToEdit(server);
+                }
+            });
+        }
     }
 
     private void goToEdit(SSServer server) {
