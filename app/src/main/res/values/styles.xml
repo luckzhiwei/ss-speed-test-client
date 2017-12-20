@@ -63,5 +63,13 @@
         <item name="android:textColor">@color/colorPrimary</item>
     </style>
 
+    <style name="textViewLarge.Cyan">
+        <item name="android:textColor">@color/colorCyan</item>
+    </style>
+
+    <style name="textViewLarge.Red">
+        <item name="android:textColor">@color/colorRed</item>
+    </style>
+
 
 </resources>

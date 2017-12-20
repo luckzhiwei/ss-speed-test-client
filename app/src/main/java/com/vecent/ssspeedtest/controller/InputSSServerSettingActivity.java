@@ -25,7 +25,6 @@ public class InputSSServerSettingActivity extends Activity {
     private EditText ssServerRemotePortEditText;
     private EditText ssServerPasswordEditText;
     private EditText ssEncryptMethodEditText;
-    private Button ensureSettingBtn;
     private long serverId = -1;
 
     @Override
@@ -41,29 +40,6 @@ public class InputSSServerSettingActivity extends Activity {
         this.ssServerRemotePortEditText = this.findViewById(R.id.ss_remote_port_edit_text);
         this.ssServerPasswordEditText = this.findViewById(R.id.ss_server_password_edit_text);
         this.ssEncryptMethodEditText = this.findViewById(R.id.ss_server_encrypt_method_edit_text);
-        this.ensureSettingBtn = this.findViewById(R.id.store_setting_btn);
-        this.ensureSettingBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (vaildation()) {
-                    SSServer ssServer = new SSServer();
-                    ssServer.setServerAddr(ssServerAddrEditText.getText().toString());
-                    ssServer.setServerPort(Integer.parseInt(ssServerRemotePortEditText.getText().toString()));
-                    ssServer.setPassword(ssServerPasswordEditText.getText().toString());
-                    ssServer.setMethod(ssEncryptMethodEditText.getText().toString());
-                    DaoSession daoSession = DaoManager.getInstance(getApplicationContext()).getDaoSession();
-                    if (serverId == -1) {
-                        daoSession.getSSServerDao().insert(ssServer);
-                    } else {
-                        ssServer.setId(serverId);
-                        daoSession.getSSServerDao().update(ssServer);
-                    }
-                    finish();
-                } else {
-                    Toast.makeText(getApplicationContext(), R.string.input_ss_server_setting_invaild, Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
     }
 
     private boolean vaildation() {
@@ -101,7 +77,6 @@ public class InputSSServerSettingActivity extends Activity {
             this.serverId = bundle.getLong("ssserverId");
         }
     }
-
 
 
 }

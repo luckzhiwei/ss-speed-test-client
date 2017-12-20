@@ -8,6 +8,5 @@
         android:cacheColorHint="@color/tranparent"
         android:divider="@color/tranparent"
         android:dividerHeight="@dimen/line_width"
-        android:listSelector="@drawable/press_normal_trans"
         android:transcriptMode="alwaysScroll" />
 </merge>

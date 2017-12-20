@@ -30,8 +30,7 @@ import com.vecent.ssspeedtest.dao.SSServer;
 import com.vecent.ssspeedtest.greendao.DaoSession;
 import com.vecent.ssspeedtest.model.bean.TotalSpeedTestResult;
 import com.vecent.ssspeedtest.service.SpeedTestService;
-
-
+import com.vecent.ssspeedtest.view.EditSSServerSettingDialog;
 
 import java.util.List;
 
@@ -68,6 +67,20 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+    private EditSSServerSettingDialog.OnDialogChange onDialogChange = new EditSSServerSettingDialog.OnDialogChange() {
+        @Override
+        public void onConfirm() {
+            loadData();
+        }
+
+        @Override
+        public void onCacnel(SSServer server) {
+            if (server != null) {
+                loadData();
+            }
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -101,7 +114,10 @@ public class MainActivity extends AppCompatActivity {
         this.addServerImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), InputSSServerSettingActivity.class));
+                EditSSServerSettingDialog dialog = new EditSSServerSettingDialog(MainActivity.this, null);
+                dialog.setOnDialogChange(onDialogChange);
+                dialog.show();
+                dialog.setWindowAttr(getWindowManager());
             }
         });
         this.contentListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
@@ -179,12 +195,6 @@ public class MainActivity extends AppCompatActivity {
         DaoSession daoSession = DaoManager.getInstance(getApplicationContext()).getDaoSession();
         daoSession.getSSServerDao().delete(server);
         loadData();
-    }
-
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
     }
 
 }
