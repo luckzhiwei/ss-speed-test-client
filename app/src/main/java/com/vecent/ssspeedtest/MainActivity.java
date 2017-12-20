@@ -8,7 +8,12 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
 import android.os.RemoteException;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
@@ -25,6 +30,7 @@ import com.vecent.ssspeedtest.dao.SSServer;
 import com.vecent.ssspeedtest.greendao.DaoSession;
 import com.vecent.ssspeedtest.model.bean.TotalSpeedTestResult;
 import com.vecent.ssspeedtest.service.SpeedTestService;
+import com.vecent.ssspeedtest.util.LogUtil;
 
 
 import java.util.List;
@@ -37,9 +43,9 @@ public class MainActivity extends AppCompatActivity {
     private ImageView addServerImg;
     private SSServerAdapter adapter;
     private List<SSServer> ssServerList;
+    private DrawerLayout mDrawerLayout;
     private ImageView menuImg;
     private ImageView getGradeImg;
-
     private ISpeedTestInterface iSpeedTestInterface;
     private ITestFinishListener iTestFinishListener = new ITestFinishListenerImpl();
 
@@ -66,10 +72,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        getSupportActionBar().setCustomView(R.layout.action_bar_main_activity);
-        getSupportActionBar().setDisplayShowCustomEnabled(true);
-//        initView();
-//        initService();
+        initView();
+        initService();
     }
 
 
@@ -116,6 +120,27 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        this.mDrawerLayout = (DrawerLayout) findViewById(R.id.main_drawer_layout);
+        initActionBar();
+    }
+
+    private void initActionBar() {
+        ActionBar actionBar = getSupportActionBar();
+        View cutsomView = LayoutInflater.from(this).inflate(R.layout.action_bar_main_activity, null);
+        actionBar.setCustomView(cutsomView);
+        this.menuImg = cutsomView.findViewById(R.id.img_menu);
+        this.getGradeImg = cutsomView.findViewById(R.id.img_get_grade);
+        actionBar.setDisplayShowCustomEnabled(true);
+        this.menuImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
+                    mDrawerLayout.closeDrawers();
+                } else {
+                    mDrawerLayout.openDrawer(GravityCompat.START);
+                }
+            }
+        });
     }
 
     private void goBackGroundResult() {
@@ -153,7 +178,7 @@ public class MainActivity extends AppCompatActivity {
     private void deleteServer(SSServer server) {
         DaoSession daoSession = DaoManager.getInstance(getApplicationContext()).getDaoSession();
         daoSession.getSSServerDao().delete(server);
-//        loadData();
+        loadData();
     }
 
 

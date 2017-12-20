@@ -26,6 +26,7 @@
         android:layout_marginRight="24dp"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
+        android:id="@+id/img_get_grade"
         android:src="@mipmap/triangle" />
 
 </RelativeLayout>
