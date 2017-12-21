@@ -43,7 +43,6 @@ public class ResultLayout extends LinearLayout {
     private int showAllContentCoordinateY;
     private TranslateAnimation mTranslateAnimationUp;
     private TranslateAnimation mTranslateAnimationDown;
-    public boolean showAll;
     private String totalServerSize;
     private String curServerSize;
     private String curTimeUsed;
@@ -55,6 +54,7 @@ public class ResultLayout extends LinearLayout {
     private String blackSpeedAvg;
     private String speedUnit;
     private String timeUnit;
+    private boolean showAll;
 
 
     public ResultLayout(Context context) {
@@ -89,9 +89,10 @@ public class ResultLayout extends LinearLayout {
         this.mImageClose.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                startAnimation(mTranslateAnimationDown);
             }
         });
+        this.mImageClose.setVisibility(View.GONE);
         initText(context.getResources());
     }
 
@@ -121,7 +122,6 @@ public class ResultLayout extends LinearLayout {
         this.mTextViewWhiteAddrSpeedAvg.setText(this.whiteSpeedAvg + totalResult.getSpeedWhiteAddrDownLoadAvg() + this.speedUnit);
         this.mTextViewBlackAddrSpeedAvg.setText(this.blackSpeedAvg + totalResult.getSpeedBlackAddrDownLoadAvg() + this.speedUnit);
     }
-
 
 
     /**
@@ -188,6 +188,7 @@ public class ResultLayout extends LinearLayout {
         public void onAnimationEnd(Animation animation) {
             clearAnimation();
             setY(showAllContentCoordinateY);
+            mImageClose.setVisibility(VISIBLE);
             showAll = true;
         }
 
@@ -207,6 +208,7 @@ public class ResultLayout extends LinearLayout {
         public void onAnimationEnd(Animation animation) {
             clearAnimation();
             setY(onlyShowTitleCoordinateY);
+            mImageClose.setVisibility(View.GONE);
             showAll = false;
         }
 
