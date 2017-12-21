@@ -38,12 +38,18 @@ public class EditSSServerSettingDialog extends Dialog {
     private long serverId = -1;
     private Context mContext;
 
+    public EditSSServerSettingDialog(@NonNull Context context) {
+        super(context);
+        this.mContext = context;
+    }
 
     public EditSSServerSettingDialog(@NonNull Context context, SSServer server) {
         super(context);
         this.mContext = context;
         this.mSSServer = server;
-        this.serverId = server.getId();
+        if (server != null) {
+            this.serverId = server.getId();
+        }
     }
 
     @Override
