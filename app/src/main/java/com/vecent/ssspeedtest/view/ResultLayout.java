@@ -38,10 +38,7 @@ public class ResultLayout extends LinearLayout {
     private TextView mTextViewCurServerCount;
     private RelativeLayout mHeaderLayout;
     private ImageView mImageClose;
-    private ImageView mImageRefresh;
     private float lastYUserTouch;
-    private TextView mTextViewServerInfo;
-    private int mTouchSlop;
     private int onlyShowTitleCoordinateY;
     private int showAllContentCoordinateY;
     private TranslateAnimation mTranslateAnimationUp;
@@ -78,7 +75,6 @@ public class ResultLayout extends LinearLayout {
     private void init(Context context) {
         LayoutInflater.from(context).inflate(R.layout.speed_total_result_layout, this);
         this.mHeaderLayout = this.findViewById(R.id.header_layout);
-        this.mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
         this.mTextViewWhiteListServerRatio = this.findViewById(R.id.textview_white_server_ratio);
         this.mTextViewWhiteListServerCount = this.findViewById(R.id.textview_white_server_count);
         this.mTextViewBlackListServerRatio = this.findViewById(R.id.textview_black_server_ratio);
@@ -89,16 +85,8 @@ public class ResultLayout extends LinearLayout {
         this.mTextViewTotalTimeUsed = this.findViewById(R.id.textview_total_time_used);
         this.mTextViewTotalSize = this.findViewById(R.id.textview_total_server_count);
         this.mImageClose = this.findViewById(R.id.img_view_close);
-        this.mImageRefresh = this.findViewById(R.id.img_view_refresh);
-        this.mTextViewServerInfo = this.findViewById(R.id.test_server_setting);
         this.showAll = false;
         this.mImageClose.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
-        this.mImageRefresh.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -134,9 +122,7 @@ public class ResultLayout extends LinearLayout {
         this.mTextViewBlackAddrSpeedAvg.setText(this.blackSpeedAvg + totalResult.getSpeedBlackAddrDownLoadAvg() + this.speedUnit);
     }
 
-    public void setProxyServerInfo(SSServer server) {
-        this.mTextViewServerInfo.setText(server.getServerAddr() + ":" + server.getServerPort());
-    }
+
 
     /**
      * getY 是相对于父控件的长度:（ ps:这里默认loc[1]是父控件相对与屏幕的距离）

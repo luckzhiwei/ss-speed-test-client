@@ -1,11 +1,12 @@
 package com.vecent.ssspeedtest.controller;
 
-import android.app.Activity;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.vecent.ssspeedtest.R;
 import com.vecent.ssspeedtest.adpater.SpeedTestAdapter;
@@ -27,13 +28,15 @@ import com.vecent.ssspeedtest.view.ResultLayout;
  * Created by zhiwei on 2017/9/9.
  */
 
-public class SpeedTestActivity extends Activity {
+public class SpeedTestActivity extends AppCompatActivity {
 
     private SpeedTest mSpeedTest;
     private ListView mContentListView;
     private SpeedTestAdapter mAdapter;
     private ProgressBar mProgressBar;
     private ResultLayout mResultLayout;
+    private TextView ssServerInfo;
+    private TextView scoreContent;
     private TotalSpeedTestResult mResult;
     private int totalSize;
     private Handler mHandler;
@@ -75,10 +78,11 @@ public class SpeedTestActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.speed_test_layout);
 
-        ModelHodler hodler = (ModelHodler) this.getLastNonConfigurationInstance();
+        ModelHodler hodler = (ModelHodler) this.getLastCustomNonConfigurationInstance();
+        this.initView();
         if (hodler == null) {
-            this.initView();
             this.initModel();
+            this.initTitleContent();
         } else {
             this.initView();
             this.continueView(hodler);
@@ -101,16 +105,26 @@ public class SpeedTestActivity extends Activity {
     }
 
     private void initView() {
-        this.mResultLayout = this.findViewById(R.id.speed_test_result_layout);
+        this.mResultLayout = (ResultLayout) this.findViewById(R.id.speed_test_result_layout);
         this.mResultLayout.post(new Runnable() {
             @Override
             public void run() {
                 mResultLayout.setHeaderShowCorOnInit(SpeedTestActivity.this);
             }
         });
-        this.mContentListView = this.findViewById(R.id.common_list_view);
-        this.mProgressBar = this.findViewById(R.id.speed_test_progress);
+        this.mContentListView = (ListView) this.findViewById(R.id.common_list_view);
+        this.mProgressBar = (ProgressBar) this.findViewById(R.id.speed_test_progress);
         this.mProgressBar.setMax(100);
+        this.ssServerInfo = (TextView) this.findViewById(R.id.textview_ss_server_info);
+        this.scoreContent = (TextView) this.findViewById(R.id.textview_score);
+        this.getSupportActionBar().setDisplayShowCustomEnabled(true);
+        this.getSupportActionBar().setCustomView(R.layout.action_bar_go_back);
+    }
+
+    private void initTitleContent() {
+        if (mProxyServer != null) {
+            this.ssServerInfo.setText(mProxyServer.getServerAddr() + ":" + mProxyServer.getServerPort());
+        }
     }
 
     private void initModel() {
@@ -146,7 +160,6 @@ public class SpeedTestActivity extends Activity {
     }
 
     private void startTestWithProxy() {
-        this.mResultLayout.setProxyServerInfo(mProxyServer);
         mGuradProcess = new SSProxyGuradProcess(mProxyServer, this, Constant.SOCKS_SERVER_LOCAL_PORT_FONT);
         mGuradProcess.start();
         if (Build.VERSION.SDK_INT < 24) {
@@ -172,6 +185,7 @@ public class SpeedTestActivity extends Activity {
 
 
     private void updateView() {
+        initTitleContent();
         mAdapter.notifyDataSetChanged();
         mProgressBar.setProgress((int) (100.0f * mResult.getCurServerCount() / totalSize));
         setResultView((System.currentTimeMillis() - mSpeedTest.getTimeStart()) / 1000.0f);
@@ -200,7 +214,7 @@ public class SpeedTestActivity extends Activity {
 
 
     @Override
-    public Object onRetainNonConfigurationInstance() {
+    public Object onRetainCustomNonConfigurationInstance() {
         ModelHodler holder = new ModelHodler();
         holder.mSaveSpeedTest = mSpeedTest;
         holder.mSaveAdapter = mAdapter;

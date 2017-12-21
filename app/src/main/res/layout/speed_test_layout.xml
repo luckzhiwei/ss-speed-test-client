@@ -1,33 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/speed_test_root_view"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/colorLightGray">
 
-    <RelativeLayout
+    <android.support.v7.widget.CardView
         android:id="@+id/speed_test_top_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:background="@mipmap/background_blue">
+        app:cardBackgroundColor="@color/colorWhite"
+        app:cardElevation="10dp">
 
-        <TextView
-            android:id="@+id/speed_test_title"
-            style="@style/textViewMiddle.White"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="8dp"
-            android:text="@string/connection_progress" />
-
-        <!--todo layout_above 属性失效-->
         <ProgressBar
             android:id="@+id/speed_test_progress"
             style="@style/Widget.AppCompat.ProgressBar.Horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/speed_test_title"
+            android:layout_alignParentTop="true"
             android:progressDrawable="@drawable/progress_background" />
-    </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/textview_ss_server_info"
+                style="@style/textViewLarge"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="32dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/system_proxy" />
+
+            <TextView
+                android:id="@+id/textview_score"
+                style="@style/textViewLarge"
+                android:layout_alignLeft="@id/textview_ss_server_info"
+                android:layout_below="@id/textview_ss_server_info"
+                android:layout_marginBottom="16dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/score" />
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -40,8 +56,6 @@
     <com.vecent.ssspeedtest.view.ResultLayout
         android:id="@+id/speed_test_result_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    </com.vecent.ssspeedtest.view.ResultLayout>
-
-
+        android:layout_marginTop="8dp"
+        android:layout_height="wrap_content" />
 </RelativeLayout>

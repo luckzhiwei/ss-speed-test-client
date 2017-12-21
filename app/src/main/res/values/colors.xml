@@ -2,6 +2,8 @@
 <resources>
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#FF303F9F</color>
+    <color name="colorBlue">#008FEE</color>
+    <color name="colorLightBlue">#70A5F5</color>
     <color name="colorAccent">#FF4081</color>
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorLightGray">#EEEEEE</color>
@@ -14,5 +16,4 @@
     <color name="selector_press">#10000000</color>
     <color name="colorOrange">#f90</color>
     <color name="colorBlack">#000000</color>
-    <color name="colorLightBlue">#11C2EE</color>
 </resources>
