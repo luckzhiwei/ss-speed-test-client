@@ -3,7 +3,7 @@
     android:id="@+id/contianer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorGray">
+    android:background="@color/colorLightGray">
 
     <include layout="@layout/listview_common" />
 

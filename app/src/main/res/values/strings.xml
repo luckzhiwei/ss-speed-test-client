@@ -61,4 +61,5 @@
     <string name="help">帮助</string>
     <string name="server_config">服务器设置</string>
     <string name="app_config">app设置</string>
+    <string name="back_test_finish_toast_msg">最近一次测速在</string>
 </resources>

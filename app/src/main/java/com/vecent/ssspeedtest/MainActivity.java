@@ -15,16 +15,14 @@ import android.support.v7.app.AppCompatActivity;
 
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AdapterView;
+
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.vecent.ssspeedtest.adpater.SSServerAdapter;
 import com.vecent.ssspeedtest.aidl.ISpeedTestInterface;
 import com.vecent.ssspeedtest.aidl.ITestFinishListener;
-import com.vecent.ssspeedtest.controller.InputSSServerSettingActivity;
-import com.vecent.ssspeedtest.controller.ServiceSpeedResultActivity;
-import com.vecent.ssspeedtest.controller.SpeedTestActivity;
 import com.vecent.ssspeedtest.dao.DaoManager;
 import com.vecent.ssspeedtest.dao.SSServer;
 import com.vecent.ssspeedtest.greendao.DaoSession;
@@ -67,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-    private EditSSServerSettingDialog.OnDialogChange onDialogChange = new EditSSServerSettingDialog.OnDialogChange() {
+    private EditSSServerSettingDialog.OnDialogChange mOnDialogChangeListener = new EditSSServerSettingDialog.OnDialogChange() {
         @Override
         public void onConfirm() {
             loadData();
@@ -76,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onCacnel(SSServer server) {
             if (server != null) {
-                loadData();
+                deleteServer(server);
             }
         }
     };
@@ -102,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
             mHandler.post(new Runnable() {
                 @Override
                 public void run() {
-
+                    Toast.makeText(getApplicationContext(), "", Toast.LENGTH_SHORT).show();
                 }
             });
         }
@@ -115,25 +113,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 EditSSServerSettingDialog dialog = new EditSSServerSettingDialog(MainActivity.this, null);
-                dialog.setOnDialogChange(onDialogChange);
+                dialog.setOnDialogChange(mOnDialogChangeListener);
                 dialog.show();
                 dialog.setWindowAttr(getWindowManager());
-            }
-        });
-        this.contentListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                deleteServer(ssServerList.get(i));
-                return true;
-            }
-        });
-        this.contentListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent intent = new Intent();
-                intent.putExtra("ssServer", ssServerList.get(i));
-                intent.setClass(getApplicationContext(), SpeedTestActivity.class);
-                startActivity(intent);
             }
         });
         this.mDrawerLayout = (DrawerLayout) findViewById(R.id.main_drawer_layout);
@@ -159,11 +141,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void goBackGroundResult() {
-        Intent intent = new Intent();
-        intent.setClass(getApplicationContext(), ServiceSpeedResultActivity.class);
-        startActivity(intent);
-    }
 
     @Override
     protected void onResume() {
@@ -172,18 +149,18 @@ public class MainActivity extends AppCompatActivity {
         loadData();
     }
 
-    private void loadData() {
+    public void loadData() {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 DaoSession daoSession = DaoManager.getInstance(getApplicationContext()).getDaoSession();
                 ssServerList = daoSession.getSSServerDao().loadAll();
-                ssServerList.add(0, new SSServer());
+                ssServerList.add(0, null);
                 mHandler.post(new Runnable() {
                     @Override
                     public void run() {
                         adapter = new SSServerAdapter(MainActivity.this,
-                                R.layout.ss_server_item_layout, ssServerList);
+                                R.layout.ss_server_item_layout, ssServerList, mOnDialogChangeListener);
                         contentListView.setAdapter(adapter);
                     }
                 });
@@ -196,5 +173,6 @@ public class MainActivity extends AppCompatActivity {
         daoSession.getSSServerDao().delete(server);
         loadData();
     }
+
 
 }

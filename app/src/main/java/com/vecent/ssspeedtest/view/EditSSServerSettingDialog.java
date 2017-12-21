@@ -38,14 +38,12 @@ public class EditSSServerSettingDialog extends Dialog {
     private long serverId = -1;
     private Context mContext;
 
-    public EditSSServerSettingDialog(@NonNull Context context) {
-        super(context);
-        this.mContext = context;
-    }
 
     public EditSSServerSettingDialog(@NonNull Context context, SSServer server) {
         super(context);
         this.mContext = context;
+        this.mSSServer = server;
+        this.serverId = server.getId();
     }
 
     @Override
@@ -83,11 +81,11 @@ public class EditSSServerSettingDialog extends Dialog {
 
     private void setContent() {
         if (this.mSSServer != null) {
-            this.ssServerRemotePortEditText.setText(this.mSSServer.getServerPort());
+            this.ssServerRemotePortEditText.setText(this.mSSServer.getServerPort() + "");
             this.ssServerPasswordEditText.setText(this.mSSServer.getPassword());
             this.ssServerAddrEditText.setText(this.mSSServer.getServerAddr());
             this.ssEncryptMethodEditText.setText(this.mSSServer.getMethod());
-            this.textViewConfirm.setText(R.string.delete);
+            this.textViewCacnel.setText(R.string.delete);
         }
     }
 

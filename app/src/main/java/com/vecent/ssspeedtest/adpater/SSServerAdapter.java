@@ -1,15 +1,20 @@
 package com.vecent.ssspeedtest.adpater;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.vecent.ssspeedtest.MainActivity;
 import com.vecent.ssspeedtest.R;
-import com.vecent.ssspeedtest.controller.InputSSServerSettingActivity;
+
+import com.vecent.ssspeedtest.controller.SpeedTestActivity;
+import com.vecent.ssspeedtest.dao.DaoManager;
 import com.vecent.ssspeedtest.dao.SSServer;
+import com.vecent.ssspeedtest.greendao.DaoSession;
+import com.vecent.ssspeedtest.view.EditSSServerSettingDialog;
 import com.zhy.adapter.abslistview.CommonAdapter;
 import com.zhy.adapter.abslistview.ViewHolder;
 
@@ -22,13 +27,23 @@ import java.util.List;
 public class SSServerAdapter extends CommonAdapter<SSServer> {
 
 
-    public SSServerAdapter(Context context, final int layoutId, List<SSServer> data) {
+    private EditSSServerSettingDialog.OnDialogChange mOnDialogChangeListener;
+
+    public SSServerAdapter(Context context, final int layoutId, List<SSServer> data, EditSSServerSettingDialog.OnDialogChange onDialogChangeListener) {
         super(context, layoutId, data);
+        this.mOnDialogChangeListener = onDialogChangeListener;
     }
 
     @Override
     public void convert(ViewHolder holder, final SSServer server, int post) {
         TextView serverNameTextView = holder.getView(R.id.texview_server_info);
+        ImageView imgViewSpeedText = holder.getView(R.id.img_speed_test);
+        imgViewSpeedText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                goSpeedTest(server);
+            }
+        });
         if (post == 0) {
             serverNameTextView.setText(mContext.getText(R.string.system_proxy));
         } else {
@@ -43,17 +58,21 @@ public class SSServerAdapter extends CommonAdapter<SSServer> {
         }
     }
 
-    private void goToEdit(SSServer server) {
+    private void goSpeedTest(SSServer server) {
         Intent intent = new Intent();
-        Bundle bundle = new Bundle();
-        bundle.putString("serverAddrName", server.getServerAddr());
-        bundle.putInt("serverPort", server.getServerPort());
-        bundle.putString("serverMethod", server.getMethod());
-        bundle.putString("serverPassword", server.getPassword());
-        bundle.putLong("ssserverId", server.getId());
-        intent.putExtras(bundle);
-        intent.setClass(mContext, InputSSServerSettingActivity.class);
+        if (server != null) {
+            intent.putExtra("ssServer", server);
+        }
+        intent.setClass(mContext, SpeedTestActivity.class);
         mContext.startActivity(intent);
     }
+
+    private void goToEdit(SSServer server) {
+        EditSSServerSettingDialog dialog = new EditSSServerSettingDialog(mContext, server);
+        dialog.setOnDialogChange(mOnDialogChangeListener);
+        dialog.show();
+        dialog.setWindowAttr(((Activity) mContext).getWindowManager());
+    }
+
 
 }
