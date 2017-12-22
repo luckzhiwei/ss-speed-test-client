@@ -9,7 +9,6 @@ import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewConfiguration;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
@@ -18,7 +17,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.vecent.ssspeedtest.R;
-import com.vecent.ssspeedtest.dao.SSServer;
 import com.vecent.ssspeedtest.model.bean.TotalSpeedTestResult;
 
 /**
