@@ -1,5 +1,6 @@
 package com.vecent.ssspeedtest.controller;
 
+import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -11,7 +12,9 @@ import android.widget.TextView;
 
 import com.vecent.ssspeedtest.R;
 import com.vecent.ssspeedtest.adpater.SpeedTestAdapter;
+import com.vecent.ssspeedtest.dao.DaoManager;
 import com.vecent.ssspeedtest.dao.SSServer;
+import com.vecent.ssspeedtest.greendao.DaoSession;
 import com.vecent.ssspeedtest.model.guradprocess.PrivoxyGuradProcess;
 import com.vecent.ssspeedtest.model.guradprocess.SSProxyGuradProcess;
 import com.vecent.ssspeedtest.model.net.INetImplDefault;
@@ -45,15 +48,21 @@ public class SpeedTestActivity extends AppCompatActivity {
     private SSProxyGuradProcess mGuradProcess;
     private PrivoxyGuradProcess mPrivoxyProcess;
     private int score;
+    private boolean isTestFinished = false;
+
+    public static final int TEST_FINISHED = 1;
 
     private SpeedTest.RequestCallBack callBack = new SpeedTest.RequestCallBack() {
         @Override
         public void onAllRequestFinishListener(float timeUsed, int totalReqSize) {
             setResultView(timeUsed);
-            if (mProxyServer != null)
+            if (mProxyServer != null) {
                 mGuradProcess.destory();
+                updateSSserverScore();
+            }
             if (mPrivoxyProcess != null)
                 mPrivoxyProcess.destory();
+            isTestFinished = true;
         }
 
         @Override
@@ -83,7 +92,6 @@ public class SpeedTestActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.speed_test_layout);
-
         ModelHodler holder = (ModelHodler) this.getLastCustomNonConfigurationInstance();
         this.initView();
         if (holder == null) {
@@ -208,11 +216,19 @@ public class SpeedTestActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        mSpeedTest.cancel();
-        if (mProxyServer != null)
-            mGuradProcess.destory();
-        if (mPrivoxyProcess != null)
-            mPrivoxyProcess.destory();
+        if (!isTestFinished) {
+            mSpeedTest.cancel();
+            if (mProxyServer != null)
+                mGuradProcess.destory();
+            if (mPrivoxyProcess != null)
+                mPrivoxyProcess.destory();
+        } else {
+            Intent dataBack = new Intent();
+            dataBack.putExtra("pos", getIntent().getIntExtra("pos", -1));
+            if (mProxyServer != null)
+                dataBack.putExtra("ssServer", mProxyServer);
+            setResult(TEST_FINISHED, dataBack);
+        }
         finish();
     }
 
@@ -236,6 +252,12 @@ public class SpeedTestActivity extends AppCompatActivity {
         holder.mSavedSSGuradProcess = mGuradProcess;
         holder.mSavedProxyServer = mProxyServer;
         return holder;
+    }
+
+    private void updateSSserverScore() {
+        DaoSession daoSession = DaoManager.getInstance(getApplicationContext()).getDaoSession();
+        this.mProxyServer.setScore(score);
+        daoSession.getSSServerDao().update(mProxyServer);
     }
 
 

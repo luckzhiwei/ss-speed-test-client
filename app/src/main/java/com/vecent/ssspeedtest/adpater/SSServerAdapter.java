@@ -35,37 +35,44 @@ public class SSServerAdapter extends CommonAdapter<SSServer> {
     }
 
     @Override
-    public void convert(ViewHolder holder, final SSServer server, int post) {
+    public void convert(ViewHolder holder, final SSServer server, final int pos) {
         TextView serverNameTextView = holder.getView(R.id.texview_server_info);
         ImageView imgViewSpeedText = holder.getView(R.id.img_speed_test);
         imgViewSpeedText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                goSpeedTest(server);
+                goSpeedTest(server, pos);
             }
         });
-        TextView serverGrade = holder.getView(R.id.textview_ss_score);
-        if (post == 0) {
+        if (pos == 0) {
             serverNameTextView.setText(mContext.getText(R.string.system_proxy));
         } else {
             serverNameTextView.setText(server.getServerAddr() + ":" + server.getServerPort());
             ImageView editImageView = holder.getView(R.id.img_edit);
+            TextView serverScore = holder.getView(R.id.textview_ss_score);
             editImageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     goToEdit(server);
                 }
             });
+            if (server.getScore() != 0) {
+                serverScore.setText(mContext.getResources().getText(R.string.score) + " " + server.getScore());
+            }
         }
     }
 
-    private void goSpeedTest(SSServer server) {
+    private void goSpeedTest(SSServer server, int pos) {
         Intent intent = new Intent();
         if (server != null) {
             intent.putExtra("ssServer", server);
         }
+        intent.putExtra("pos", pos);
         intent.setClass(mContext, SpeedTestActivity.class);
-        mContext.startActivity(intent);
+        if (mContext instanceof MainActivity) {
+            MainActivity activity = (MainActivity) mContext;
+            activity.startActivityForResult(intent, MainActivity.REQUEST_CODE);
+        }
     }
 
     private void goToEdit(SSServer server) {

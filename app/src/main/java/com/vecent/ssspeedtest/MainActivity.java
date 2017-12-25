@@ -23,11 +23,13 @@ import android.widget.Toast;
 import com.vecent.ssspeedtest.adpater.SSServerAdapter;
 import com.vecent.ssspeedtest.aidl.ISpeedTestInterface;
 import com.vecent.ssspeedtest.aidl.ITestFinishListener;
+import com.vecent.ssspeedtest.controller.SpeedTestActivity;
 import com.vecent.ssspeedtest.dao.DaoManager;
 import com.vecent.ssspeedtest.dao.SSServer;
 import com.vecent.ssspeedtest.greendao.DaoSession;
 import com.vecent.ssspeedtest.model.bean.TotalSpeedTestResult;
 import com.vecent.ssspeedtest.service.SpeedTestService;
+import com.vecent.ssspeedtest.util.LogUtil;
 import com.vecent.ssspeedtest.view.EditSSServerSettingDialog;
 
 import java.util.List;
@@ -46,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
     private ISpeedTestInterface iSpeedTestInterface;
     private ITestFinishListener iTestFinishListener = new ITestFinishListenerImpl();
 
+    public static final int REQUEST_CODE = 1;
 
     private ServiceConnection speedTestServiceConnection = new ServiceConnection() {
         @Override
@@ -143,8 +146,8 @@ public class MainActivity extends AppCompatActivity {
 
 
     @Override
-    protected void onResume() {
-        super.onResume();
+    protected void onStart() {
+        super.onStart();
         if (mHandler == null) mHandler = new Handler(Looper.getMainLooper());
         loadData();
     }
@@ -168,10 +171,23 @@ public class MainActivity extends AppCompatActivity {
         }).start();
     }
 
+    //todo 删除一个server不用重新加载
     private void deleteServer(SSServer server) {
         DaoSession daoSession = DaoManager.getInstance(getApplicationContext()).getDaoSession();
         daoSession.getSSServerDao().delete(server);
         loadData();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == SpeedTestActivity.TEST_FINISHED) {
+            int pos = data.getIntExtra("pos", -1);
+            SSServer server = data.getParcelableExtra("ssServer");
+            if (pos != -1 && server != null) {
+                LogUtil.logDebug(getClass().getName(), "pos is" + pos);
+                LogUtil.logDebug(getClass().getName(), "score is" + server.getScore());
+            }
+        }
     }
 
 
