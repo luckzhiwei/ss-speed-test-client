@@ -179,11 +179,17 @@ public class MainActivity extends AppCompatActivity {
             int pos = data.getIntExtra("pos", -1);
             SSServer server = data.getParcelableExtra("ssServer");
             if (pos != -1 && server != null) {
-                LogUtil.logDebug(getClass().getName(), "pos is" + pos);
-                LogUtil.logDebug(getClass().getName(), "score is" + server.getScore());
+                updateSSServerList(pos, server);
             }
         }
     }
 
+    private void updateSSServerList(int pos, SSServer server) {
+        this.ssServerList.set(pos, server);
+        if (pos <= contentListView.getLastVisiblePosition() && pos >= contentListView.getFirstVisiblePosition()) {
+            View view = contentListView.getChildAt(pos - contentListView.getFirstVisiblePosition());
+            adapter.updateView(view, server);
+        }
+    }
 
 }

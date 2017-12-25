@@ -62,6 +62,7 @@ public class SSServerAdapter extends CommonAdapter<SSServer> {
         }
     }
 
+
     private void goSpeedTest(SSServer server, int pos) {
         Intent intent = new Intent();
         if (server != null) {
@@ -80,6 +81,15 @@ public class SSServerAdapter extends CommonAdapter<SSServer> {
         dialog.setOnDialogChange(mOnDialogChangeListener);
         dialog.show();
         dialog.setWindowAttr(((Activity) mContext).getWindowManager());
+    }
+
+    public void updateView(View view, SSServer server) {
+        Object object = view.getTag();
+        if (object instanceof ViewHolder) {
+            ViewHolder holder = (ViewHolder) object;
+            TextView serverScore = holder.getView(R.id.textview_ss_score);
+            serverScore.setText(mContext.getResources().getText(R.string.score) + " " + server.getScore());
+        }
     }
 
 
