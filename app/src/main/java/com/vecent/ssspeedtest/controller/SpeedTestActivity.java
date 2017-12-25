@@ -44,6 +44,7 @@ public class SpeedTestActivity extends AppCompatActivity {
     private SSServer mProxyServer;
     private SSProxyGuradProcess mGuradProcess;
     private PrivoxyGuradProcess mPrivoxyProcess;
+    private int score;
 
     private SpeedTest.RequestCallBack callBack = new SpeedTest.RequestCallBack() {
         @Override
@@ -57,6 +58,9 @@ public class SpeedTestActivity extends AppCompatActivity {
 
         @Override
         public void onOneRequestFinishListener(SpeedTestResult result) {
+            if (!result.isExceptionOccured()) {
+                score++;
+            }
             mResult.addResult2List(result);
             updateView();
         }
@@ -67,6 +71,7 @@ public class SpeedTestActivity extends AppCompatActivity {
         public Handler mSaveHandler;
         public SSServer mSavedProxyServer;
         public int mSavedTotalSize;
+        public int score;
         public TotalSpeedTestResult mSaveResult;
         public SpeedTestAdapter mSaveAdapter;
         public SpeedTest mSaveSpeedTest;
@@ -79,14 +84,13 @@ public class SpeedTestActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.speed_test_layout);
 
-        ModelHodler hodler = (ModelHodler) this.getLastCustomNonConfigurationInstance();
+        ModelHodler holder = (ModelHodler) this.getLastCustomNonConfigurationInstance();
         this.initView();
-        if (hodler == null) {
+        if (holder == null) {
             this.initModel();
             this.initTitleContent();
         } else {
-            this.initView();
-            this.continueView(hodler);
+            this.continueView(holder);
         }
     }
 
@@ -100,6 +104,7 @@ public class SpeedTestActivity extends AppCompatActivity {
         this.mResult = hodler.mSaveResult;
         this.totalSize = hodler.mSavedTotalSize;
         this.mProxyServer = hodler.mSavedProxyServer;
+        this.score = hodler.score;
         this.mContentListView.setAdapter(this.mAdapter);
         this.mSpeedTest.setRequestCallBack(callBack);
         this.updateView();
@@ -119,9 +124,10 @@ public class SpeedTestActivity extends AppCompatActivity {
         this.mProgressBar = (ProgressBar) this.findViewById(R.id.speed_test_progress);
         this.mProgressBar.setMax(100);
         this.ssServerInfo = (TextView) this.findViewById(R.id.textview_ss_server_info);
-        this.scoreContent = (TextView) this.findViewById(R.id.textview_score);
+        this.scoreContent = (TextView) this.findViewById(R.id.textview_score_value);
         this.getSupportActionBar().setDisplayShowCustomEnabled(true);
         this.getSupportActionBar().setCustomView(R.layout.action_bar_go_back);
+        initTitleContent();
     }
 
     private void initTitleContent() {
@@ -132,6 +138,7 @@ public class SpeedTestActivity extends AppCompatActivity {
 
     private void initModel() {
         mResult = new TotalSpeedTestResult();
+        score = 0;
         this.mAdapter = new SpeedTestAdapter(getApplicationContext(),
                 R.layout.speed_test_item_layout, mResult.getResultList());
         this.mContentListView.setAdapter(this.mAdapter);
@@ -188,8 +195,8 @@ public class SpeedTestActivity extends AppCompatActivity {
 
 
     private void updateView() {
-        initTitleContent();
         mAdapter.notifyDataSetChanged();
+        scoreContent.setText(score + "");
         mProgressBar.setProgress((int) (100.0f * mResult.getCurServerCount() / totalSize));
         setResultView((System.currentTimeMillis() - mSpeedTest.getTimeStart()) / 1000.0f);
     }

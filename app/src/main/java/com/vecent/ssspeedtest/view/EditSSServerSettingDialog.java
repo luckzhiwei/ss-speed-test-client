@@ -35,7 +35,6 @@ public class EditSSServerSettingDialog extends Dialog {
     private SSServer mSSServer;
     private OnDialogChange mOnDialogChange;
 
-    private long serverId = -1;
     private Context mContext;
 
     public EditSSServerSettingDialog(@NonNull Context context) {
@@ -47,9 +46,6 @@ public class EditSSServerSettingDialog extends Dialog {
         super(context);
         this.mContext = context;
         this.mSSServer = server;
-        if (server != null) {
-            this.serverId = server.getId();
-        }
     }
 
     @Override
@@ -106,18 +102,16 @@ public class EditSSServerSettingDialog extends Dialog {
             @Override
             public void onClick(View view) {
                 if (vaildation()) {
-                    SSServer ssServer = new SSServer();
-                    ssServer.setServerAddr(ssServerAddrEditText.getText().toString());
-                    ssServer.setServerPort(Integer.parseInt(ssServerRemotePortEditText.getText().toString()));
-                    ssServer.setPassword(ssServerPasswordEditText.getText().toString());
-                    ssServer.setMethod(ssEncryptMethodEditText.getText().toString());
                     DaoSession daoSession = DaoManager.getInstance(mContext).getDaoSession();
-                    if (serverId == -1) {
-                        daoSession.getSSServerDao().insert(ssServer);
+                    if (mSSServer != null) {
+                        setServerSetting(mSSServer);
+                        daoSession.getSSServerDao().update(mSSServer);
                     } else {
-                        ssServer.setId(serverId);
-                        daoSession.getSSServerDao().update(ssServer);
+                        SSServer ssServer = new SSServer();
+                        setServerSetting(ssServer);
+                        daoSession.getSSServerDao().insert(ssServer);
                     }
+
                     if (mOnDialogChange != null) {
                         mOnDialogChange.onConfirm();
                     }
@@ -154,6 +148,13 @@ public class EditSSServerSettingDialog extends Dialog {
         android.view.WindowManager.LayoutParams p = getWindow().getAttributes();
         p.width = (int) (size.x * 0.8);
         this.getWindow().setAttributes(p);
+    }
+
+    private void setServerSetting(SSServer ssServer) {
+        ssServer.setServerAddr(ssServerAddrEditText.getText().toString());
+        ssServer.setServerPort(Integer.parseInt(ssServerRemotePortEditText.getText().toString()));
+        ssServer.setPassword(ssServerPasswordEditText.getText().toString());
+        ssServer.setMethod(ssEncryptMethodEditText.getText().toString());
     }
 
     public void setOnDialogChange(OnDialogChange onDialogChange) {

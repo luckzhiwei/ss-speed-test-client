@@ -8,6 +8,7 @@ import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.NotNull;
 import org.greenrobot.greendao.annotation.Property;
 import org.greenrobot.greendao.annotation.Generated;
+
 /**
  * Created by zhiwei on 2017/11/7.
  */
@@ -33,6 +34,10 @@ public class SSServer implements Parcelable {
     @Property(nameInDb = "method")
     @NotNull
     private String method;
+
+    @Property(nameInDb = "score")
+    @NotNull
+    private int score = 0;
 
     public Long getId() {
         return this.id;
@@ -88,19 +93,6 @@ public class SSServer implements Parcelable {
         }
     };
 
-    @Generated(hash = 653072287)
-    public SSServer(Long id, @NotNull String serverAddr, int serverPort, @NotNull String password,
-                    @NotNull String method) {
-        this.id = id;
-        this.serverAddr = serverAddr;
-        this.serverPort = serverPort;
-        this.password = password;
-        this.method = method;
-    }
-
-    @Generated(hash = 1471507233)
-    public SSServer() {
-    }
 
     public int describeContents() {
         //几乎所有情况都返回0，仅在当前对象中存在文件描述符时返回1
@@ -115,12 +107,36 @@ public class SSServer implements Parcelable {
         out.writeString(method);
     }
 
+    public int getScore() {
+        return this.score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
+
+
     protected SSServer(Parcel in) {
         this.id = in.readLong();
         this.serverAddr = in.readString();
         this.serverPort = in.readInt();
         this.password = in.readString();
         this.method = in.readString();
+    }
+
+    @Generated(hash = 1182408304)
+    public SSServer(Long id, @NotNull String serverAddr, int serverPort, @NotNull String password,
+                    @NotNull String method, int score) {
+        this.id = id;
+        this.serverAddr = serverAddr;
+        this.serverPort = serverPort;
+        this.password = password;
+        this.method = method;
+        this.score = score;
+    }
+
+    @Generated(hash = 1471507233)
+    public SSServer() {
     }
 
 }

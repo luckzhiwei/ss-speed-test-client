@@ -29,6 +29,7 @@ public class SSServerDao extends AbstractDao<SSServer, Long> {
         public final static Property ServerPort = new Property(2, int.class, "serverPort", false, "serverPort");
         public final static Property Password = new Property(3, String.class, "password", false, "password");
         public final static Property Method = new Property(4, String.class, "method", false, "method");
+        public final static Property Score = new Property(5, int.class, "score", false, "score");
     }
 
 
@@ -48,7 +49,8 @@ public class SSServerDao extends AbstractDao<SSServer, Long> {
                 "\"serverAddr\" TEXT NOT NULL ," + // 1: serverAddr
                 "\"serverPort\" INTEGER NOT NULL ," + // 2: serverPort
                 "\"password\" TEXT NOT NULL ," + // 3: password
-                "\"method\" TEXT NOT NULL );"); // 4: method
+                "\"method\" TEXT NOT NULL ," + // 4: method
+                "\"score\" INTEGER NOT NULL );"); // 5: score
     }
 
     /** Drops the underlying database table. */
@@ -69,6 +71,7 @@ public class SSServerDao extends AbstractDao<SSServer, Long> {
         stmt.bindLong(3, entity.getServerPort());
         stmt.bindString(4, entity.getPassword());
         stmt.bindString(5, entity.getMethod());
+        stmt.bindLong(6, entity.getScore());
     }
 
     @Override
@@ -83,6 +86,7 @@ public class SSServerDao extends AbstractDao<SSServer, Long> {
         stmt.bindLong(3, entity.getServerPort());
         stmt.bindString(4, entity.getPassword());
         stmt.bindString(5, entity.getMethod());
+        stmt.bindLong(6, entity.getScore());
     }
 
     @Override
@@ -97,7 +101,8 @@ public class SSServerDao extends AbstractDao<SSServer, Long> {
             cursor.getString(offset + 1), // serverAddr
             cursor.getInt(offset + 2), // serverPort
             cursor.getString(offset + 3), // password
-            cursor.getString(offset + 4) // method
+            cursor.getString(offset + 4), // method
+            cursor.getInt(offset + 5) // score
         );
         return entity;
     }
@@ -109,6 +114,7 @@ public class SSServerDao extends AbstractDao<SSServer, Long> {
         entity.setServerPort(cursor.getInt(offset + 2));
         entity.setPassword(cursor.getString(offset + 3));
         entity.setMethod(cursor.getString(offset + 4));
+        entity.setScore(cursor.getInt(offset + 5));
      }
     
     @Override

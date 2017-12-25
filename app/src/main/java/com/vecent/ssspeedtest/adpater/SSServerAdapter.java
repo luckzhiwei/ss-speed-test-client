@@ -44,6 +44,7 @@ public class SSServerAdapter extends CommonAdapter<SSServer> {
                 goSpeedTest(server);
             }
         });
+        TextView serverGrade = holder.getView(R.id.textview_ss_score);
         if (post == 0) {
             serverNameTextView.setText(mContext.getText(R.string.system_proxy));
         } else {
