@@ -56,10 +56,9 @@ public class SpeedTestActivity extends AppCompatActivity {
         @Override
         public void onAllRequestFinishListener(float timeUsed, int totalReqSize) {
             setResultView(timeUsed);
-            if (mProxyServer != null) {
+            updateSSserverScore();
+            if (!mProxyServer.isSystemProxy())
                 mGuradProcess.destory();
-                updateSSserverScore();
-            }
             if (mPrivoxyProcess != null)
                 mPrivoxyProcess.destory();
             isTestFinished = true;
@@ -135,11 +134,10 @@ public class SpeedTestActivity extends AppCompatActivity {
         this.scoreContent = (TextView) this.findViewById(R.id.textview_score_value);
         this.getSupportActionBar().setDisplayShowCustomEnabled(true);
         this.getSupportActionBar().setCustomView(R.layout.action_bar_go_back);
-        initTitleContent();
     }
 
     private void initTitleContent() {
-        if (mProxyServer != null) {
+        if (!mProxyServer.isSystemProxy()) {
             this.ssServerInfo.setText(mProxyServer.getServerAddr() + ":" + mProxyServer.getServerPort());
         }
     }
@@ -161,7 +159,7 @@ public class SpeedTestActivity extends AppCompatActivity {
 
     private void startSpeedTest() {
         this.mSpeedTest.setRequestCallBack(callBack);
-        if (mProxyServer != null) {
+        if (!mProxyServer.isSystemProxy()) {
             startTestWithProxy();
         } else {
             startTestWithoutProxy();
@@ -218,15 +216,14 @@ public class SpeedTestActivity extends AppCompatActivity {
     public void onBackPressed() {
         if (!isTestFinished) {
             mSpeedTest.cancel();
-            if (mProxyServer != null)
+            if (!mProxyServer.isSystemProxy())
                 mGuradProcess.destory();
             if (mPrivoxyProcess != null)
                 mPrivoxyProcess.destory();
         } else {
             Intent dataBack = new Intent();
             dataBack.putExtra("pos", getIntent().getIntExtra("pos", -1));
-            if (mProxyServer != null)
-                dataBack.putExtra("ssServer", mProxyServer);
+            dataBack.putExtra("ssServer", mProxyServer);
             setResult(TEST_FINISHED, dataBack);
         }
         finish();

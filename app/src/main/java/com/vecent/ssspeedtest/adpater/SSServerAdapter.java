@@ -14,6 +14,8 @@ import com.vecent.ssspeedtest.controller.SpeedTestActivity;
 import com.vecent.ssspeedtest.dao.DaoManager;
 import com.vecent.ssspeedtest.dao.SSServer;
 import com.vecent.ssspeedtest.greendao.DaoSession;
+import com.vecent.ssspeedtest.util.Constant;
+import com.vecent.ssspeedtest.util.LogUtil;
 import com.vecent.ssspeedtest.view.EditSSServerSettingDialog;
 import com.zhy.adapter.abslistview.CommonAdapter;
 import com.zhy.adapter.abslistview.ViewHolder;
@@ -44,21 +46,21 @@ public class SSServerAdapter extends CommonAdapter<SSServer> {
                 goSpeedTest(server, pos);
             }
         });
-        if (pos == 0) {
+        if (server.isSystemProxy()) {
             serverNameTextView.setText(mContext.getText(R.string.system_proxy));
         } else {
             serverNameTextView.setText(server.getServerAddr() + ":" + server.getServerPort());
             ImageView editImageView = holder.getView(R.id.img_edit);
-            TextView serverScore = holder.getView(R.id.textview_ss_score);
             editImageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     goToEdit(server);
                 }
             });
-            if (server.getScore() != 0) {
-                serverScore.setText(mContext.getResources().getText(R.string.score) + " " + server.getScore());
-            }
+        }
+        TextView serverScore = holder.getView(R.id.textview_ss_score);
+        if (server.getScore() != 0) {
+            serverScore.setText(mContext.getResources().getText(R.string.score) + " " + server.getScore());
         }
     }
 
@@ -88,6 +90,8 @@ public class SSServerAdapter extends CommonAdapter<SSServer> {
         if (object instanceof ViewHolder) {
             ViewHolder holder = (ViewHolder) object;
             TextView serverScore = holder.getView(R.id.textview_ss_score);
+            TextView serverAddr = holder.getView(R.id.texview_server_info);
+            LogUtil.logDebug(getClass().getName(), serverAddr.getText().toString());
             serverScore.setText(mContext.getResources().getText(R.string.score) + " " + server.getScore());
         }
     }

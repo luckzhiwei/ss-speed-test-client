@@ -16,6 +16,7 @@ import com.vecent.ssspeedtest.model.SpeedTest;
 import com.vecent.ssspeedtest.model.bean.Server;
 import com.vecent.ssspeedtest.model.bean.SpeedTestResult;
 import com.vecent.ssspeedtest.model.bean.TotalSpeedTestResult;
+import com.vecent.ssspeedtest.model.net.INetImplDefault;
 import com.vecent.ssspeedtest.model.net.INetImplWithPrivoxy;
 import com.vecent.ssspeedtest.model.net.INetImplWithProxy;
 import com.vecent.ssspeedtest.model.net.INetImplWithSSProxy;
@@ -77,16 +78,20 @@ public class GuradSpeedTester extends Thread {
                 @Override
                 public void run() {
                     final TotalSpeedTestResult curResult = new TotalSpeedTestResult();
-                    SSServer proxySSServer = mIterator.next();
+                    final SSServer proxySSServer = mIterator.next();
                     final SSProxyGuradProcess proxyGuradProcess = new SSProxyGuradProcess(proxySSServer, mContext, Constant.SOCKS_SERVER_LOCAL_PORT_BACK);
-                    proxyGuradProcess.start();
+                    if (!proxySSServer.isSystemProxy()) {
+                        proxyGuradProcess.start();
+                    }
                     curResult.setServer2TestAddr(proxySSServer.getServerAddr());
                     SpeedTest speedTest = new SpeedTest(servers2Test, mHandler);
                     speedTest.setRequestCallBack(new SpeedTest.RequestCallBack() {
                         @Override
                         public void onAllRequestFinishListener(float timeUsed, int totalReqSize) {
                             results.add(curResult);
-                            proxyGuradProcess.destory();
+                            if (!proxySSServer.isSystemProxy())
+                                proxyGuradProcess.destory();
+
                             runTest();
                         }
 
@@ -95,10 +100,14 @@ public class GuradSpeedTester extends Thread {
                             curResult.addResult2List(result);
                         }
                     });
-                    if (Build.VERSION.SDK_INT < 24) {
-                        speedTest.startTest(new INetImplWithPrivoxy(Constant.PRIVOXY_LOCAL_PORT_BACK));
+                    if (proxySSServer.isSystemProxy()) {
+                        speedTest.startTest(new INetImplDefault());
                     } else {
-                        speedTest.startTest(new INetImplWithSSProxy(Constant.SOCKS_SERVER_LOCAL_PORT_BACK));
+                        if (Build.VERSION.SDK_INT < 24) {
+                            speedTest.startTest(new INetImplWithPrivoxy(Constant.PRIVOXY_LOCAL_PORT_BACK));
+                        } else if (proxySSServer.isSystemProxy()) {
+                            speedTest.startTest(new INetImplWithSSProxy(Constant.SOCKS_SERVER_LOCAL_PORT_BACK));
+                        }
                     }
                 }
             }).start();

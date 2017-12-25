@@ -29,7 +29,6 @@ import com.vecent.ssspeedtest.dao.SSServer;
 import com.vecent.ssspeedtest.greendao.DaoSession;
 import com.vecent.ssspeedtest.model.bean.TotalSpeedTestResult;
 import com.vecent.ssspeedtest.service.SpeedTestService;
-import com.vecent.ssspeedtest.util.LogUtil;
 import com.vecent.ssspeedtest.view.EditSSServerSettingDialog;
 
 import java.util.List;
@@ -153,7 +152,6 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 DaoSession daoSession = DaoManager.getInstance(getApplicationContext()).getDaoSession();
                 ssServerList = daoSession.getSSServerDao().loadAll();
-                ssServerList.add(0, null);
                 mHandler.post(new Runnable() {
                     @Override
                     public void run() {
@@ -166,7 +164,6 @@ public class MainActivity extends AppCompatActivity {
         }).start();
     }
 
-    //todo 删除一个server不用重新加载
     private void deleteServer(SSServer server) {
         DaoSession daoSession = DaoManager.getInstance(getApplicationContext()).getDaoSession();
         daoSession.getSSServerDao().delete(server);

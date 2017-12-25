@@ -22,6 +22,6 @@ public class Constant {
     public static final int MAX_THREAD_POOL_SIZE = 100;
     public static final int SERVICE_WAIT_INTERNAL = 2 * 60 * 1000;
     public static final int REQUEST_WRITE_STORAGE = 112;
-
+    public static final String SYSTEM_PROXY = "SYSTEM_PROXY";
 
 }

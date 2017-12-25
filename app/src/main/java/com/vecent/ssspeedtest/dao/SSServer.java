@@ -3,6 +3,8 @@ package com.vecent.ssspeedtest.dao;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.vecent.ssspeedtest.util.Constant;
+
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.NotNull;
@@ -139,6 +141,10 @@ public class SSServer implements Parcelable {
 
     @Generated(hash = 1471507233)
     public SSServer() {
+    }
+
+    public boolean isSystemProxy() {
+        return this.serverAddr.equals(Constant.SYSTEM_PROXY);
     }
 
 }
