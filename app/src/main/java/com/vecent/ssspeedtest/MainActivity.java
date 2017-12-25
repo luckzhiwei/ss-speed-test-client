@@ -88,6 +88,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         initView();
         initService();
+        loadData();
     }
 
 
@@ -145,14 +146,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        if (mHandler == null) mHandler = new Handler(Looper.getMainLooper());
-        loadData();
-    }
-
     public void loadData() {
+        if (mHandler == null) mHandler = new Handler(Looper.getMainLooper());
         new Thread(new Runnable() {
             @Override
             public void run() {
