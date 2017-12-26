@@ -185,13 +185,13 @@ public class SpeedTestActivity extends AppCompatActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                if (Build.VERSION.SDK_INT < 24) {
-                    mSpeedTest.startTest(new INetImplWithPrivoxy(Constant.PRIVOXY_LOCAL_PORT_FONT));
-                } else {
-                    mSpeedTest.startTest(new INetImplWithSSProxy(Constant.SOCKS_SERVER_LOCAL_PORT_FONT));
-                }
                 try {
-                    Thread.sleep(1000);
+                    Thread.sleep(500);
+                    if (Build.VERSION.SDK_INT < 24) {
+                        mSpeedTest.startTest(new INetImplWithPrivoxy(Constant.PRIVOXY_LOCAL_PORT_FONT));
+                    } else {
+                        mSpeedTest.startTest(new INetImplWithSSProxy(Constant.SOCKS_SERVER_LOCAL_PORT_FONT));
+                    }
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

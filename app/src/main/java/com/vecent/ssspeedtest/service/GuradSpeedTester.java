@@ -91,7 +91,6 @@ public class GuradSpeedTester extends Thread {
                             results.add(curResult);
                             if (!proxySSServer.isSystemProxy())
                                 proxyGuradProcess.destory();
-
                             runTest();
                         }
 
