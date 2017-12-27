@@ -220,8 +220,8 @@ public class SpeedTestActivity extends AppCompatActivity {
                 mGuradProcess.destory();
             if (mPrivoxyProcess != null)
                 mPrivoxyProcess.destory();
+            updateSSserverScore();
         }
-        updateSSserverScore();
         Intent dataBack = new Intent();
         dataBack.putExtra("pos", getIntent().getIntExtra("pos", -1));
         dataBack.putExtra("ssServer", mProxyServer);

@@ -90,8 +90,6 @@ public class SSServerAdapter extends CommonAdapter<SSServer> {
         if (object instanceof ViewHolder) {
             ViewHolder holder = (ViewHolder) object;
             TextView serverScore = holder.getView(R.id.textview_ss_score);
-            TextView serverAddr = holder.getView(R.id.texview_server_info);
-            LogUtil.logDebug(getClass().getName(), serverAddr.getText().toString());
             serverScore.setText(mContext.getResources().getText(R.string.score) + " " + server.getScore());
         }
     }

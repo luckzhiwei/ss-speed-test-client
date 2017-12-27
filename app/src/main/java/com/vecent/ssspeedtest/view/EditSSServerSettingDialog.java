@@ -34,7 +34,6 @@ public class EditSSServerSettingDialog extends Dialog {
     private TextView textViewCacnel;
     private SSServer mSSServer;
     private OnDialogChange mOnDialogChange;
-
     private Context mContext;
 
     public EditSSServerSettingDialog(@NonNull Context context) {

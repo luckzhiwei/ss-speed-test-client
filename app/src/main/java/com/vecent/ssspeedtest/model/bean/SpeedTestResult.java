@@ -68,8 +68,6 @@ public class SpeedTestResult {
 
     public void setDownLoadSpeed() {
         if (this.totalSize != 0 && this.timeUsed != 0) {
-            LogUtil.logDebug(getClass().getName(), this.timeUsed + "ms  time used");
-            LogUtil.logDebug(getClass().getName(), this.totalSize + " byte  ");
             this.downLoadSpeed = this.totalSize * 1.0f / this.timeUsed;
         }
     }

@@ -37,6 +37,7 @@ public class INetImplDefault implements INet {
                 LogUtil.logDebug(getClass().getName(), "connection is null");
                 throw new IOException("conn init fail");
             }
+            result.setStartTime(System.currentTimeMillis());
             int responseCode = conn.getResponseCode();
             int countNum = 0;
             while (this.isRedirect(responseCode)) {
@@ -102,7 +103,7 @@ public class INetImplDefault implements INet {
 
     private int getResponseSize(InputStream in) throws IOException {
         BufferedInputStream inputStream = new BufferedInputStream(in);
-        byte[] buf = new byte[1024];
+        byte[] buf = new byte[8192];
         int len = 0;
         int totalSize = 0;
         while ((len = inputStream.read(buf)) != -1) {
