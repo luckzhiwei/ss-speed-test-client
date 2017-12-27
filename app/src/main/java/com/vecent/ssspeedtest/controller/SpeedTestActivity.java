@@ -220,12 +220,12 @@ public class SpeedTestActivity extends AppCompatActivity {
                 mGuradProcess.destory();
             if (mPrivoxyProcess != null)
                 mPrivoxyProcess.destory();
-        } else {
-            Intent dataBack = new Intent();
-            dataBack.putExtra("pos", getIntent().getIntExtra("pos", -1));
-            dataBack.putExtra("ssServer", mProxyServer);
-            setResult(TEST_FINISHED, dataBack);
         }
+        updateSSserverScore();
+        Intent dataBack = new Intent();
+        dataBack.putExtra("pos", getIntent().getIntExtra("pos", -1));
+        dataBack.putExtra("ssServer", mProxyServer);
+        setResult(TEST_FINISHED, dataBack);
         finish();
     }
 
@@ -248,6 +248,7 @@ public class SpeedTestActivity extends AppCompatActivity {
         holder.mSaveHandler = mHandler;
         holder.mSavedSSGuradProcess = mGuradProcess;
         holder.mSavedProxyServer = mProxyServer;
+        holder.score = score;
         return holder;
     }
 

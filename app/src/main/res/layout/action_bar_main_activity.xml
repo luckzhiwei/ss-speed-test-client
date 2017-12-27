@@ -28,4 +28,15 @@
         android:layout_marginRight="24dp"
         android:src="@mipmap/triangle" />
 
+    <ProgressBar
+        android:id="@+id/progress_background"
+        style="@android:style/Widget.ProgressBar.Large"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="24dp"
+        android:indeterminateDrawable="@drawable/progress_background_black"
+        android:visibility="gone" />
+
 </RelativeLayout>

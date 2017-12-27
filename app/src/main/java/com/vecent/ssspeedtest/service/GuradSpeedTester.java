@@ -48,11 +48,14 @@ public class GuradSpeedTester extends Thread {
 
     private PrivoxyGuradProcess mPrivoxyGuradProcess;
 
+    private boolean isRunning;
+
 
     public GuradSpeedTester(List<Server> servers2Test, Context context) {
         this.servers2Test = servers2Test;
         this.mContext = context;
         this.results = new ArrayList<>();
+        this.isRunning = false;
     }
 
     @Override
@@ -62,18 +65,18 @@ public class GuradSpeedTester extends Thread {
         }
         mHandler = new Handler(Looper.myLooper());
         LogUtil.logDebug(getClass().getName(), "start test");
-        readSSProxyServerFromDB();
-        runTest();
         if (Build.VERSION.SDK_INT < 24) {
             mPrivoxyGuradProcess = new PrivoxyGuradProcess(mContext, Constant.BACK_PRIVOXY_CONFIG_FILE_NAME);
             mPrivoxyGuradProcess.start();
         }
+        startTest();
         Looper.loop();
     }
 
 
     public void runTest() {
         if (mIterator.hasNext()) {
+            isRunning = true;
             new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -102,10 +105,15 @@ public class GuradSpeedTester extends Thread {
                     if (proxySSServer.isSystemProxy()) {
                         speedTest.startTest(new INetImplDefault());
                     } else {
-                        if (Build.VERSION.SDK_INT < 24) {
-                            speedTest.startTest(new INetImplWithPrivoxy(Constant.PRIVOXY_LOCAL_PORT_BACK));
-                        } else if (proxySSServer.isSystemProxy()) {
-                            speedTest.startTest(new INetImplWithSSProxy(Constant.SOCKS_SERVER_LOCAL_PORT_BACK));
+                        try {
+                            Thread.sleep(500);
+                            if (Build.VERSION.SDK_INT < 24) {
+                                speedTest.startTest(new INetImplWithPrivoxy(Constant.PRIVOXY_LOCAL_PORT_BACK));
+                            } else if (proxySSServer.isSystemProxy()) {
+                                speedTest.startTest(new INetImplWithSSProxy(Constant.SOCKS_SERVER_LOCAL_PORT_BACK));
+                            }
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
                         }
                     }
                 }
@@ -113,6 +121,24 @@ public class GuradSpeedTester extends Thread {
         } else {
             LogUtil.logDebug(getClass().getName(), "end test");
             finishSpeedTest();
+        }
+    }
+
+    private void startTest() {
+        readSSProxyServerFromDB();
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                LogUtil.logDebug(getClass().getName(), "start test");
+                runTest();
+            }
+        });
+        if (mTestFinishListener != null) {
+            try {
+                mTestFinishListener.onTestStart();
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -125,18 +151,13 @@ public class GuradSpeedTester extends Thread {
                 mTestFinishListener.onTestFinish(results);
             }
             this.results = new ArrayList<>();
+            this.isRunning = false;
             Thread.sleep(Constant.SERVICE_WAIT_INTERNAL);
-            readSSProxyServerFromDB();
-            mHandler.post(new Runnable() {
-                @Override
-                public void run() {
-                    LogUtil.logDebug(getClass().getName(), "start test");
-                    runTest();
-                }
-            });
+            startTest();
         } catch (RemoteException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
+            startTest();
             e.printStackTrace();
         }
     }
@@ -163,6 +184,10 @@ public class GuradSpeedTester extends Thread {
 
     public void setTestFinishListener(ITestFinishListener listener) {
         this.mTestFinishListener = listener;
+    }
+
+    public boolean isRunning() {
+        return this.isRunning;
     }
 
     public void exit() {

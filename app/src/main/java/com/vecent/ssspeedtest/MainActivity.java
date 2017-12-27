@@ -18,6 +18,7 @@ import android.view.View;
 
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.vecent.ssspeedtest.adpater.SSServerAdapter;
@@ -44,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout mDrawerLayout;
     private ImageView menuImg;
     private ImageView getGradeImg;
+    private ProgressBar progressBarBackground;
     private ISpeedTestInterface iSpeedTestInterface;
     private ITestFinishListener iTestFinishListener = new ITestFinishListenerImpl();
 
@@ -56,6 +58,10 @@ public class MainActivity extends AppCompatActivity {
             try {
                 iSpeedTestInterface.startTest();
                 iSpeedTestInterface.setOnTestFinishListener(iTestFinishListener);
+                if (iSpeedTestInterface.isTestRuning()) {
+                    getGradeImg.setVisibility(View.GONE);
+                    progressBarBackground.setVisibility(View.VISIBLE);
+                }
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
@@ -103,7 +109,19 @@ public class MainActivity extends AppCompatActivity {
             mHandler.post(new Runnable() {
                 @Override
                 public void run() {
-                    Toast.makeText(getApplicationContext(), "", Toast.LENGTH_SHORT).show();
+                    getGradeImg.setVisibility(View.VISIBLE);
+                    progressBarBackground.setVisibility(View.GONE);
+                }
+            });
+        }
+
+        @Override
+        public void onTestStart() throws RemoteException {
+            mHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    getGradeImg.setVisibility(View.GONE);
+                    progressBarBackground.setVisibility(View.VISIBLE);
                 }
             });
         }
@@ -132,6 +150,8 @@ public class MainActivity extends AppCompatActivity {
         this.menuImg = cutsomView.findViewById(R.id.img_menu);
         this.getGradeImg = cutsomView.findViewById(R.id.img_get_grade);
         actionBar.setDisplayShowCustomEnabled(true);
+        this.progressBarBackground = cutsomView.findViewById(R.id.progress_background);
+        this.progressBarBackground.setVisibility(View.GONE);
         this.menuImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -40,6 +40,11 @@ public class SpeedTestService extends Service {
         }
 
         @Override
+        public boolean isTestRuning() throws RemoteException {
+            return mGuradSpeedTester.isRunning();
+        }
+
+        @Override
         public void setOnTestFinishListener(ITestFinishListener listener) throws RemoteException {
             mGuradSpeedTester.setTestFinishListener(listener);
         }

@@ -10,5 +10,6 @@ interface ISpeedTestInterface {
      */
      void startTest();
      void stopTest();
+     boolean isTestRuning();
      void setOnTestFinishListener(in ITestFinishListener listener);
 }

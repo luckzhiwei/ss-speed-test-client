@@ -19,7 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:progressDrawable="@drawable/progress_background" />
+            android:progressDrawable="@drawable/progress_background_blue" />
 
         <RelativeLayout
             android:layout_width="match_parent"

@@ -6,4 +6,5 @@ import com.vecent.ssspeedtest.model.bean.TotalSpeedTestResult;
 interface ITestFinishListener {
 
     void onTestFinish(in List<TotalSpeedTestResult> results);
+    void onTestStart();
 }

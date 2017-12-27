@@ -1,5 +1,7 @@
 package com.vecent.ssspeedtest.model.bean;
 
+import com.vecent.ssspeedtest.util.LogUtil;
+
 /**
  * Created by lzw on 17-9-5.
  */
@@ -17,6 +19,25 @@ public class SpeedTestResult {
     private String redirectServer;
     private boolean isExceptionOccured = false;
     private boolean isWhiteAddr;
+
+    public long getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(long startTime) {
+        this.startTime = startTime;
+    }
+
+    public long getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(long endTime) {
+        this.endTime = endTime;
+    }
+
+    private long startTime;
+    private long endTime;
 
     public boolean isWhiteAddr() {
         return isWhiteAddr;
@@ -47,6 +68,8 @@ public class SpeedTestResult {
 
     public void setDownLoadSpeed() {
         if (this.totalSize != 0 && this.timeUsed != 0) {
+            LogUtil.logDebug(getClass().getName(), this.timeUsed + "ms  time used");
+            LogUtil.logDebug(getClass().getName(), this.totalSize + " byte  ");
             this.downLoadSpeed = this.totalSize * 1.0f / this.timeUsed;
         }
     }
@@ -129,5 +152,11 @@ public class SpeedTestResult {
 
     public void setTimeUsed(long timeUsed) {
         this.timeUsed = timeUsed;
+    }
+
+    public void setTimeUsed() {
+        if (this.startTime != 0 && this.endTime != 0) {
+            this.timeUsed = this.endTime - this.startTime;
+        }
     }
 }
