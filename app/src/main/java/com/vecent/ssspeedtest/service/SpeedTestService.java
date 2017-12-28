@@ -79,6 +79,8 @@ public class SpeedTestService extends Service {
         if (mGuradSpeedTester == null) {
             mGuradSpeedTester = new GuradSpeedTester(servers2Test.getServers(), getApplicationContext());
             mGuradSpeedTester.start();
+        } else {
+            mGuradSpeedTester.interrupt();
         }
     }
 
@@ -87,7 +89,6 @@ public class SpeedTestService extends Service {
             mGuradSpeedTester.exit();
         }
     }
-
 
 
 }

@@ -19,7 +19,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.vecent.ssspeedtest.adpater.SSServerAdapter;
 import com.vecent.ssspeedtest.aidl.ISpeedTestInterface;
@@ -159,6 +158,16 @@ public class MainActivity extends AppCompatActivity {
                     mDrawerLayout.closeDrawers();
                 } else {
                     mDrawerLayout.openDrawer(GravityCompat.START);
+                }
+            }
+        });
+        this.getGradeImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    iSpeedTestInterface.startTest();
+                } catch (RemoteException e) {
+                    e.printStackTrace();
                 }
             }
         });

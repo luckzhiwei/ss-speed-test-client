@@ -64,7 +64,6 @@ public class GuradSpeedTester extends Thread {
             Looper.prepare();
         }
         mHandler = new Handler(Looper.myLooper());
-        LogUtil.logDebug(getClass().getName(), "start test");
         if (Build.VERSION.SDK_INT < 24) {
             mPrivoxyGuradProcess = new PrivoxyGuradProcess(mContext, Constant.BACK_PRIVOXY_CONFIG_FILE_NAME);
             mPrivoxyGuradProcess.start();
@@ -157,6 +156,7 @@ public class GuradSpeedTester extends Thread {
         } catch (RemoteException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
+            LogUtil.logDebug(getClass().getName(), "interupted");
             startTest();
             e.printStackTrace();
         }
