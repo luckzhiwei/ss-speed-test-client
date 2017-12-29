@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ss助手</string>
+    <string name="app_name">SS助手</string>
     <string name="test_speed">测速</string>
     <string name="status">状态:</string>
     <string name="server_address">测试服务器</string>

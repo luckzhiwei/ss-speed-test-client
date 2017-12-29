@@ -68,8 +68,6 @@ public class SpeedTestAdapter extends CommonAdapter<SpeedTestResult> {
         String requestResult = result.isExceptionOccured() ? res.getString(R.string.execption_occured) : res.getString(R.string.result_ok);
         ((KeyValueView) view.getChildAt(2)).setValue(requestResult);
         ((KeyValueView) view.getChildAt(3)).setValue(result.getTimeUsed() + res.getString(R.string.unit_millisecond));
-
-
     }
 
     private void setExceptionInfo(ViewGroup view, SpeedTestResult result, Resources res) {

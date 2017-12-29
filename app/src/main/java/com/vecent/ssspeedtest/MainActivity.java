@@ -30,7 +30,6 @@ import com.vecent.ssspeedtest.dao.SSServer;
 import com.vecent.ssspeedtest.greendao.DaoSession;
 import com.vecent.ssspeedtest.model.bean.TotalSpeedTestResult;
 import com.vecent.ssspeedtest.service.SpeedTestService;
-import com.vecent.ssspeedtest.util.LogUtil;
 import com.vecent.ssspeedtest.view.EditSSServerSettingDialog;
 
 import java.util.List;
@@ -76,14 +75,19 @@ public class MainActivity extends AppCompatActivity {
 
     private EditSSServerSettingDialog.OnDialogChange mOnDialogChangeListener = new EditSSServerSettingDialog.OnDialogChange() {
         @Override
-        public void onConfirm() {
-            loadData();
+        public void onConfirm(int pos, SSServer server) {
+            if (pos == -1) {
+                ssServerList.add(server);
+                adapter.notifyDataSetChanged();
+            } else {
+                updateSSServerItem(pos, server);
+            }
         }
 
         @Override
-        public void onCacnel(SSServer server) {
-            if (server != null) {
-                deleteServer(server);
+        public void onCacnel(int pos, SSServer server) {
+            if (server != null && pos != -1) {
+                deleteServer(pos, server);
             }
         }
     };
@@ -208,10 +212,11 @@ public class MainActivity extends AppCompatActivity {
         }).start();
     }
 
-    private void deleteServer(SSServer server) {
+    private void deleteServer(int pos, SSServer server) {
         DaoSession daoSession = DaoManager.getInstance(getApplicationContext()).getDaoSession();
         daoSession.getSSServerDao().delete(server);
-        loadData();
+        this.ssServerList.remove(pos);
+        this.adapter.notifyDataSetChanged();
     }
 
     @Override
@@ -220,30 +225,24 @@ public class MainActivity extends AppCompatActivity {
             int pos = data.getIntExtra("pos", -1);
             SSServer server = data.getParcelableExtra("ssServer");
             if (pos != -1 && server != null) {
-                updateSSServerScore(pos, server);
+                updateSSServerItem(pos, server);
             }
         }
     }
 
-    private void updateSSServerScore(int pos, SSServer server) {
+    private void updateSSServerItem(int pos, SSServer server) {
         this.ssServerList.set(pos, server);
         if (pos <= contentListView.getLastVisiblePosition() && pos >= contentListView.getFirstVisiblePosition()) {
             View view = contentListView.getChildAt(pos - contentListView.getFirstVisiblePosition());
-            adapter.updateScoreView(view, server);
+            adapter.updatView(view, server, pos);
         }
     }
-
+    
     private void updateSSServerGrade(long id, int grade) {
-        LogUtil.logDebug(getClass().getName(), " the id is" + id);
-        LogUtil.logDebug(getClass().getName(), " the grade is" + grade);
         int pos = searchPoistion(id);
-        if (pos == -1)
-            return;
+        if (pos == -1) return;
         this.ssServerList.get(pos).setGrade(grade);
-        if (pos <= contentListView.getLastVisiblePosition() && pos >= contentListView.getFirstVisiblePosition()) {
-            View view = contentListView.getChildAt(pos - contentListView.getFirstVisiblePosition());
-            adapter.updateGradeView(view, this.ssServerList.get(pos));
-        }
+        this.updateSSServerItem(pos, this.ssServerList.get(pos));
     }
 
     private int searchPoistion(long targetId) {
@@ -252,7 +251,6 @@ public class MainActivity extends AppCompatActivity {
         while (start <= end) {
             int mid = start + (end - start) / 2;
             long id = this.ssServerList.get(mid).getId();
-            LogUtil.logDebug(getClass().getName(), "mid is" + mid + "and id is" + id);
             if (id > targetId)
                 end = mid - 1;
             else if (id < targetId)

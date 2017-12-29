@@ -35,16 +35,19 @@ public class EditSSServerSettingDialog extends Dialog {
     private SSServer mSSServer;
     private OnDialogChange mOnDialogChange;
     private Context mContext;
-
-    public EditSSServerSettingDialog(@NonNull Context context) {
-        super(context);
-        this.mContext = context;
-    }
+    private int position = -1;
 
     public EditSSServerSettingDialog(@NonNull Context context, SSServer server) {
         super(context);
         this.mContext = context;
         this.mSSServer = server;
+    }
+
+    public EditSSServerSettingDialog(@NonNull Context context, SSServer server, int pos) {
+        super(context);
+        this.mContext = context;
+        this.mSSServer = server;
+        this.position = pos;
     }
 
     @Override
@@ -112,7 +115,7 @@ public class EditSSServerSettingDialog extends Dialog {
                     }
 
                     if (mOnDialogChange != null) {
-                        mOnDialogChange.onConfirm();
+                        mOnDialogChange.onConfirm(position, mSSServer);
                     }
                     dismiss();
                 } else {
@@ -124,7 +127,7 @@ public class EditSSServerSettingDialog extends Dialog {
             @Override
             public void onClick(View view) {
                 if (mOnDialogChange != null) {
-                    mOnDialogChange.onCacnel(mSSServer);
+                    mOnDialogChange.onCacnel(position, mSSServer);
                 }
                 dismiss();
 
@@ -135,9 +138,9 @@ public class EditSSServerSettingDialog extends Dialog {
 
 
     public interface OnDialogChange {
-        void onConfirm();
+        void onConfirm(int position, SSServer server);
 
-        void onCacnel(SSServer server);
+        void onCacnel(int position, SSServer server);
     }
 
     public void setWindowAttr(WindowManager manager) {

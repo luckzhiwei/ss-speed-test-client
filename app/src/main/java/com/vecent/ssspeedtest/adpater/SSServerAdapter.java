@@ -35,6 +35,17 @@ public class SSServerAdapter extends CommonAdapter<SSServer> {
 
     @Override
     public void convert(ViewHolder holder, final SSServer server, final int pos) {
+        setContentData(holder, server, pos);
+    }
+
+    public void updatView(View view, SSServer server, int pos) {
+        Object viewHolder = view.getTag();
+        if (viewHolder instanceof ViewHolder) {
+            this.setContentData((ViewHolder) viewHolder, server, pos);
+        }
+    }
+
+    private void setContentData(ViewHolder holder, final SSServer server, final int pos) {
         TextView serverNameTextView = holder.getView(R.id.texview_server_info);
         ImageView imgViewSpeedText = holder.getView(R.id.img_speed_test);
         imgViewSpeedText.setOnClickListener(new View.OnClickListener() {
@@ -51,7 +62,7 @@ public class SSServerAdapter extends CommonAdapter<SSServer> {
             editImageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    goToEdit(server);
+                    goToEdit(server, pos);
                 }
             });
         }
@@ -73,20 +84,13 @@ public class SSServerAdapter extends CommonAdapter<SSServer> {
         }
     }
 
-    private void goToEdit(SSServer server) {
-        EditSSServerSettingDialog dialog = new EditSSServerSettingDialog(mContext, server);
+    private void goToEdit(SSServer server, int pos) {
+        EditSSServerSettingDialog dialog = new EditSSServerSettingDialog(mContext, server, pos);
         dialog.setOnDialogChange(mOnDialogChangeListener);
         dialog.show();
         dialog.setWindowAttr(((Activity) mContext).getWindowManager());
     }
 
-    public void updateScoreView(View view, SSServer server) {
-        Object object = view.getTag();
-        if (object instanceof ViewHolder) {
-            ViewHolder holder = (ViewHolder) object;
-            setScoreContent(holder, server);
-        }
-    }
 
     private void setScoreContent(ViewHolder holder, SSServer server) {
         TextView serverScore = holder.getView(R.id.textview_ss_score);
@@ -115,12 +119,6 @@ public class SSServerAdapter extends CommonAdapter<SSServer> {
         }
     }
 
-    public void updateGradeView(View view, SSServer server) {
-        Object object = view.getTag();
-        if (object instanceof ViewHolder) {
-            setGradeViewContent((ViewHolder) object, server);
-        }
-    }
 
     private void setStatueByGrade(TextView textView, int grade) {
         if (grade >= 90) {
