@@ -50,8 +50,6 @@ public class GuradSpeedTester extends Thread {
 
     private boolean isRunning;
 
-    private int position = -1;
-
     private int grade = 0;
 
 
@@ -80,7 +78,6 @@ public class GuradSpeedTester extends Thread {
     public void runTest() {
         if (mIterator.hasNext()) {
             isRunning = true;
-            position++;
             new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -101,7 +98,7 @@ public class GuradSpeedTester extends Thread {
                                 proxyGuradProcess.destory();
                             try {
                                 if (mTestFinishListener != null)
-                                    mTestFinishListener.onOneItemFinish(position, grade);
+                                    mTestFinishListener.onOneItemFinish(proxySSServer.getId(), grade);
                             } catch (RemoteException e) {
                                 e.printStackTrace();
                             }
@@ -163,7 +160,6 @@ public class GuradSpeedTester extends Thread {
             }
             this.results = new ArrayList<>();
             this.isRunning = false;
-            this.position = -1;
             Thread.sleep(Constant.SERVICE_WAIT_INTERNAL);
             startTest();
         } catch (RemoteException e) {

@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">ss助手</string>
     <string name="test_speed">测速</string>
-    <string name="status">状态</string>
+    <string name="status">状态:</string>
     <string name="server_address">测试服务器</string>
     <string name="server_address_test">www.baidu.com</string>
     <string name="redirect_address">重定向地址</string>
@@ -52,7 +52,7 @@
     <string name="top_100_white_addr_speed_avg">中国前25网址平均速度</string>
     <string name="top_100_black_addr_success_ratio">美国前100网址成功率</string>
     <string name="top_100_black_addr_speed_avg">美国前100网址平均速度</string>
-    <string name="grade">评分</string>
+    <string name="grade">评分:</string>
     <string name="score">跑分</string>
     <string name="about">关于</string>
     <string name="help">帮助</string>

@@ -3,6 +3,7 @@ package com.vecent.ssspeedtest.adpater;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -56,7 +57,6 @@ public class SSServerAdapter extends CommonAdapter<SSServer> {
         }
         setScoreContent(holder, server);
         setGradeViewContent(holder, server);
-
     }
 
 
@@ -90,22 +90,28 @@ public class SSServerAdapter extends CommonAdapter<SSServer> {
 
     private void setScoreContent(ViewHolder holder, SSServer server) {
         TextView serverScore = holder.getView(R.id.textview_ss_score);
-        if (server.getScore() != 0) {
+        if (server.getScore() != -1) {
             serverScore.setText(mContext.getResources().getText(R.string.score) + " " + server.getScore());
         }
     }
 
     private void setGradeViewContent(ViewHolder holder, SSServer server) {
         TextView serverGrade = holder.getView(R.id.textview_ss_grade);
+        TextView serverGradeValue = holder.getView(R.id.textview_ss_grade_value);
         TextView serverStatus = holder.getView(R.id.textview_ss_status);
-        if (server.getGrade() == 0) {
-            serverGrade.setVisibility(View.GONE);
-            serverStatus.setVisibility(View.GONE);
+        TextView serverStatusValue = holder.getView(R.id.textview_ss_status_value);
+        if (server.getGrade() == -1) {
+            serverGrade.setVisibility(View.INVISIBLE);
+            serverStatus.setVisibility(View.INVISIBLE);
+            serverGradeValue.setVisibility(View.INVISIBLE);
+            serverStatusValue.setVisibility(View.INVISIBLE);
         } else {
             serverGrade.setVisibility(View.VISIBLE);
             serverStatus.setVisibility(View.VISIBLE);
-            serverGrade.setText(mContext.getString(R.string.grade) + " : " + server.getGrade());
-            serverStatus.setText(mContext.getString(R.string.status) + " : " + getStatueByGrade(server.getGrade()));
+            serverGradeValue.setVisibility(View.VISIBLE);
+            serverStatusValue.setVisibility(View.VISIBLE);
+            serverGradeValue.setText(server.getGrade() + "");
+            this.setStatueByGrade(serverStatusValue, server.getGrade());
         }
     }
 
@@ -116,13 +122,17 @@ public class SSServerAdapter extends CommonAdapter<SSServer> {
         }
     }
 
-    private String getStatueByGrade(int grade) {
-        if (grade >= 90)
-            return mContext.getResources().getString(R.string.status_good);
-        else if (grade < 90 && grade >= 60)
-            return mContext.getResources().getString(R.string.status_normal);
-        else
-            return mContext.getResources().getString(R.string.status_bad);
+    private void setStatueByGrade(TextView textView, int grade) {
+        if (grade >= 90) {
+            textView.setText(R.string.status_good);
+            textView.setTextColor(ContextCompat.getColor(mContext, R.color.colorGreen));
+        } else if (grade < 90 && grade >= 60) {
+            textView.setText(R.string.status_normal);
+            textView.setTextColor(ContextCompat.getColor(mContext, R.color.colorYellow));
+        } else {
+            textView.setText(R.string.status_bad);
+            textView.setTextColor(ContextCompat.getColor(mContext, R.color.colorRed));
+        }
 
     }
 

@@ -118,11 +118,11 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onOneItemFinish(final int position, final int grade) throws RemoteException {
+        public void onOneItemFinish(final long id, final int grade) throws RemoteException {
             mHandler.post(new Runnable() {
                 @Override
                 public void run() {
-                    updateSSServerGrade(position, grade);
+                    updateSSServerGrade(id, grade);
                 }
             });
         }
@@ -134,6 +134,7 @@ public class MainActivity extends AppCompatActivity {
                 public void run() {
                     getGradeImg.setVisibility(View.GONE);
                     progressBarBackground.setVisibility(View.VISIBLE);
+                    loadData();
                 }
             });
         }
@@ -178,6 +179,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 try {
+                    loadData();
                     iSpeedTestInterface.startTest();
                 } catch (RemoteException e) {
                     e.printStackTrace();
@@ -206,7 +208,6 @@ public class MainActivity extends AppCompatActivity {
         }).start();
     }
 
-    //todo
     private void deleteServer(SSServer server) {
         DaoSession daoSession = DaoManager.getInstance(getApplicationContext()).getDaoSession();
         daoSession.getSSServerDao().delete(server);
@@ -232,13 +233,34 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void updateSSServerGrade(int pos, int grade) {
-        LogUtil.logDebug(getClass().getName(), grade + "");
+    private void updateSSServerGrade(long id, int grade) {
+        LogUtil.logDebug(getClass().getName(), " the id is" + id);
+        LogUtil.logDebug(getClass().getName(), " the grade is" + grade);
+        int pos = searchPoistion(id);
+        if (pos == -1)
+            return;
         this.ssServerList.get(pos).setGrade(grade);
         if (pos <= contentListView.getLastVisiblePosition() && pos >= contentListView.getFirstVisiblePosition()) {
             View view = contentListView.getChildAt(pos - contentListView.getFirstVisiblePosition());
             adapter.updateGradeView(view, this.ssServerList.get(pos));
         }
+    }
+
+    private int searchPoistion(long targetId) {
+        int start = 0;
+        int end = this.ssServerList.size() - 1;
+        while (start <= end) {
+            int mid = start + (end - start) / 2;
+            long id = this.ssServerList.get(mid).getId();
+            LogUtil.logDebug(getClass().getName(), "mid is" + mid + "and id is" + id);
+            if (id > targetId)
+                end = mid - 1;
+            else if (id < targetId)
+                start = mid + 1;
+            else
+                return mid;
+        }
+        return -1;
     }
 
 }

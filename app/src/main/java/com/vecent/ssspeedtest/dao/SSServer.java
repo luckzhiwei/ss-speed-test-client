@@ -40,7 +40,7 @@ public class SSServer implements Parcelable {
 
     @Property(nameInDb = "score")
     @NotNull
-    private int score = 0;
+    private int score = -1;
 
 
     public int getGrade() {
@@ -52,7 +52,7 @@ public class SSServer implements Parcelable {
     }
 
     @Transient
-    private int grade;
+    private int grade = -1;
 
     public Long getId() {
         return this.id;
