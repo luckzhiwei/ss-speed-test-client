@@ -5,7 +5,9 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -132,8 +134,19 @@ public class SpeedTestActivity extends AppCompatActivity {
         this.mProgressBar.setMax(100);
         this.ssServerInfo = (TextView) this.findViewById(R.id.textview_ss_server_info);
         this.scoreContent = (TextView) this.findViewById(R.id.textview_score_value);
-        this.getSupportActionBar().setDisplayShowCustomEnabled(true);
+        initActionBar();
+    }
+
+    private void initActionBar() {
+        ActionBar actionBar = this.getSupportActionBar();
+        actionBar.setDisplayShowCustomEnabled(true);
         this.getSupportActionBar().setCustomView(R.layout.action_bar_go_back);
+        actionBar.getCustomView().findViewById(R.id.action_back_root_layout).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
     }
 
     private void initTitleContent() {
