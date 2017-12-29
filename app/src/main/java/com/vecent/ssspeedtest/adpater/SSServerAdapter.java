@@ -11,11 +11,7 @@ import com.vecent.ssspeedtest.MainActivity;
 import com.vecent.ssspeedtest.R;
 
 import com.vecent.ssspeedtest.controller.SpeedTestActivity;
-import com.vecent.ssspeedtest.dao.DaoManager;
 import com.vecent.ssspeedtest.dao.SSServer;
-import com.vecent.ssspeedtest.greendao.DaoSession;
-import com.vecent.ssspeedtest.util.Constant;
-import com.vecent.ssspeedtest.util.LogUtil;
 import com.vecent.ssspeedtest.view.EditSSServerSettingDialog;
 import com.zhy.adapter.abslistview.CommonAdapter;
 import com.zhy.adapter.abslistview.ViewHolder;
@@ -58,10 +54,9 @@ public class SSServerAdapter extends CommonAdapter<SSServer> {
                 }
             });
         }
-        TextView serverScore = holder.getView(R.id.textview_ss_score);
-        if (server.getScore() != 0) {
-            serverScore.setText(mContext.getResources().getText(R.string.score) + " " + server.getScore());
-        }
+        setScoreContent(holder, server);
+        setGradeViewContent(holder, server);
+
     }
 
 
@@ -85,13 +80,50 @@ public class SSServerAdapter extends CommonAdapter<SSServer> {
         dialog.setWindowAttr(((Activity) mContext).getWindowManager());
     }
 
-    public void updateView(View view, SSServer server) {
+    public void updateScoreView(View view, SSServer server) {
         Object object = view.getTag();
         if (object instanceof ViewHolder) {
             ViewHolder holder = (ViewHolder) object;
-            TextView serverScore = holder.getView(R.id.textview_ss_score);
+            setScoreContent(holder, server);
+        }
+    }
+
+    private void setScoreContent(ViewHolder holder, SSServer server) {
+        TextView serverScore = holder.getView(R.id.textview_ss_score);
+        if (server.getScore() != 0) {
             serverScore.setText(mContext.getResources().getText(R.string.score) + " " + server.getScore());
         }
+    }
+
+    private void setGradeViewContent(ViewHolder holder, SSServer server) {
+        TextView serverGrade = holder.getView(R.id.textview_ss_grade);
+        TextView serverStatus = holder.getView(R.id.textview_ss_status);
+        if (server.getGrade() == 0) {
+            serverGrade.setVisibility(View.GONE);
+            serverStatus.setVisibility(View.GONE);
+        } else {
+            serverGrade.setVisibility(View.VISIBLE);
+            serverStatus.setVisibility(View.VISIBLE);
+            serverGrade.setText(mContext.getString(R.string.grade) + " : " + server.getGrade());
+            serverStatus.setText(mContext.getString(R.string.status) + " : " + getStatueByGrade(server.getGrade()));
+        }
+    }
+
+    public void updateGradeView(View view, SSServer server) {
+        Object object = view.getTag();
+        if (object instanceof ViewHolder) {
+            setGradeViewContent((ViewHolder) object, server);
+        }
+    }
+
+    private String getStatueByGrade(int grade) {
+        if (grade >= 90)
+            return mContext.getResources().getString(R.string.status_good);
+        else if (grade < 90 && grade >= 60)
+            return mContext.getResources().getString(R.string.status_normal);
+        else
+            return mContext.getResources().getString(R.string.status_bad);
+
     }
 
 

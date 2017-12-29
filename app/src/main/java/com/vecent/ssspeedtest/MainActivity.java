@@ -19,6 +19,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.vecent.ssspeedtest.adpater.SSServerAdapter;
 import com.vecent.ssspeedtest.aidl.ISpeedTestInterface;
@@ -29,6 +30,7 @@ import com.vecent.ssspeedtest.dao.SSServer;
 import com.vecent.ssspeedtest.greendao.DaoSession;
 import com.vecent.ssspeedtest.model.bean.TotalSpeedTestResult;
 import com.vecent.ssspeedtest.service.SpeedTestService;
+import com.vecent.ssspeedtest.util.LogUtil;
 import com.vecent.ssspeedtest.view.EditSSServerSettingDialog;
 
 import java.util.List;
@@ -110,6 +112,17 @@ public class MainActivity extends AppCompatActivity {
                 public void run() {
                     getGradeImg.setVisibility(View.VISIBLE);
                     progressBarBackground.setVisibility(View.GONE);
+                    Toast.makeText(getApplicationContext(), R.string.back_test_finish_toast_msg, Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+
+        @Override
+        public void onOneItemFinish(final int position, final int grade) throws RemoteException {
+            mHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    updateSSServerGrade(position, grade);
                 }
             });
         }
@@ -193,6 +206,7 @@ public class MainActivity extends AppCompatActivity {
         }).start();
     }
 
+    //todo
     private void deleteServer(SSServer server) {
         DaoSession daoSession = DaoManager.getInstance(getApplicationContext()).getDaoSession();
         daoSession.getSSServerDao().delete(server);
@@ -205,16 +219,25 @@ public class MainActivity extends AppCompatActivity {
             int pos = data.getIntExtra("pos", -1);
             SSServer server = data.getParcelableExtra("ssServer");
             if (pos != -1 && server != null) {
-                updateSSServerList(pos, server);
+                updateSSServerScore(pos, server);
             }
         }
     }
 
-    private void updateSSServerList(int pos, SSServer server) {
+    private void updateSSServerScore(int pos, SSServer server) {
         this.ssServerList.set(pos, server);
         if (pos <= contentListView.getLastVisiblePosition() && pos >= contentListView.getFirstVisiblePosition()) {
             View view = contentListView.getChildAt(pos - contentListView.getFirstVisiblePosition());
-            adapter.updateView(view, server);
+            adapter.updateScoreView(view, server);
+        }
+    }
+
+    private void updateSSServerGrade(int pos, int grade) {
+        LogUtil.logDebug(getClass().getName(), grade + "");
+        this.ssServerList.get(pos).setGrade(grade);
+        if (pos <= contentListView.getLastVisiblePosition() && pos >= contentListView.getFirstVisiblePosition()) {
+            View view = contentListView.getChildAt(pos - contentListView.getFirstVisiblePosition());
+            adapter.updateGradeView(view, this.ssServerList.get(pos));
         }
     }
 

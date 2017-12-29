@@ -10,6 +10,7 @@ import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.NotNull;
 import org.greenrobot.greendao.annotation.Property;
 import org.greenrobot.greendao.annotation.Generated;
+import org.greenrobot.greendao.annotation.Transient;
 
 /**
  * Created by zhiwei on 2017/11/7.
@@ -40,6 +41,18 @@ public class SSServer implements Parcelable {
     @Property(nameInDb = "score")
     @NotNull
     private int score = 0;
+
+
+    public int getGrade() {
+        return grade;
+    }
+
+    public void setGrade(int grade) {
+        this.grade = grade;
+    }
+
+    @Transient
+    private int grade;
 
     public Long getId() {
         return this.id;

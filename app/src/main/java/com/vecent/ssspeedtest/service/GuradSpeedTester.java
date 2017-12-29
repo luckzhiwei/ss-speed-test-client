@@ -50,6 +50,10 @@ public class GuradSpeedTester extends Thread {
 
     private boolean isRunning;
 
+    private int position = -1;
+
+    private int grade = 0;
+
 
     public GuradSpeedTester(List<Server> servers2Test, Context context) {
         this.servers2Test = servers2Test;
@@ -76,9 +80,11 @@ public class GuradSpeedTester extends Thread {
     public void runTest() {
         if (mIterator.hasNext()) {
             isRunning = true;
+            position++;
             new Thread(new Runnable() {
                 @Override
                 public void run() {
+                    grade = 0;
                     final TotalSpeedTestResult curResult = new TotalSpeedTestResult();
                     final SSServer proxySSServer = mIterator.next();
                     final SSProxyGuradProcess proxyGuradProcess = new SSProxyGuradProcess(proxySSServer, mContext, Constant.SOCKS_SERVER_LOCAL_PORT_BACK);
@@ -93,19 +99,27 @@ public class GuradSpeedTester extends Thread {
                             results.add(curResult);
                             if (!proxySSServer.isSystemProxy())
                                 proxyGuradProcess.destory();
+                            try {
+                                if (mTestFinishListener != null)
+                                    mTestFinishListener.onOneItemFinish(position, grade);
+                            } catch (RemoteException e) {
+                                e.printStackTrace();
+                            }
                             runTest();
                         }
 
                         @Override
                         public void onOneRequestFinishListener(SpeedTestResult result) {
                             curResult.addResult2List(result);
+                            if (!result.isExceptionOccured())
+                                grade++;
                         }
                     });
                     if (proxySSServer.isSystemProxy()) {
                         speedTest.startTest(new INetImplDefault());
                     } else {
                         try {
-                            Thread.sleep(500);
+                            Thread.sleep(2000);
                             if (Build.VERSION.SDK_INT < 24) {
                                 speedTest.startTest(new INetImplWithPrivoxy(Constant.PRIVOXY_LOCAL_PORT_BACK));
                             } else if (proxySSServer.isSystemProxy()) {
@@ -144,13 +158,12 @@ public class GuradSpeedTester extends Thread {
 
     private void finishSpeedTest() {
         try {
-            rmDBCached();
             if (mTestFinishListener != null && results.size() != 0) {
-                writeResult2DB();
                 mTestFinishListener.onTestFinish(results);
             }
             this.results = new ArrayList<>();
             this.isRunning = false;
+            this.position = -1;
             Thread.sleep(Constant.SERVICE_WAIT_INTERNAL);
             startTest();
         } catch (RemoteException e) {
@@ -168,15 +181,6 @@ public class GuradSpeedTester extends Thread {
         mIterator = proxyServers.iterator();
     }
 
-    private void rmDBCached() {
-        DaoSession daoSession = DaoManager.getInstance(mContext.getApplicationContext()).getDaoSession();
-        daoSession.getTotalSpeedTestResultDao().deleteAll();
-    }
-
-    private void writeResult2DB() {
-        DaoSession daoSession = DaoManager.getInstance(mContext.getApplicationContext()).getDaoSession();
-        daoSession.getTotalSpeedTestResultDao().insertInTx(results);
-    }
 
     public List<TotalSpeedTestResult> getResult() {
         return this.results;

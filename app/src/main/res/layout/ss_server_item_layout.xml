@@ -42,22 +42,24 @@
                 android:src="@mipmap/triangle" />
 
             <TextView
-                android:id="@+id/textview_ss_state"
+                android:id="@+id/textview_ss_status"
                 style="@style/textViewLarge"
                 android:layout_alignLeft="@id/texview_server_info"
                 android:layout_below="@id/texview_server_info"
                 android:layout_marginTop="8dp"
-                android:text="@string/state" />
+                android:text="@string/status"
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/textview_ss_grade"
                 style="@style/textViewLarge"
-                android:layout_alignBottom="@id/textview_ss_state"
+                android:layout_alignBottom="@id/textview_ss_status"
                 android:layout_below="@id/texview_server_info"
                 android:layout_marginLeft="48dp"
                 android:layout_marginTop="8dp"
-                android:layout_toRightOf="@id/textview_ss_state"
-                android:text="@string/grade" />
+                android:layout_toRightOf="@id/textview_ss_status"
+                android:text="@string/grade"
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/textview_ss_score"

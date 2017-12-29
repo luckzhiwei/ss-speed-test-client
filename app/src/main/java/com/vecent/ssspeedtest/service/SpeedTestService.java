@@ -80,7 +80,9 @@ public class SpeedTestService extends Service {
             mGuradSpeedTester = new GuradSpeedTester(servers2Test.getServers(), getApplicationContext());
             mGuradSpeedTester.start();
         } else {
-            mGuradSpeedTester.interrupt();
+            if (!mGuradSpeedTester.isRunning()) {
+                mGuradSpeedTester.interrupt();
+            }
         }
     }
 
