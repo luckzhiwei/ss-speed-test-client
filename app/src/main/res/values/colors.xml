@@ -16,5 +16,5 @@
     <color name="selector_press">#10000000</color>
     <color name="colorOrange">#f90</color>
     <color name="colorBlack">#000000</color>
-    <color name="colorYellow">#FFFF00</color>
+    <color name="colorYellow">#AAAA00</color>
 </resources>

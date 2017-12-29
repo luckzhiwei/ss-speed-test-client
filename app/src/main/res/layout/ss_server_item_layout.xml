@@ -78,7 +78,7 @@
                 android:id="@+id/textview_ss_score"
                 style="@style/textViewLarge"
                 android:layout_alignLeft="@id/img_speed_test"
-                android:layout_alignTop="@id/textview_score"
+                android:layout_marginTop="24dp"
                 android:layout_below="@id/img_speed_test"
                 android:text="@string/score" />
         </RelativeLayout>
