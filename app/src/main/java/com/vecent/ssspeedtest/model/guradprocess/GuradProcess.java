@@ -37,6 +37,7 @@ public abstract class GuradProcess {
                     try {
                         ProcessBuilder processBuilder = new ProcessBuilder().command(mCmds);
                         mProcess = processBuilder.start();
+                        LogUtil.logDebug(getClass().getName(), "cmds header " + mCmds.get(0));
                         LogUtil.logDebug(getClass().getName(), "RET IS " + mProcess.waitFor() + "");
                     } catch (IOException e) {
                         LogUtil.logDebug(getClass().getName(), "io execption" + e.getMessage());

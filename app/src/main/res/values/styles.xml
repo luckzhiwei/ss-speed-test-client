@@ -3,7 +3,7 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimary">@color/colorWhite</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
@@ -16,6 +16,10 @@
 
     <style name="textViewSmall" parent="textViewBaseStyle">
         <item name="android:textSize">@dimen/text_size_small</item>
+    </style>
+
+    <style name="textViewXLarge" parent="textViewBaseStyle">
+        <item name="android:textSize">@dimen/text_size_Xlarge</item>
     </style>
 
     <style name="textViewMiddle" parent="textViewBaseStyle">
@@ -57,6 +61,14 @@
 
     <style name="textViewLarge.Primary">
         <item name="android:textColor">@color/colorPrimary</item>
+    </style>
+
+    <style name="textViewLarge.Cyan">
+        <item name="android:textColor">@color/colorCyan</item>
+    </style>
+
+    <style name="textViewLarge.Red">
+        <item name="android:textColor">@color/colorRed</item>
     </style>
 
 

@@ -40,6 +40,11 @@ public class SpeedTestService extends Service {
         }
 
         @Override
+        public boolean isTestRuning() throws RemoteException {
+            return mGuradSpeedTester.isRunning();
+        }
+
+        @Override
         public void setOnTestFinishListener(ITestFinishListener listener) throws RemoteException {
             mGuradSpeedTester.setTestFinishListener(listener);
         }
@@ -74,6 +79,10 @@ public class SpeedTestService extends Service {
         if (mGuradSpeedTester == null) {
             mGuradSpeedTester = new GuradSpeedTester(servers2Test.getServers(), getApplicationContext());
             mGuradSpeedTester.start();
+        } else {
+            if (!mGuradSpeedTester.isRunning()) {
+                mGuradSpeedTester.interrupt();
+            }
         }
     }
 
@@ -82,7 +91,6 @@ public class SpeedTestService extends Service {
             mGuradSpeedTester.exit();
         }
     }
-
 
 
 }

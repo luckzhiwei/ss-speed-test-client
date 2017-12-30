@@ -7,8 +7,10 @@ import com.vecent.ssspeedtest.util.Constant;
 import com.vecent.ssspeedtest.util.LogUtil;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
@@ -22,22 +24,23 @@ public class INetImplDefault implements INet {
 
     public static final String TOO_MANY_TIMES_TO_REDIRECT = "too many times to redriect";
 
+
     public SpeedTestResult getHttpTestResult(Server server) {
         SpeedTestResult result = new SpeedTestResult();
         result.setRequestServer(server.getWeb());
         result.setWhiteAddr(server.isWhiteListAddr());
         HttpURLConnection conn = null;
         try {
-            long startTime = System.currentTimeMillis();
+            result.setStartTime(System.currentTimeMillis());
             conn = this.getConnection(server.getWeb());
             if (conn == null) {
                 LogUtil.logDebug(getClass().getName(), "connection is null");
                 throw new IOException("conn init fail");
             }
+            result.setStartTime(System.currentTimeMillis());
             int responseCode = conn.getResponseCode();
             int countNum = 0;
             while (this.isRedirect(responseCode)) {
-                startTime = System.currentTimeMillis();
                 String newUrl = conn.getHeaderField("Location");
                 conn = getConnection(newUrl);
                 result.setRedirect(true);
@@ -51,8 +54,6 @@ public class INetImplDefault implements INet {
             }
             result.setStatusCode(conn.getResponseCode());
             result.setTotalSize(this.getResponseSize(conn.getInputStream()));
-            result.setTimeUsed(System.currentTimeMillis() - startTime);
-            result.setDownLoadSpeed();
         } catch (MalformedURLException e) {
             result.setUrlWrong(true);
             setResultExceptionMsg(result, e.getMessage());
@@ -63,6 +64,11 @@ public class INetImplDefault implements INet {
             result.setTimedOut(true);
             setResultExceptionMsg(result, e.getMessage());
         } finally {
+            result.setEndTime(System.currentTimeMillis());
+            result.setTimeUsed();
+            if (!result.isExceptionOccured()) {
+                result.setDownLoadSpeed();
+            }
             if (conn != null) {
                 conn.disconnect();
             }
@@ -97,7 +103,7 @@ public class INetImplDefault implements INet {
 
     private int getResponseSize(InputStream in) throws IOException {
         BufferedInputStream inputStream = new BufferedInputStream(in);
-        byte[] buf = new byte[1024];
+        byte[] buf = new byte[8192];
         int len = 0;
         int totalSize = 0;
         while ((len = inputStream.read(buf)) != -1) {

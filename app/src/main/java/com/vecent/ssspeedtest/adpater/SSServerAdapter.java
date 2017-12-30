@@ -1,15 +1,19 @@
 package com.vecent.ssspeedtest.adpater;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.vecent.ssspeedtest.MainActivity;
 import com.vecent.ssspeedtest.R;
-import com.vecent.ssspeedtest.controller.InputSSServerSettingActivity;
+
+import com.vecent.ssspeedtest.controller.SpeedTestActivity;
 import com.vecent.ssspeedtest.dao.SSServer;
+import com.vecent.ssspeedtest.view.EditSSServerSettingDialog;
 import com.zhy.adapter.abslistview.CommonAdapter;
 import com.zhy.adapter.abslistview.ViewHolder;
 
@@ -22,38 +26,113 @@ import java.util.List;
 public class SSServerAdapter extends CommonAdapter<SSServer> {
 
 
-    public SSServerAdapter(Context context, final int layoutId, List<SSServer> data) {
+    private EditSSServerSettingDialog.OnDialogChange mOnDialogChangeListener;
+
+    public SSServerAdapter(Context context, final int layoutId, List<SSServer> data, EditSSServerSettingDialog.OnDialogChange onDialogChangeListener) {
         super(context, layoutId, data);
+        this.mOnDialogChangeListener = onDialogChangeListener;
     }
 
     @Override
-    public void convert(ViewHolder holder, final SSServer server, int post) {
-        TextView serverNameTextView = holder.getView(R.id.ss_server_address);
-        TextView serverPortTextView = holder.getView(R.id.ss_server_port);
-        TextView serverMethodTextView = holder.getView(R.id.ss_encrpyted_method);
-        ImageView editImageView = holder.getView(R.id.edit_setting_imgview);
-        editImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                goToEdit(server);
-            }
-        });
-        serverMethodTextView.setText(server.getMethod());
-        serverPortTextView.setText(server.getServerPort() + "");
-        serverNameTextView.setText(server.getServerAddr() + ":");
+    public void convert(ViewHolder holder, final SSServer server, final int pos) {
+        setContentData(holder, server, pos);
     }
 
-    private void goToEdit(SSServer server) {
-        Intent intent = new Intent();
-        Bundle bundle = new Bundle();
-        bundle.putString("serverAddrName", server.getServerAddr());
-        bundle.putInt("serverPort", server.getServerPort());
-        bundle.putString("serverMethod", server.getMethod());
-        bundle.putString("serverPassword", server.getPassword());
-        bundle.putLong("ssserverId", server.getId());
-        intent.putExtras(bundle);
-        intent.setClass(mContext, InputSSServerSettingActivity.class);
-        mContext.startActivity(intent);
+    public void updatView(View view, SSServer server, int pos) {
+        Object viewHolder = view.getTag();
+        if (viewHolder instanceof ViewHolder) {
+            this.setContentData((ViewHolder) viewHolder, server, pos);
+        }
     }
+
+    private void setContentData(ViewHolder holder, final SSServer server, final int pos) {
+        TextView serverNameTextView = holder.getView(R.id.texview_server_info);
+        ImageView imgViewSpeedText = holder.getView(R.id.img_speed_test);
+        imgViewSpeedText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                goSpeedTest(server, pos);
+            }
+        });
+        if (server.isSystemProxy()) {
+            serverNameTextView.setText(mContext.getText(R.string.system_proxy));
+        } else {
+            serverNameTextView.setText(server.getServerAddr() + ":" + server.getServerPort());
+            ImageView editImageView = holder.getView(R.id.img_edit);
+            editImageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    goToEdit(server, pos);
+                }
+            });
+        }
+        setScoreContent(holder, server);
+        setGradeViewContent(holder, server);
+    }
+
+
+    private void goSpeedTest(SSServer server, int pos) {
+        Intent intent = new Intent();
+        if (server != null) {
+            intent.putExtra("ssServer", server);
+        }
+        intent.putExtra("pos", pos);
+        intent.setClass(mContext, SpeedTestActivity.class);
+        if (mContext instanceof MainActivity) {
+            MainActivity activity = (MainActivity) mContext;
+            activity.startActivityForResult(intent, MainActivity.REQUEST_CODE);
+        }
+    }
+
+    private void goToEdit(SSServer server, int pos) {
+        EditSSServerSettingDialog dialog = new EditSSServerSettingDialog(mContext, server, pos);
+        dialog.setOnDialogChange(mOnDialogChangeListener);
+        dialog.show();
+        dialog.setWindowAttr(((Activity) mContext).getWindowManager());
+    }
+
+
+    private void setScoreContent(ViewHolder holder, SSServer server) {
+        TextView serverScore = holder.getView(R.id.textview_ss_score);
+        if (server.getScore() != -1) {
+            serverScore.setText(mContext.getResources().getText(R.string.score) + " " + server.getScore());
+        }
+    }
+
+    private void setGradeViewContent(ViewHolder holder, SSServer server) {
+        TextView serverGrade = holder.getView(R.id.textview_ss_grade);
+        TextView serverGradeValue = holder.getView(R.id.textview_ss_grade_value);
+        TextView serverStatus = holder.getView(R.id.textview_ss_status);
+        TextView serverStatusValue = holder.getView(R.id.textview_ss_status_value);
+        if (server.getGrade() == -1) {
+            serverGrade.setVisibility(View.INVISIBLE);
+            serverStatus.setVisibility(View.INVISIBLE);
+            serverGradeValue.setVisibility(View.INVISIBLE);
+            serverStatusValue.setVisibility(View.INVISIBLE);
+        } else {
+            serverGrade.setVisibility(View.VISIBLE);
+            serverStatus.setVisibility(View.VISIBLE);
+            serverGradeValue.setVisibility(View.VISIBLE);
+            serverStatusValue.setVisibility(View.VISIBLE);
+            serverGradeValue.setText(server.getGrade() + "");
+            this.setStatueByGrade(serverStatusValue, server.getGrade());
+        }
+    }
+
+
+    private void setStatueByGrade(TextView textView, int grade) {
+        if (grade >= 90) {
+            textView.setText(R.string.status_good);
+            textView.setTextColor(ContextCompat.getColor(mContext, R.color.colorGreen));
+        } else if (grade < 90 && grade >= 60) {
+            textView.setText(R.string.status_normal);
+            textView.setTextColor(ContextCompat.getColor(mContext, R.color.colorYellow));
+        } else {
+            textView.setText(R.string.status_bad);
+            textView.setTextColor(ContextCompat.getColor(mContext, R.color.colorRed));
+        }
+
+    }
+
 
 }

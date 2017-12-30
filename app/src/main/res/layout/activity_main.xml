@@ -1,52 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/contianer"
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main_drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <include layout="@layout/listview_common" />
+    <include
+        layout="@layout/main_activity_content_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
-    <ImageView
-        android:id="@+id/plead_add_img"
-        android:layout_width="72dp"
-        android:layout_height="72dp"
-        android:layout_centerInParent="true"
-        android:src="@mipmap/pleaase_add"
-        android:visibility="gone" />
+    <include
+        layout="@layout/main_activity_menu_layout"
+        android:layout_width="300dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start" />
 
-    <TextView
-        android:id="@+id/plead_add_textview"
-        style="@style/textViewLarge.Primary"
-        android:layout_below="@id/plead_add_img"
-        android:layout_centerInParent="true"
-        android:layout_marginTop="8dp"
-        android:text="@string/please_add"
-        android:visibility="gone" />
+</android.support.v4.widget.DrawerLayout>
 
-    <ImageView
-        android:id="@+id/add_ss_server_img"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginBottom="32dp"
-        android:layout_marginRight="32dp"
-        android:src="@mipmap/add" />
-
-    <ImageView
-        android:id="@+id/test_sapmle_img"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_marginBottom="32dp"
-        android:layout_marginLeft="32dp"
-        android:src="@mipmap/test_speed_sample" />
-
-    <com.vecent.ssspeedtest.view.HeadBeatImage
-        android:id="@+id/img_view_heat_beat"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_alignBottom="@id/test_sapmle_img"
-        android:layout_centerHorizontal="true" />
-</RelativeLayout>

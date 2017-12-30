@@ -9,7 +9,6 @@ import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewConfiguration;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
@@ -18,7 +17,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.vecent.ssspeedtest.R;
-import com.vecent.ssspeedtest.dao.SSServer;
 import com.vecent.ssspeedtest.model.bean.TotalSpeedTestResult;
 
 /**
@@ -38,15 +36,11 @@ public class ResultLayout extends LinearLayout {
     private TextView mTextViewCurServerCount;
     private RelativeLayout mHeaderLayout;
     private ImageView mImageClose;
-    private ImageView mImageRefresh;
     private float lastYUserTouch;
-    private TextView mTextViewServerInfo;
-    private int mTouchSlop;
     private int onlyShowTitleCoordinateY;
     private int showAllContentCoordinateY;
     private TranslateAnimation mTranslateAnimationUp;
     private TranslateAnimation mTranslateAnimationDown;
-    public boolean showAll;
     private String totalServerSize;
     private String curServerSize;
     private String curTimeUsed;
@@ -58,6 +52,7 @@ public class ResultLayout extends LinearLayout {
     private String blackSpeedAvg;
     private String speedUnit;
     private String timeUnit;
+    private boolean showAll;
 
 
     public ResultLayout(Context context) {
@@ -78,7 +73,6 @@ public class ResultLayout extends LinearLayout {
     private void init(Context context) {
         LayoutInflater.from(context).inflate(R.layout.speed_total_result_layout, this);
         this.mHeaderLayout = this.findViewById(R.id.header_layout);
-        this.mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
         this.mTextViewWhiteListServerRatio = this.findViewById(R.id.textview_white_server_ratio);
         this.mTextViewWhiteListServerCount = this.findViewById(R.id.textview_white_server_count);
         this.mTextViewBlackListServerRatio = this.findViewById(R.id.textview_black_server_ratio);
@@ -89,21 +83,14 @@ public class ResultLayout extends LinearLayout {
         this.mTextViewTotalTimeUsed = this.findViewById(R.id.textview_total_time_used);
         this.mTextViewTotalSize = this.findViewById(R.id.textview_total_server_count);
         this.mImageClose = this.findViewById(R.id.img_view_close);
-        this.mImageRefresh = this.findViewById(R.id.img_view_refresh);
-        this.mTextViewServerInfo = this.findViewById(R.id.test_server_setting);
         this.showAll = false;
         this.mImageClose.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                startAnimation(mTranslateAnimationDown);
             }
         });
-        this.mImageRefresh.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
+        this.mImageClose.setVisibility(View.GONE);
         initText(context.getResources());
     }
 
@@ -134,9 +121,6 @@ public class ResultLayout extends LinearLayout {
         this.mTextViewBlackAddrSpeedAvg.setText(this.blackSpeedAvg + totalResult.getSpeedBlackAddrDownLoadAvg() + this.speedUnit);
     }
 
-    public void setProxyServerInfo(SSServer server) {
-        this.mTextViewServerInfo.setText(server.getServerAddr() + ":" + server.getServerPort());
-    }
 
     /**
      * getY 是相对于父控件的长度:（ ps:这里默认loc[1]是父控件相对与屏幕的距离）
@@ -202,6 +186,7 @@ public class ResultLayout extends LinearLayout {
         public void onAnimationEnd(Animation animation) {
             clearAnimation();
             setY(showAllContentCoordinateY);
+            mImageClose.setVisibility(VISIBLE);
             showAll = true;
         }
 
@@ -221,6 +206,7 @@ public class ResultLayout extends LinearLayout {
         public void onAnimationEnd(Animation animation) {
             clearAnimation();
             setY(onlyShowTitleCoordinateY);
+            mImageClose.setVisibility(View.GONE);
             showAll = false;
         }
 

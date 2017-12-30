@@ -1,91 +1,115 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical">
 
     <TextView
-        style="@style/textViewSmall.Green"
-        android:layout_margin="8dp"
+        style="@style/textViewXLarge"
+        android:layout_margin="16dp"
         android:text="@string/server_setting" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="8dp">
+        android:padding="16dp">
 
         <TextView
             android:id="@+id/ss_server_address"
-            style="@style/textViewMiddle"
+            style="@style/textViewMiddle.Gray"
             android:text="@string/ss_server_address" />
 
         <EditText
             android:id="@+id/ss_server_address_edit_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/ss_server_address" />
+            android:layout_below="@id/ss_server_address"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/edit_text_background" />
     </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="8dp">
+        android:padding="16dp">
 
         <TextView
             android:id="@+id/ss_remote_port"
-            style="@style/textViewMiddle"
+            style="@style/textViewMiddle.Gray"
             android:text="@string/ss_remote_port" />
 
         <EditText
             android:id="@+id/ss_remote_port_edit_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/ss_remote_port" />
+            android:layout_below="@id/ss_remote_port"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/edit_text_background" />
     </RelativeLayout>
 
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="8dp">
+        android:padding="16dp">
 
         <TextView
             android:id="@+id/ss_server_password"
-            style="@style/textViewMiddle"
+            style="@style/textViewMiddle.Gray"
             android:text="@string/ss_password" />
 
         <EditText
             android:id="@+id/ss_server_password_edit_text"
-            android:inputType="textPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/ss_server_password" />
+            android:layout_below="@id/ss_server_password"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/edit_text_background"
+            android:inputType="textPassword" />
     </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="8dp">
+        android:padding="16dp">
 
         <TextView
             android:id="@+id/ss_server_encrypt_method"
-            style="@style/textViewMiddle"
+            style="@style/textViewMiddle.Gray"
             android:text="@string/ss_encrypt_method" />
 
         <EditText
             android:id="@+id/ss_server_encrypt_method_edit_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/ss_server_encrypt_method" />
+            android:layout_below="@id/ss_server_encrypt_method"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/edit_text_background" />
     </RelativeLayout>
 
-    <Button
-        android:id="@+id/store_setting_btn"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:background="@color/colorPrimaryDark"
-        android:text="@string/store_setting"
-        android:textColor="@color/colorWhite" />
+        android:layout_marginTop="16dp"
+        android:padding="32dp">
+
+
+        <TextView
+            android:id="@+id/textview_cancel"
+            style="@style/textViewLarge.Red"
+            android:layout_centerInParent="true"
+            android:text="@string/cancel" />
+
+        <TextView
+            android:id="@+id/textview_confirm"
+            style="@style/textViewLarge.Cyan"
+            android:layout_alignTop="@id/textview_cancel"
+            android:layout_marginLeft="32dp"
+            android:layout_marginRight="24dp"
+            android:layout_toRightOf="@id/textview_cancel"
+            android:text="@string/ensure" />
+
+    </RelativeLayout>
+
 
 </LinearLayout>

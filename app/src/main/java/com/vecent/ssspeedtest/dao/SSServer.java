@@ -3,11 +3,15 @@ package com.vecent.ssspeedtest.dao;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.vecent.ssspeedtest.util.Constant;
+
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.NotNull;
 import org.greenrobot.greendao.annotation.Property;
 import org.greenrobot.greendao.annotation.Generated;
+import org.greenrobot.greendao.annotation.Transient;
+
 /**
  * Created by zhiwei on 2017/11/7.
  */
@@ -33,6 +37,22 @@ public class SSServer implements Parcelable {
     @Property(nameInDb = "method")
     @NotNull
     private String method;
+
+    @Property(nameInDb = "score")
+    @NotNull
+    private int score = -1;
+
+
+    public int getGrade() {
+        return grade;
+    }
+
+    public void setGrade(int grade) {
+        this.grade = grade;
+    }
+
+    @Transient
+    private int grade = -1;
 
     public Long getId() {
         return this.id;
@@ -88,19 +108,6 @@ public class SSServer implements Parcelable {
         }
     };
 
-    @Generated(hash = 653072287)
-    public SSServer(Long id, @NotNull String serverAddr, int serverPort, @NotNull String password,
-                    @NotNull String method) {
-        this.id = id;
-        this.serverAddr = serverAddr;
-        this.serverPort = serverPort;
-        this.password = password;
-        this.method = method;
-    }
-
-    @Generated(hash = 1471507233)
-    public SSServer() {
-    }
 
     public int describeContents() {
         //几乎所有情况都返回0，仅在当前对象中存在文件描述符时返回1
@@ -113,7 +120,17 @@ public class SSServer implements Parcelable {
         out.writeInt(serverPort);
         out.writeString(password);
         out.writeString(method);
+        out.writeInt(score);
     }
+
+    public int getScore() {
+        return this.score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
+
 
     protected SSServer(Parcel in) {
         this.id = in.readLong();
@@ -121,6 +138,26 @@ public class SSServer implements Parcelable {
         this.serverPort = in.readInt();
         this.password = in.readString();
         this.method = in.readString();
+        this.score = in.readInt();
+    }
+
+    @Generated(hash = 1182408304)
+    public SSServer(Long id, @NotNull String serverAddr, int serverPort, @NotNull String password,
+                    @NotNull String method, int score) {
+        this.id = id;
+        this.serverAddr = serverAddr;
+        this.serverPort = serverPort;
+        this.password = password;
+        this.method = method;
+        this.score = score;
+    }
+
+    @Generated(hash = 1471507233)
+    public SSServer() {
+    }
+
+    public boolean isSystemProxy() {
+        return this.serverAddr.equals(Constant.SYSTEM_PROXY);
     }
 
 }

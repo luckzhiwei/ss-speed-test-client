@@ -44,6 +44,7 @@ public class SpeedTestAdapter extends CommonAdapter<SpeedTestResult> {
         this.addKVView(container, res.getString(R.string.server_address), "");
         this.addKVView(container, res.getString(R.string.redirect_address), "");
         this.addKVView(container, res.getString(R.string.request_result), "");
+        this.addKVView(container, res.getString(R.string.time_used), "");
 
         this.addKVView(container, res.getString(R.string.exception_msg), "");
         this.addKVView(container, res.getString(R.string.is_url_wrong), "");
@@ -51,7 +52,6 @@ public class SpeedTestAdapter extends CommonAdapter<SpeedTestResult> {
         this.addKVView(container, res.getString(R.string.too_mangy_time_redirect), "");
 
         this.addKVView(container, res.getString(R.string.response_byte_size), "");
-        this.addKVView(container, res.getString(R.string.time_used), "");
         this.addKVView(container, res.getString(R.string.dowload_speed), "");
     }
 
@@ -67,23 +67,23 @@ public class SpeedTestAdapter extends CommonAdapter<SpeedTestResult> {
         ((KeyValueView) view.getChildAt(1)).setValue(redirectServer);
         String requestResult = result.isExceptionOccured() ? res.getString(R.string.execption_occured) : res.getString(R.string.result_ok);
         ((KeyValueView) view.getChildAt(2)).setValue(requestResult);
+        ((KeyValueView) view.getChildAt(3)).setValue(result.getTimeUsed() + res.getString(R.string.unit_millisecond));
     }
 
     private void setExceptionInfo(ViewGroup view, SpeedTestResult result, Resources res) {
-        ((KeyValueView) view.getChildAt(3)).setValue(result.getExceptionMsg());
+        ((KeyValueView) view.getChildAt(4)).setValue(result.getExceptionMsg());
         String isUrlWrong = result.isUrlWrong() ? res.getString(R.string.yes) : res.getString(R.string.no);
-        ((KeyValueView) view.getChildAt(4)).setValue(isUrlWrong);
+        ((KeyValueView) view.getChildAt(5)).setValue(isUrlWrong);
         String isTimedOut = result.isTimedOut() ? res.getString(R.string.yes) : res.getString(R.string.no);
-        ((KeyValueView) view.getChildAt(5)).setValue(isTimedOut);
+        ((KeyValueView) view.getChildAt(6)).setValue(isTimedOut);
         String is2ManyRedirect = result.is2ManyTimeRelocation() ? res.getString(R.string.yes) : res.getString(R.string.no);
-        ((KeyValueView) view.getChildAt(6)).setValue(is2ManyRedirect);
+        ((KeyValueView) view.getChildAt(7)).setValue(is2ManyRedirect);
         this.hidenNormalInfo(view);
         this.showExceptionInfo(view);
     }
 
     private void setNormalInfo(ViewGroup view, SpeedTestResult result, Resources res) {
-        ((KeyValueView) view.getChildAt(7)).setValue(result.getTotalSize() + res.getString(R.string.unit_byte));
-        ((KeyValueView) view.getChildAt(8)).setValue(result.getTimeUsed() + res.getString(R.string.unit_millisecond));
+        ((KeyValueView) view.getChildAt(8)).setValue(result.getTotalSize() + res.getString(R.string.unit_byte));
         ((KeyValueView) view.getChildAt(9)).setValue(result.getDownLoadSpeed() + res.getString(R.string.kb_by_second));
         this.hidenExceptionInfo(view);
         this.showNormalInfo(view);
@@ -91,13 +91,13 @@ public class SpeedTestAdapter extends CommonAdapter<SpeedTestResult> {
 
 
     private void hidenExceptionInfo(ViewGroup container) {
-        for (int i = 3; i <= 6; i++) {
+        for (int i = 4; i <= 7; i++) {
             ((KeyValueView) container.getChildAt(i)).hidden();
         }
     }
 
     private void hidenNormalInfo(ViewGroup container) {
-        for (int i = 7; i <= 9; i++) {
+        for (int i = 8; i <= 9; i++) {
             ((KeyValueView) container.getChildAt(i)).hidden();
         }
     }

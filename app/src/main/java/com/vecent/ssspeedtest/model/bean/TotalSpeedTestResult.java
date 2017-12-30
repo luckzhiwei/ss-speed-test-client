@@ -63,6 +63,7 @@ public class TotalSpeedTestResult implements Parcelable {
     @Transient
     private List<SpeedTestResult> mResults;
 
+
     public TotalSpeedTestResult() {
         this.mResults = new ArrayList<>();
     }

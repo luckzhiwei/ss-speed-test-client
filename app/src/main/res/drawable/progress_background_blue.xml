@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@android:id/background">
+    <item
+        android:id="@android:id/background"
+        android:height="3dp">
         <shape android:shape="rectangle">
             <corners android:radius="3dp" />
             <gradient
@@ -8,14 +10,16 @@
                 android:startColor="@color/colorWhite" />
         </shape>
     </item>
-    <item android:id="@android:id/progress">
+    <item
+        android:id="@android:id/progress"
+        android:height="3dp">
         <clip>
             <shape android:shape="rectangle">
                 <corners android:radius="3dp" />
                 <gradient
                     android:angle="45"
-                    android:endColor="@color/colorRed"
-                    android:startColor="@color/colorOrange" />
+                    android:endColor="@color/colorBlue"
+                    android:startColor="@color/colorLightBlue" />
             </shape>
         </clip>
     </item>
