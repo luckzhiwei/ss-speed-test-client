@@ -10,7 +10,8 @@
         android:id="@+id/img_nagvation"
         android:layout_width="match_parent"
         android:layout_height="160dp"
-        android:background="@mipmap/timg" />
+        android:scaleType="centerCrop"
+        android:src="@mipmap/timg" />
 
     <RelativeLayout
         android:id="@+id/layout_server_config"
