@@ -3,6 +3,7 @@
 对Shadowsocks服务器进行测速评分的Android客户端
 
 Copyright (C) 2017 by linanwx linanwx@gmail.com
+
 Copyright (C) 2017 by luckzhiwei lzw00000@qq.com
 
 ### LICENSE
