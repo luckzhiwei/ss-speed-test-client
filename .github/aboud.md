@@ -4,7 +4,7 @@
 
 Copyright (C) 2017 by linanwx linanwx@gmail.com
 
-Copyright (C) 2017 by luckzhiwei lzw00000@qq.com
+Copyright (C) 2017 by luckzhiwei zhiweil@gmail.com
 
 ### LICENSE
 

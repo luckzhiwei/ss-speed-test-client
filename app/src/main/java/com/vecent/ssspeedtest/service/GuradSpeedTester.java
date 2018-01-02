@@ -123,10 +123,10 @@ public class GuradSpeedTester extends Thread {
                         speedTest.startTest(new INetImplDefault());
                     } else {
                         try {
-                            Thread.sleep(2000);
+                            Thread.sleep(5000);
                             if (Build.VERSION.SDK_INT < 24) {
                                 speedTest.startTest(new INetImplWithPrivoxy(Constant.PRIVOXY_LOCAL_PORT_BACK));
-                            } else if (proxySSServer.isSystemProxy()) {
+                            } else {
                                 speedTest.startTest(new INetImplWithSSProxy(Constant.SOCKS_SERVER_LOCAL_PORT_BACK));
                             }
                         } catch (InterruptedException e) {
