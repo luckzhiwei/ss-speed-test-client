@@ -24,9 +24,8 @@
         </activity>
         <activity android:name=".controller.SpeedTestActivity" />
         <activity
-            android:name=".controller.ServiceSpeedResultActivity"
+            android:name=".controller.AppConigActivity"
             android:screenOrientation="portrait" />
-
         <service
             android:name=".service.SpeedTestService"
             android:process=":remote" />
