@@ -21,7 +21,7 @@ import com.vecent.ssspeedtest.service.SpeedTestService;
 public class AppConigActivity extends AppCompatActivity {
 
     private Switch autoTestSwitch;
-
+    private Switch onlyWifiTestSwitch;
     private ISpeedTestInterface iSpeedTestInterface;
 
     private ServiceConnection configServerConnection = new ServiceConnection() {
@@ -30,6 +30,7 @@ public class AppConigActivity extends AppCompatActivity {
             iSpeedTestInterface = ISpeedTestInterface.Stub.asInterface(iBinder);
             try {
                 autoTestSwitch.setChecked(iSpeedTestInterface.getAllowTestRuning());
+                onlyWifiTestSwitch.setChecked(iSpeedTestInterface.getOnlyWifiTest());
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
@@ -58,6 +59,7 @@ public class AppConigActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowCustomEnabled(true);
         getSupportActionBar().setCustomView(R.layout.action_bar_common);
         this.autoTestSwitch = (Switch) this.findViewById(R.id.switch_auto_test);
+        this.onlyWifiTestSwitch = (Switch) this.findViewById(R.id.switch_only_wifi_test);
         this.autoTestSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -66,7 +68,16 @@ public class AppConigActivity extends AppCompatActivity {
                 } catch (RemoteException e) {
                     e.printStackTrace();
                 }
-
+            }
+        });
+        this.onlyWifiTestSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                try {
+                    iSpeedTestInterface.setOnlyWifiTest(b);
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
             }
         });
     }

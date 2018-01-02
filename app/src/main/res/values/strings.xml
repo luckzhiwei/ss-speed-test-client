@@ -64,6 +64,8 @@
     <string name="status_good">优良</string>
     <string name="status_normal">正常</string>
     <string name="status_bad">较差</string>
+    <string name="wifi_test">WiFi测速</string>
+    <string name="wifi_test_explain">仅仅在Wifi情况下进行自动测速,移动流量等情况下不进行</string>
     <string name="auto_test">自动测速</string>
     <string name="auto_test_explain">如果程序在后台运行,则每隔一段时间对所有的服务器进行评分测速</string>
 </resources>

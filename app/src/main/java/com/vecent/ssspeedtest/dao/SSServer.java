@@ -121,6 +121,7 @@ public class SSServer implements Parcelable {
         out.writeString(password);
         out.writeString(method);
         out.writeInt(score);
+        out.writeInt(grade);
     }
 
     public int getScore() {
@@ -139,6 +140,7 @@ public class SSServer implements Parcelable {
         this.password = in.readString();
         this.method = in.readString();
         this.score = in.readInt();
+        this.grade = in.readInt();
     }
 
     @Generated(hash = 1182408304)

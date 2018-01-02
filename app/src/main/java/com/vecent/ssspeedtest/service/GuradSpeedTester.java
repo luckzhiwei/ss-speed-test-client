@@ -18,10 +18,10 @@ import com.vecent.ssspeedtest.model.bean.SpeedTestResult;
 import com.vecent.ssspeedtest.model.bean.TotalSpeedTestResult;
 import com.vecent.ssspeedtest.model.net.INetImplDefault;
 import com.vecent.ssspeedtest.model.net.INetImplWithPrivoxy;
-import com.vecent.ssspeedtest.model.net.INetImplWithProxy;
 import com.vecent.ssspeedtest.model.net.INetImplWithSSProxy;
 import com.vecent.ssspeedtest.util.Constant;
 import com.vecent.ssspeedtest.util.LogUtil;
+import com.vecent.ssspeedtest.util.NetWorkUtil;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -54,6 +54,10 @@ public class GuradSpeedTester extends Thread {
 
     private boolean allowRunning = true;
 
+    private boolean onlyInWifiRunning = true;
+
+    private boolean isRealRunning = true;
+
 
     public GuradSpeedTester(List<Server> servers2Test, Context context) {
         this.servers2Test = servers2Test;
@@ -78,7 +82,8 @@ public class GuradSpeedTester extends Thread {
 
 
     public void runTest() {
-        if (mIterator.hasNext() && allowRunning) {
+        this.isRealRunning = checkRunningCondition();
+        if (isRealRunning) {
             isRunning = true;
             new Thread(new Runnable() {
                 @Override
@@ -118,10 +123,10 @@ public class GuradSpeedTester extends Thread {
                         speedTest.startTest(new INetImplDefault());
                     } else {
                         try {
-                            Thread.sleep(2000);
+                            Thread.sleep(5000);
                             if (Build.VERSION.SDK_INT < 24) {
                                 speedTest.startTest(new INetImplWithPrivoxy(Constant.PRIVOXY_LOCAL_PORT_BACK));
-                            } else if (proxySSServer.isSystemProxy()) {
+                            } else {
                                 speedTest.startTest(new INetImplWithSSProxy(Constant.SOCKS_SERVER_LOCAL_PORT_BACK));
                             }
                         } catch (InterruptedException e) {
@@ -157,8 +162,8 @@ public class GuradSpeedTester extends Thread {
 
     private void finishSpeedTest() {
         try {
-            if (mTestFinishListener != null && results.size() != 0 || !allowRunning) {
-                mTestFinishListener.onTestFinish(results);
+            if (mTestFinishListener != null) {
+                mTestFinishListener.onTestFinish(isRealRunning);
             }
             this.results = new ArrayList<>();
             this.isRunning = false;
@@ -202,6 +207,27 @@ public class GuradSpeedTester extends Thread {
 
     public boolean getAllowRunning() {
         return this.allowRunning;
+    }
+
+    public void setOnlyWifiTest(boolean tag) {
+        this.onlyInWifiRunning = tag;
+    }
+
+    public boolean getOnlyWifiTest() {
+        return this.onlyInWifiRunning;
+    }
+
+    private boolean checkRunningCondition() {
+        if (!mIterator.hasNext())
+            return false;
+        if (!allowRunning)
+            return false;
+        if (onlyInWifiRunning) {
+            if (!NetWorkUtil.isWifi(mContext)) {
+                return false;
+            }
+        }
+        return true;
     }
 
 }

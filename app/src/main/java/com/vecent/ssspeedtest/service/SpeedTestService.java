@@ -7,13 +7,8 @@ import android.os.RemoteException;
 
 import com.vecent.ssspeedtest.aidl.ISpeedTestInterface;
 import com.vecent.ssspeedtest.aidl.ITestFinishListener;
-import com.vecent.ssspeedtest.dao.DaoManager;
-import com.vecent.ssspeedtest.dao.SSServer;
-import com.vecent.ssspeedtest.greendao.DaoSession;
 import com.vecent.ssspeedtest.model.Servers;
 import com.vecent.ssspeedtest.util.LogUtil;
-
-import java.util.List;
 
 
 /**
@@ -61,6 +56,18 @@ public class SpeedTestService extends Service {
                 return false;
         }
 
+        @Override
+        public void setOnlyWifiTest(boolean flag) throws RemoteException {
+            if (mGuradSpeedTester != null)
+                mGuradSpeedTester.setOnlyWifiTest(flag);
+        }
+
+        @Override
+        public boolean getOnlyWifiTest() throws RemoteException {
+            if (mGuradSpeedTester != null)
+                return mGuradSpeedTester.getOnlyWifiTest();
+            else return false;
+        }
 
         @Override
         public void setOnTestFinishListener(ITestFinishListener listener) throws RemoteException {
