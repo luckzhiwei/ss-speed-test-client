@@ -21,7 +21,8 @@ public class Constant {
     public static final int MIN_THREAD_POOL_SIZE = 50;
     public static final int MAX_THREAD_POOL_SIZE = 100;
     public static final int SERVICE_WAIT_INTERNAL = 2 * 60 * 1000;
-    public static final int REQUEST_WRITE_STORAGE = 112;
     public static final String SYSTEM_PROXY = "SYSTEM_PROXY";
+    public static final String ABOUT_URL = "https://github.com/luckzhiwei/ss-speed-test-client/blob/master/.github/aboud.md";
+
 
 }
