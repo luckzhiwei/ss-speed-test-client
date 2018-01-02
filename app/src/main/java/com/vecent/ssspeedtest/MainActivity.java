@@ -115,17 +115,14 @@ public class MainActivity extends AppCompatActivity {
 
     private class ITestFinishListenerImpl extends ITestFinishListener.Stub {
         @Override
-        public void onTestFinish(List<TotalSpeedTestResult> results) throws RemoteException {
+        public void onTestFinish(final boolean isRealRunning) throws RemoteException {
             mHandler.post(new Runnable() {
                 @Override
                 public void run() {
                     getGradeImg.setVisibility(View.VISIBLE);
                     progressBarBackground.setVisibility(View.GONE);
-                    try {
-                        if (iSpeedTestInterface.getAllowTestRuning())
-                            Toast.makeText(getApplicationContext(), R.string.back_test_finish_toast_msg, Toast.LENGTH_SHORT).show();
-                    } catch (RemoteException e) {
-                        e.printStackTrace();
+                    if (isRealRunning) {
+                        Toast.makeText(getApplicationContext(), R.string.back_test_finish_toast_msg, Toast.LENGTH_SHORT).show();
                     }
                 }
             });

@@ -110,6 +110,7 @@ public class EditSSServerSettingDialog extends Dialog {
                         daoSession.getSSServerDao().update(mSSServer);
                     } else {
                         SSServer ssServer = new SSServer();
+                        mSSServer = ssServer;
                         setServerSetting(ssServer);
                         daoSession.getSSServerDao().insert(ssServer);
                     }

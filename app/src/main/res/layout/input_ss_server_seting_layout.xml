@@ -105,7 +105,6 @@
             style="@style/textViewLarge.Cyan"
             android:layout_alignTop="@id/textview_cancel"
             android:layout_marginLeft="32dp"
-            android:layout_marginRight="24dp"
             android:layout_toRightOf="@id/textview_cancel"
             android:text="@string/ensure" />
 

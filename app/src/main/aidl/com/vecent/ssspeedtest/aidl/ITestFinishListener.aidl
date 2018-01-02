@@ -5,7 +5,7 @@ package com.vecent.ssspeedtest.aidl;
 import com.vecent.ssspeedtest.model.bean.TotalSpeedTestResult;
 interface ITestFinishListener {
 
-    void onTestFinish(in List<TotalSpeedTestResult> results);
+    void onTestFinish(boolean isRealRunning);
     void onOneItemFinish(in long id,in int grade);
     void onTestStart();
 }

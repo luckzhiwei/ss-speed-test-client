@@ -13,5 +13,7 @@ interface ISpeedTestInterface {
      boolean isTestRuning();
      void setAllowTestRunning(in boolean flag);
      boolean getAllowTestRuning();
+     void setOnlyWifiTest(in boolean flag);
+     boolean getOnlyWifiTest();
      void setOnTestFinishListener(in ITestFinishListener listener);
 }
