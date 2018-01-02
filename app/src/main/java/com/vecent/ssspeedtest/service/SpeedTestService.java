@@ -30,8 +30,8 @@ public class SpeedTestService extends Service {
     public class ISpeedTestInterfaceImpl extends ISpeedTestInterface.Stub {
 
         @Override
-        public void startTest() throws RemoteException {
-            startSpeedTest();
+        public void startTest(ITestFinishListener listener) throws RemoteException {
+            startSpeedTest(listener);
         }
 
         @Override
@@ -41,8 +41,26 @@ public class SpeedTestService extends Service {
 
         @Override
         public boolean isTestRuning() throws RemoteException {
-            return mGuradSpeedTester.isRunning();
+            if (mGuradSpeedTester != null)
+                return mGuradSpeedTester.isRunning();
+            else
+                return false;
         }
+
+        @Override
+        public void setAllowTestRunning(boolean flag) throws RemoteException {
+            if (mGuradSpeedTester != null)
+                mGuradSpeedTester.setAllowRunning(flag);
+        }
+
+        @Override
+        public boolean getAllowTestRuning() throws RemoteException {
+            if (mGuradSpeedTester != null)
+                return mGuradSpeedTester.getAllowRunning();
+            else
+                return false;
+        }
+
 
         @Override
         public void setOnTestFinishListener(ITestFinishListener listener) throws RemoteException {
@@ -61,7 +79,6 @@ public class SpeedTestService extends Service {
         if (iSpeedTestInterfaceImpl == null) {
             iSpeedTestInterfaceImpl = new ISpeedTestInterfaceImpl();
         }
-
         return iSpeedTestInterfaceImpl;
     }
 
@@ -72,24 +89,24 @@ public class SpeedTestService extends Service {
         LogUtil.logDebug(getClass().getName(), "on destory");
     }
 
-    private void startSpeedTest() {
+    private void startSpeedTest(ITestFinishListener listener) {
         if (servers2Test == null) {
             servers2Test = new Servers(getApplicationContext(), "alexa.json");
         }
         if (mGuradSpeedTester == null) {
             mGuradSpeedTester = new GuradSpeedTester(servers2Test.getServers(), getApplicationContext());
+            if (listener != null)
+                mGuradSpeedTester.setTestFinishListener(listener);
             mGuradSpeedTester.start();
         } else {
-            if (!mGuradSpeedTester.isRunning()) {
+            if (!mGuradSpeedTester.isRunning())
                 mGuradSpeedTester.interrupt();
-            }
         }
     }
 
     private void stopSpeedTest() {
-        if (mGuradSpeedTester != null) {
+        if (mGuradSpeedTester != null)
             mGuradSpeedTester.exit();
-        }
     }
 
 

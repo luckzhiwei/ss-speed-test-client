@@ -19,17 +19,20 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.vecent.ssspeedtest.adpater.SSServerAdapter;
 import com.vecent.ssspeedtest.aidl.ISpeedTestInterface;
 import com.vecent.ssspeedtest.aidl.ITestFinishListener;
+import com.vecent.ssspeedtest.controller.AppConigActivity;
 import com.vecent.ssspeedtest.controller.SpeedTestActivity;
 import com.vecent.ssspeedtest.dao.DaoManager;
 import com.vecent.ssspeedtest.dao.SSServer;
 import com.vecent.ssspeedtest.greendao.DaoSession;
 import com.vecent.ssspeedtest.model.bean.TotalSpeedTestResult;
 import com.vecent.ssspeedtest.service.SpeedTestService;
+import com.vecent.ssspeedtest.util.LogUtil;
 import com.vecent.ssspeedtest.view.EditSSServerSettingDialog;
 
 import java.util.List;
@@ -48,6 +51,8 @@ public class MainActivity extends AppCompatActivity {
     private ProgressBar progressBarBackground;
     private ISpeedTestInterface iSpeedTestInterface;
     private ITestFinishListener iTestFinishListener = new ITestFinishListenerImpl();
+    private RelativeLayout serverConfigLayout;
+    private RelativeLayout appConfigLayout;
 
     public static final int REQUEST_CODE = 1;
 
@@ -56,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
         public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
             iSpeedTestInterface = ISpeedTestInterface.Stub.asInterface(iBinder);
             try {
-                iSpeedTestInterface.startTest();
+                iSpeedTestInterface.startTest(iTestFinishListener);
                 iSpeedTestInterface.setOnTestFinishListener(iTestFinishListener);
                 if (iSpeedTestInterface.isTestRuning()) {
                     getGradeImg.setVisibility(View.GONE);
@@ -116,7 +121,12 @@ public class MainActivity extends AppCompatActivity {
                 public void run() {
                     getGradeImg.setVisibility(View.VISIBLE);
                     progressBarBackground.setVisibility(View.GONE);
-                    Toast.makeText(getApplicationContext(), R.string.back_test_finish_toast_msg, Toast.LENGTH_SHORT).show();
+                    try {
+                        if (iSpeedTestInterface.getAllowTestRuning())
+                            Toast.makeText(getApplicationContext(), R.string.back_test_finish_toast_msg, Toast.LENGTH_SHORT).show();
+                    } catch (RemoteException e) {
+                        e.printStackTrace();
+                    }
                 }
             });
         }
@@ -158,6 +168,7 @@ public class MainActivity extends AppCompatActivity {
         });
         this.mDrawerLayout = (DrawerLayout) findViewById(R.id.main_drawer_layout);
         initActionBar();
+        initMenuLayout();
     }
 
     private void initActionBar() {
@@ -184,10 +195,27 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 try {
                     loadData();
-                    iSpeedTestInterface.startTest();
+                    iSpeedTestInterface.startTest(iTestFinishListener);
                 } catch (RemoteException e) {
                     e.printStackTrace();
                 }
+            }
+        });
+    }
+
+    private void initMenuLayout() {
+        this.serverConfigLayout = (RelativeLayout) this.findViewById(R.id.layout_server_config);
+        this.appConfigLayout = (RelativeLayout) this.findViewById(R.id.layout_app_config);
+        this.serverConfigLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mDrawerLayout.closeDrawers();
+            }
+        });
+        this.appConfigLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent().setClass(getApplicationContext(), AppConigActivity.class));
             }
         });
     }
@@ -237,7 +265,7 @@ public class MainActivity extends AppCompatActivity {
             adapter.updatView(view, server, pos);
         }
     }
-    
+
     private void updateSSServerGrade(long id, int grade) {
         int pos = searchPoistion(id);
         if (pos == -1) return;

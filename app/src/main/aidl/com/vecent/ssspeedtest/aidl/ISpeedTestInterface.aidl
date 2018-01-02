@@ -8,8 +8,10 @@ interface ISpeedTestInterface {
      * Demonstrates some basic types that you can use as parameters
      * and return values in AIDL.
      */
-     void startTest();
+     void startTest(in ITestFinishListener listener);
      void stopTest();
      boolean isTestRuning();
+     void setAllowTestRunning(in boolean flag);
+     boolean getAllowTestRuning();
      void setOnTestFinishListener(in ITestFinishListener listener);
 }

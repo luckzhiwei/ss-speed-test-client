@@ -52,6 +52,8 @@ public class GuradSpeedTester extends Thread {
 
     private int grade = 0;
 
+    private boolean allowRunning = true;
+
 
     public GuradSpeedTester(List<Server> servers2Test, Context context) {
         this.servers2Test = servers2Test;
@@ -76,7 +78,7 @@ public class GuradSpeedTester extends Thread {
 
 
     public void runTest() {
-        if (mIterator.hasNext()) {
+        if (mIterator.hasNext() && allowRunning) {
             isRunning = true;
             new Thread(new Runnable() {
                 @Override
@@ -155,7 +157,7 @@ public class GuradSpeedTester extends Thread {
 
     private void finishSpeedTest() {
         try {
-            if (mTestFinishListener != null && results.size() != 0) {
+            if (mTestFinishListener != null && results.size() != 0 || !allowRunning) {
                 mTestFinishListener.onTestFinish(results);
             }
             this.results = new ArrayList<>();
@@ -192,6 +194,14 @@ public class GuradSpeedTester extends Thread {
 
     public void exit() {
         mHandler.getLooper().quit();
+    }
+
+    public void setAllowRunning(boolean flag) {
+        this.allowRunning = flag;
+    }
+
+    public boolean getAllowRunning() {
+        return this.allowRunning;
     }
 
 }
