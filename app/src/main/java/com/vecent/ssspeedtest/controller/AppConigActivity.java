@@ -66,7 +66,6 @@ public class AppConigActivity extends AppCompatActivity {
                 } catch (RemoteException e) {
                     e.printStackTrace();
                 }
-
             }
         });
     }

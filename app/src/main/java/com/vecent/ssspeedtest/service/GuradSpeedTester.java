@@ -55,6 +55,8 @@ public class GuradSpeedTester extends Thread {
     private boolean allowRunning = true;
 
 
+
+
     public GuradSpeedTester(List<Server> servers2Test, Context context) {
         this.servers2Test = servers2Test;
         this.mContext = context;
