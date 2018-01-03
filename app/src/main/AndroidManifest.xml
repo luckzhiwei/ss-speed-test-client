@@ -5,7 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:name=".MyApplication"
@@ -26,6 +26,9 @@
         <activity android:name=".controller.SpeedTestActivity" />
         <activity
             android:name=".controller.AppConigActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".controller.AboutActivity"
             android:screenOrientation="portrait" />
 
         <service

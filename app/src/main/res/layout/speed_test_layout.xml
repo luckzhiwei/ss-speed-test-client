@@ -14,11 +14,10 @@
         app:cardElevation="10dp">
 
         <ProgressBar
-            android:id="@+id/speed_test_progress"
+            android:id="@+id/common_progress"
             style="@style/Widget.AppCompat.ProgressBar.Horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
             android:progressDrawable="@drawable/progress_background_blue" />
 
         <RelativeLayout
@@ -56,7 +55,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/speed_test_top_view">
-
         <include layout="@layout/listview_common" />
     </LinearLayout>
 

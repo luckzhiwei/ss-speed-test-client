@@ -25,6 +25,7 @@ import android.widget.Toast;
 import com.vecent.ssspeedtest.adpater.SSServerAdapter;
 import com.vecent.ssspeedtest.aidl.ISpeedTestInterface;
 import com.vecent.ssspeedtest.aidl.ITestFinishListener;
+import com.vecent.ssspeedtest.controller.AboutActivity;
 import com.vecent.ssspeedtest.controller.AppConigActivity;
 import com.vecent.ssspeedtest.controller.SpeedTestActivity;
 import com.vecent.ssspeedtest.dao.DaoManager;
@@ -53,6 +54,8 @@ public class MainActivity extends AppCompatActivity {
     private ITestFinishListener iTestFinishListener = new ITestFinishListenerImpl();
     private RelativeLayout serverConfigLayout;
     private RelativeLayout appConfigLayout;
+    private RelativeLayout helpLayout;
+    private RelativeLayout aboutLayout;
 
     public static final int REQUEST_CODE = 1;
 
@@ -201,6 +204,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initMenuLayout() {
+        this.aboutLayout = (RelativeLayout) this.findViewById(R.id.layout_about);
+        this.helpLayout = (RelativeLayout) this.findViewById(R.id.layout_help);
         this.serverConfigLayout = (RelativeLayout) this.findViewById(R.id.layout_server_config);
         this.appConfigLayout = (RelativeLayout) this.findViewById(R.id.layout_app_config);
         this.serverConfigLayout.setOnClickListener(new View.OnClickListener() {
@@ -213,6 +218,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent().setClass(getApplicationContext(), AppConigActivity.class));
+            }
+        });
+        this.aboutLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent().setClass(getApplicationContext(), AboutActivity.class));
             }
         });
     }
