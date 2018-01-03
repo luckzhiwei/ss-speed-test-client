@@ -17,6 +17,7 @@
         android:id="@+id/layout_server_config"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="?android:attr/selectableItemBackground"
         android:layout_below="@id/img_nagvation"
         android:padding="8dp">
 
@@ -48,6 +49,7 @@
     <RelativeLayout
         android:id="@+id/layout_app_config"
         android:layout_width="match_parent"
+        android:background="?android:attr/selectableItemBackground"
         android:layout_height="wrap_content"
         android:layout_below="@id/layout_server_config"
         android:padding="8dp">
@@ -94,6 +96,7 @@
                 android:id="@+id/layout_help"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="?android:attr/selectableItemBackground"
                 android:padding="8dp">
 
                 <ImageView
@@ -118,6 +121,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
+                android:background="?android:attr/selectableItemBackground"
                 android:padding="8dp">
 
                 <ImageView

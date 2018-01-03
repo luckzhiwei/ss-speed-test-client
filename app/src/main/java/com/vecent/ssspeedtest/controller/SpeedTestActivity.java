@@ -144,7 +144,7 @@ public class SpeedTestActivity extends AppCompatActivity {
         actionBar.getCustomView().findViewById(R.id.action_back_root_layout).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onBackPressed();
+//                onBackPressed();
             }
         });
     }
