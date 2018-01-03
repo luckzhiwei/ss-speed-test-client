@@ -13,6 +13,7 @@ import com.vecent.ssspeedtest.R;
 
 import com.vecent.ssspeedtest.controller.SpeedTestActivity;
 import com.vecent.ssspeedtest.dao.SSServer;
+import com.vecent.ssspeedtest.util.LogUtil;
 import com.vecent.ssspeedtest.view.EditSSServerSettingDialog;
 import com.zhy.adapter.abslistview.CommonAdapter;
 import com.zhy.adapter.abslistview.ViewHolder;
@@ -96,6 +97,8 @@ public class SSServerAdapter extends CommonAdapter<SSServer> {
         TextView serverScore = holder.getView(R.id.textview_ss_score);
         if (server.getScore() != -1) {
             serverScore.setText(mContext.getResources().getText(R.string.score) + " " + server.getScore());
+        } else {
+            serverScore.setText(R.string.score);
         }
     }
 
