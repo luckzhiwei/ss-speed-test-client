@@ -4,6 +4,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <include layout="@layout/progress_common" />
+
     <WebView
         android:id="@+id/web_container"
         android:layout_width="match_parent"

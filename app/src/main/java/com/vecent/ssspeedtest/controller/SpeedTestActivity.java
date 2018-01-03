@@ -130,7 +130,7 @@ public class SpeedTestActivity extends AppCompatActivity {
         this.mContentListView = (ListView) this.findViewById(R.id.common_list_view);
         this.mContentListView.setDivider(new ColorDrawable(getResources().getColor(R.color.list_separator)));
         this.mContentListView.setDividerHeight(1);
-        this.mProgressBar = (ProgressBar) this.findViewById(R.id.speed_test_progress);
+        this.mProgressBar = (ProgressBar) this.findViewById(R.id.common_progress);
         this.mProgressBar.setMax(100);
         this.ssServerInfo = (TextView) this.findViewById(R.id.textview_ss_server_info);
         this.scoreContent = (TextView) this.findViewById(R.id.textview_score_value);
