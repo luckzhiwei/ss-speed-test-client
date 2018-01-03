@@ -5,10 +5,12 @@ import android.content.Context;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.text.InputType;
 import android.view.Display;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,6 +38,9 @@ public class EditSSServerSettingDialog extends Dialog {
     private OnDialogChange mOnDialogChange;
     private Context mContext;
     private int position = -1;
+    private boolean editIsPasswordType = true;
+    private ImageView changeEditTypeImg;
+
 
     public EditSSServerSettingDialog(@NonNull Context context, SSServer server) {
         super(context);
@@ -100,6 +105,7 @@ public class EditSSServerSettingDialog extends Dialog {
         this.ssEncryptMethodEditText = this.findViewById(R.id.ss_server_encrypt_method_edit_text);
         this.textViewConfirm = this.findViewById(R.id.textview_confirm);
         this.textViewCacnel = this.findViewById(R.id.textview_cancel);
+        this.changeEditTypeImg = this.findViewById(R.id.img_change_password_edit_type);
         this.textViewConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -134,6 +140,21 @@ public class EditSSServerSettingDialog extends Dialog {
 
             }
         });
+        this.changeEditTypeImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (editIsPasswordType) {
+                    changeEditTypeImg.setImageResource(R.mipmap.ic_eye);
+                    ssServerPasswordEditText.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                } else {
+                    changeEditTypeImg.setImageResource(R.mipmap.ic_eye_off);
+                    ssServerPasswordEditText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                }
+                editIsPasswordType = !editIsPasswordType;
+
+            }
+        });
+
         this.setContent();
     }
 
