@@ -1,42 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/action_bar_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/img_menu"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_alignParentLeft="true"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="8dp"
-        android:src="@mipmap/menu" />
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
 
-    <TextView
-        style="@style/textViewXLarge"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="16dp"
-        android:layout_toRightOf="@id/img_menu"
-        android:text="@string/app_name" />
+        <TextView
+            style="@style/textViewXLarge"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="16dp"
+            android:text="@string/app_name" />
 
-    <ImageView
-        android:id="@+id/img_get_grade"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:layout_marginRight="24dp"
-        android:src="@mipmap/triangle" />
+        <ImageView
+            android:id="@+id/img_get_grade"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="24dp"
+            android:src="@mipmap/triangle" />
 
-    <ProgressBar
-        android:id="@+id/progress_background"
-        style="@android:style/Widget.ProgressBar.Large"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:layout_marginRight="24dp"
-        android:indeterminateDrawable="@drawable/progress_background_black"
-        android:visibility="gone" />
+        <ProgressBar
+            android:id="@+id/progress_background"
+            style="@android:style/Widget.ProgressBar.Large"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="24dp"
+            android:indeterminateDrawable="@drawable/progress_background_black"
+            android:visibility="gone" />
+    </RelativeLayout>
 
-</RelativeLayout>
+</android.support.v7.widget.Toolbar>
