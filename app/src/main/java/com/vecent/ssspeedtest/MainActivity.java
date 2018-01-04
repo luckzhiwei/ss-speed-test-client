@@ -11,8 +11,10 @@ import android.os.RemoteException;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -47,8 +49,7 @@ public class MainActivity extends AppCompatActivity {
     private SSServerAdapter adapter;
     private List<SSServer> ssServerList;
     private DrawerLayout mDrawerLayout;
-    private ImageView menuImg;
-    private ImageView getGradeImg;
+        private ImageView getGradeImg;
     private ProgressBar progressBarBackground;
     private ISpeedTestInterface iSpeedTestInterface;
     private ITestFinishListener iTestFinishListener = new ITestFinishListenerImpl();
@@ -56,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
     private RelativeLayout appConfigLayout;
     private RelativeLayout helpLayout;
     private RelativeLayout aboutLayout;
+    private Toolbar mToolBar;
 
     public static final int REQUEST_CODE = 1;
 
@@ -166,30 +168,20 @@ public class MainActivity extends AppCompatActivity {
                 dialog.setWindowAttr(getWindowManager());
             }
         });
-        this.mDrawerLayout = (DrawerLayout) findViewById(R.id.main_drawer_layout);
         initActionBar();
         initMenuLayout();
+        initDrawerLayout();
     }
+
 
     private void initActionBar() {
         ActionBar actionBar = getSupportActionBar();
         View cutsomView = LayoutInflater.from(this).inflate(R.layout.action_bar_main_activity, null);
         actionBar.setCustomView(cutsomView);
-        this.menuImg = cutsomView.findViewById(R.id.img_menu);
         this.getGradeImg = cutsomView.findViewById(R.id.img_get_grade);
         actionBar.setDisplayShowCustomEnabled(true);
         this.progressBarBackground = cutsomView.findViewById(R.id.progress_background);
         this.progressBarBackground.setVisibility(View.GONE);
-        this.menuImg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
-                    mDrawerLayout.closeDrawers();
-                } else {
-                    mDrawerLayout.openDrawer(GravityCompat.START);
-                }
-            }
-        });
         this.getGradeImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -201,6 +193,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+        this.mToolBar = cutsomView.findViewById(R.id.action_bar_root);
     }
 
     private void initMenuLayout() {
@@ -226,6 +219,14 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent().setClass(getApplicationContext(), AboutActivity.class));
             }
         });
+    }
+
+    private void initDrawerLayout() {
+        this.mDrawerLayout = (DrawerLayout) findViewById(R.id.main_drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this,
+                this.mDrawerLayout, this.mToolBar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        this.mDrawerLayout.setDrawerListener(toggle);
+        toggle.syncState();
     }
 
 

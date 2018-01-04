@@ -1,25 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/action_back_root_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorWhite"
     android:orientation="vertical">
 
-    <ImageView
-        android:id="@+id/img_back"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_alignParentLeft="true"
-        android:layout_centerVertical="true"
-        android:src="@mipmap/arrow_back" />
+    <RelativeLayout
+        android:id="@+id/action_back_root_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/textview_back"
-        style="@style/textViewXLarge"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="16dp"
-        android:layout_toRightOf="@id/img_back"
-        android:text="@string/back" />
+        <ImageView
+            android:id="@+id/img_back"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/arrow_back" />
+
+        <TextView
+            android:id="@+id/textview_back"
+            style="@style/textViewXLarge"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="16dp"
+            android:layout_toRightOf="@id/img_back"
+            android:text="@string/back" />
+    </RelativeLayout>
 
 </RelativeLayout>

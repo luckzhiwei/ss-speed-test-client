@@ -68,4 +68,6 @@
     <string name="wifi_test_explain">仅仅在Wifi情况下进行自动测速,移动流量等情况下不进行</string>
     <string name="auto_test">自动测速</string>
     <string name="auto_test_explain">如果程序在后台运行,则每隔一段时间对所有的服务器进行评分测速</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 </resources>
