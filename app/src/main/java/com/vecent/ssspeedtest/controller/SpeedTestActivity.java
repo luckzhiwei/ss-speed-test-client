@@ -189,17 +189,17 @@ public class SpeedTestActivity extends AppCompatActivity {
     }
 
     private void startTestWithProxy() {
-        mSSProxyProcess = new SSProxyGuradProcess(mProxyServer, this, Constant.SOCKS_SERVER_LOCAL_PORT_FONT);
-        mSSProxyProcess.start();
-        mSSProxyProcess.waitFor(Constant.SOCKS_SERVER_LOCAL_PORT_FONT);
-        if (Build.VERSION.SDK_INT < 24) {
-            mPrivoxyProcess = new PrivoxyGuradProcess(this, Constant.FRONT_PRIVOXY_CONFIG_FILE_NAME);
-            mPrivoxyProcess.start();
-            mPrivoxyProcess.waitFor(Constant.PRIVOXY_LOCAL_PORT_FONT);
-        }
         new Thread(new Runnable() {
             @Override
             public void run() {
+                if (Build.VERSION.SDK_INT < 24) {
+                    mPrivoxyProcess = new PrivoxyGuradProcess(getApplicationContext(), Constant.FRONT_PRIVOXY_CONFIG_FILE_NAME);
+                    mPrivoxyProcess.start();
+                    mPrivoxyProcess.waitFor(Constant.PRIVOXY_LOCAL_PORT_FONT);
+                }
+                mSSProxyProcess = new SSProxyGuradProcess(mProxyServer, getApplicationContext(), Constant.SOCKS_SERVER_LOCAL_PORT_FONT);
+                mSSProxyProcess.start();
+                mSSProxyProcess.waitFor(Constant.SOCKS_SERVER_LOCAL_PORT_FONT);
                 if (Build.VERSION.SDK_INT < 24) {
                     mSpeedTest.startTest(new INetImplWithPrivoxy(Constant.PRIVOXY_LOCAL_PORT_FONT));
                 } else {
