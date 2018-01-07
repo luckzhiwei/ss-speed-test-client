@@ -144,7 +144,7 @@ public class SpeedTestActivity extends AppCompatActivity {
         actionBar.getCustomView().findViewById(R.id.action_back_root_layout).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                onBackPressed();
+                onBackPressed();
             }
         });
     }
@@ -161,7 +161,7 @@ public class SpeedTestActivity extends AppCompatActivity {
         this.mAdapter = new SpeedTestAdapter(getApplicationContext(),
                 R.layout.speed_test_item_layout, mResult.getResultList());
         this.mContentListView.setAdapter(this.mAdapter);
-        Servers servers2Test = new Servers(this.getApplicationContext(), "gfwlistOutput.json");
+        Servers servers2Test = new Servers(this.getApplicationContext(), "alexa.json");
         this.mHandler = new Handler(getMainLooper());
         this.mSpeedTest = new SpeedTest(servers2Test.getServers(), this.mHandler);
         this.totalSize = servers2Test.getServers().size();

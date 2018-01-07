@@ -1,5 +1,6 @@
 package com.vecent.ssspeedtest.model.net;
 
+import com.vecent.ssspeedtest.model.SpeedTest;
 import com.vecent.ssspeedtest.model.bean.Server;
 import com.vecent.ssspeedtest.model.bean.SpeedTestResult;
 import com.vecent.ssspeedtest.model.net.INet;
@@ -53,7 +54,7 @@ public class INetImplDefault implements INet {
                 }
             }
             result.setStatusCode(conn.getResponseCode());
-            result.setTotalSize(this.getResponseSize(conn.getInputStream()));
+            this.getResponseSize(conn.getInputStream(), result);
         } catch (MalformedURLException e) {
             result.setUrlWrong(true);
             setResultExceptionMsg(result, e.getMessage());
@@ -89,6 +90,7 @@ public class INetImplDefault implements INet {
         conn.setDoInput(true);
         conn.setConnectTimeout(Constant.CONNECTION_TIME_OUT);
         conn.setReadTimeout(Constant.READ_TIME_OUT);
+        conn.setRequestProperty("User-agent","Mozilla/5.0 (Linux; Android 4.2.1; Nexus 7 Build/JOP40D) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.166  Safari/535.19");
         return conn;
     }
 
@@ -101,14 +103,18 @@ public class INetImplDefault implements INet {
                 || code == HttpURLConnection.HTTP_SEE_OTHER;
     }
 
-    private int getResponseSize(InputStream in) throws IOException {
+    private int getResponseSize(InputStream in, SpeedTestResult result) throws IOException {
         BufferedInputStream inputStream = new BufferedInputStream(in);
         byte[] buf = new byte[8192];
         int len = 0;
         int totalSize = 0;
         while ((len = inputStream.read(buf)) != -1) {
             totalSize += len;
+            if (System.currentTimeMillis() - result.getStartTime() > (Constant.TOTAL_TIME_OUT)) {
+                throw new IOException("total time out");
+            }
         }
+        result.setTotalSize(totalSize);
         inputStream.close();
         return totalSize;
     }

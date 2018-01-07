@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
     private SSServerAdapter adapter;
     private List<SSServer> ssServerList;
     private DrawerLayout mDrawerLayout;
-        private ImageView getGradeImg;
+    private ImageView getGradeImg;
     private ProgressBar progressBarBackground;
     private ISpeedTestInterface iSpeedTestInterface;
     private ITestFinishListener iTestFinishListener = new ITestFinishListenerImpl();
