@@ -8,7 +8,6 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
 import android.os.RemoteException;
-import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -33,9 +32,7 @@ import com.vecent.ssspeedtest.controller.SpeedTestActivity;
 import com.vecent.ssspeedtest.dao.DaoManager;
 import com.vecent.ssspeedtest.dao.SSServer;
 import com.vecent.ssspeedtest.greendao.DaoSession;
-import com.vecent.ssspeedtest.model.bean.TotalSpeedTestResult;
 import com.vecent.ssspeedtest.service.SpeedTestService;
-import com.vecent.ssspeedtest.util.LogUtil;
 import com.vecent.ssspeedtest.view.EditSSServerSettingDialog;
 
 import java.util.List;
@@ -49,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
     private SSServerAdapter adapter;
     private List<SSServer> ssServerList;
     private DrawerLayout mDrawerLayout;
-        private ImageView getGradeImg;
+    private ImageView getGradeImg;
     private ProgressBar progressBarBackground;
     private ISpeedTestInterface iSpeedTestInterface;
     private ITestFinishListener iTestFinishListener = new ITestFinishListenerImpl();
@@ -261,6 +258,7 @@ public class MainActivity extends AppCompatActivity {
         if (resultCode == SpeedTestActivity.TEST_FINISHED) {
             int pos = data.getIntExtra("pos", -1);
             SSServer server = data.getParcelableExtra("ssServer");
+            server.setGrade(this.ssServerList.get(pos).getGrade());
             if (pos != -1 && server != null) {
                 updateSSServerItem(pos, server);
             }
@@ -296,6 +294,11 @@ public class MainActivity extends AppCompatActivity {
                 return mid;
         }
         return -1;
+    }
+
+    @Override
+    public void onBackPressed() {
+        moveTaskToBack(false);
     }
 
 }

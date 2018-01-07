@@ -7,6 +7,8 @@ import com.vecent.ssspeedtest.model.bean.SpeedTestResult;
 import com.vecent.ssspeedtest.model.net.INet;
 import com.vecent.ssspeedtest.util.LogUtil;
 
+import java.io.IOException;
+import java.net.Socket;
 import java.util.List;
 
 /**
@@ -78,6 +80,7 @@ public class SpeedTest {
             }
         });
     }
+
 
     public void setRequestCallBack(RequestCallBack callback) {
         this.mRequestCallBack = callback;
