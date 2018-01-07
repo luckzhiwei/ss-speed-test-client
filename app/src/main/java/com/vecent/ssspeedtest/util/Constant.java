@@ -25,6 +25,7 @@ public class Constant {
     public static final int SERVICE_WAIT_INTERNAL = 2 * 60 * 1000;
     public static final String SYSTEM_PROXY = "SYSTEM_PROXY";
     public static final String ABOUT_URL = "https://github.com/luckzhiwei/ss-speed-test-client/blob/master/.github/aboud.md";
+    public static final int WAIT_PROCESS_TIME_OUT = 10 * 1000;
 
 
 }

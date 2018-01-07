@@ -75,6 +75,7 @@ public class GuradSpeedTester extends Thread {
         if (Build.VERSION.SDK_INT < 24) {
             mPrivoxyGuradProcess = new PrivoxyGuradProcess(mContext, Constant.BACK_PRIVOXY_CONFIG_FILE_NAME);
             mPrivoxyGuradProcess.start();
+            mPrivoxyGuradProcess.waitFor(Constant.PRIVOXY_LOCAL_PORT_BACK);
         }
         startTest();
         Looper.loop();
@@ -94,6 +95,7 @@ public class GuradSpeedTester extends Thread {
                     final SSProxyGuradProcess proxyGuradProcess = new SSProxyGuradProcess(proxySSServer, mContext, Constant.SOCKS_SERVER_LOCAL_PORT_BACK);
                     if (!proxySSServer.isSystemProxy()) {
                         proxyGuradProcess.start();
+                        proxyGuradProcess.waitFor(Constant.SOCKS_SERVER_LOCAL_PORT_BACK);
                     }
                     curResult.setServer2TestAddr(proxySSServer.getServerAddr());
                     SpeedTest speedTest = new SpeedTest(servers2Test, mHandler);
@@ -101,11 +103,15 @@ public class GuradSpeedTester extends Thread {
                         @Override
                         public void onAllRequestFinishListener(float timeUsed, int totalReqSize) {
                             results.add(curResult);
-                            if (!proxySSServer.isSystemProxy())
+                            if (!proxySSServer.isSystemProxy()) {
                                 proxyGuradProcess.destory();
+                                proxyGuradProcess.waitForClose(Constant.SOCKS_SERVER_LOCAL_PORT_BACK);
+                            }
                             try {
-                                if (mTestFinishListener != null)
+                                if (mTestFinishListener != null) {
+                                    grade = ((100 * grade) / totalReqSize);
                                     mTestFinishListener.onOneItemFinish(proxySSServer.getId(), grade);
+                                }
                             } catch (RemoteException e) {
                                 e.printStackTrace();
                             }
@@ -122,16 +128,12 @@ public class GuradSpeedTester extends Thread {
                     if (proxySSServer.isSystemProxy()) {
                         speedTest.startTest(new INetImplDefault());
                     } else {
-                        try {
-                            Thread.sleep(5000);
-                            if (Build.VERSION.SDK_INT < 24) {
-                                speedTest.startTest(new INetImplWithPrivoxy(Constant.PRIVOXY_LOCAL_PORT_BACK));
-                            } else {
-                                speedTest.startTest(new INetImplWithSSProxy(Constant.SOCKS_SERVER_LOCAL_PORT_BACK));
-                            }
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
+                        if (Build.VERSION.SDK_INT < 24) {
+                            speedTest.startTest(new INetImplWithPrivoxy(Constant.PRIVOXY_LOCAL_PORT_BACK));
+                        } else {
+                            speedTest.startTest(new INetImplWithSSProxy(Constant.SOCKS_SERVER_LOCAL_PORT_BACK));
                         }
+
                     }
                 }
             }).start();
@@ -229,5 +231,7 @@ public class GuradSpeedTester extends Thread {
         }
         return true;
     }
+
+
 
 }

@@ -47,7 +47,7 @@ public class SpeedTestActivity extends AppCompatActivity {
     private int totalSize;
     private Handler mHandler;
     private SSServer mProxyServer;
-    private SSProxyGuradProcess mGuradProcess;
+    private SSProxyGuradProcess mSSProxyProcess;
     private PrivoxyGuradProcess mPrivoxyProcess;
     private int score;
     private boolean isTestFinished = false;
@@ -60,7 +60,7 @@ public class SpeedTestActivity extends AppCompatActivity {
             setResultView(timeUsed);
             updateSSserverScore();
             if (!mProxyServer.isSystemProxy())
-                mGuradProcess.destory();
+                mSSProxyProcess.destory();
             if (mPrivoxyProcess != null)
                 mPrivoxyProcess.destory();
             isTestFinished = true;
@@ -108,7 +108,7 @@ public class SpeedTestActivity extends AppCompatActivity {
         this.mAdapter = hodler.mSaveAdapter;
         this.mSpeedTest = hodler.mSaveSpeedTest;
         this.mHandler = hodler.mSaveHandler;
-        this.mGuradProcess = hodler.mSavedSSGuradProcess;
+        this.mSSProxyProcess = hodler.mSavedSSGuradProcess;
         this.mPrivoxyProcess = hodler.mSavedPrivoxyProcess;
         this.mResult = hodler.mSaveResult;
         this.totalSize = hodler.mSavedTotalSize;
@@ -189,24 +189,21 @@ public class SpeedTestActivity extends AppCompatActivity {
     }
 
     private void startTestWithProxy() {
-        mGuradProcess = new SSProxyGuradProcess(mProxyServer, this, Constant.SOCKS_SERVER_LOCAL_PORT_FONT);
-        mGuradProcess.start();
+        mSSProxyProcess = new SSProxyGuradProcess(mProxyServer, this, Constant.SOCKS_SERVER_LOCAL_PORT_FONT);
+        mSSProxyProcess.start();
+        mSSProxyProcess.waitFor(Constant.SOCKS_SERVER_LOCAL_PORT_FONT);
         if (Build.VERSION.SDK_INT < 24) {
             mPrivoxyProcess = new PrivoxyGuradProcess(this, Constant.FRONT_PRIVOXY_CONFIG_FILE_NAME);
             mPrivoxyProcess.start();
+            mPrivoxyProcess.waitFor(Constant.PRIVOXY_LOCAL_PORT_FONT);
         }
         new Thread(new Runnable() {
             @Override
             public void run() {
-                try {
-                    Thread.sleep(500);
-                    if (Build.VERSION.SDK_INT < 24) {
-                        mSpeedTest.startTest(new INetImplWithPrivoxy(Constant.PRIVOXY_LOCAL_PORT_FONT));
-                    } else {
-                        mSpeedTest.startTest(new INetImplWithSSProxy(Constant.SOCKS_SERVER_LOCAL_PORT_FONT));
-                    }
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+                if (Build.VERSION.SDK_INT < 24) {
+                    mSpeedTest.startTest(new INetImplWithPrivoxy(Constant.PRIVOXY_LOCAL_PORT_FONT));
+                } else {
+                    mSpeedTest.startTest(new INetImplWithSSProxy(Constant.SOCKS_SERVER_LOCAL_PORT_FONT));
                 }
             }
         }).start();
@@ -230,7 +227,7 @@ public class SpeedTestActivity extends AppCompatActivity {
         if (!isTestFinished) {
             mSpeedTest.cancel();
             if (!mProxyServer.isSystemProxy())
-                mGuradProcess.destory();
+                mSSProxyProcess.destory();
             if (mPrivoxyProcess != null)
                 mPrivoxyProcess.destory();
             updateSSserverScore();
@@ -259,7 +256,7 @@ public class SpeedTestActivity extends AppCompatActivity {
         holder.mSaveResult = mResult;
         holder.mSavedTotalSize = totalSize;
         holder.mSaveHandler = mHandler;
-        holder.mSavedSSGuradProcess = mGuradProcess;
+        holder.mSavedSSGuradProcess = mSSProxyProcess;
         holder.mSavedProxyServer = mProxyServer;
         holder.score = score;
         return holder;
