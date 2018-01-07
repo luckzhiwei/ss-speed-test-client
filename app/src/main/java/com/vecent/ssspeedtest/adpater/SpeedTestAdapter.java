@@ -66,6 +66,7 @@ public class SpeedTestAdapter extends CommonAdapter<SpeedTestResult> {
         String redirectServer = result.isRedirect() ? result.getRedirectServer() : res.getString(R.string.empty);
         ((KeyValueView) view.getChildAt(1)).setValue(redirectServer);
         String requestResult = result.isExceptionOccured() ? res.getString(R.string.execption_occured) : res.getString(R.string.result_ok);
+        requestResult += result.getStatusCode();
         ((KeyValueView) view.getChildAt(2)).setValue(requestResult);
         ((KeyValueView) view.getChildAt(3)).setValue(result.getTimeUsed() + res.getString(R.string.unit_millisecond));
     }

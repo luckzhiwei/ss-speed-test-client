@@ -8,7 +8,6 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
 import android.os.RemoteException;
-import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -259,6 +258,7 @@ public class MainActivity extends AppCompatActivity {
         if (resultCode == SpeedTestActivity.TEST_FINISHED) {
             int pos = data.getIntExtra("pos", -1);
             SSServer server = data.getParcelableExtra("ssServer");
+            server.setGrade(this.ssServerList.get(pos).getGrade());
             if (pos != -1 && server != null) {
                 updateSSServerItem(pos, server);
             }

@@ -161,7 +161,7 @@ public class SpeedTestActivity extends AppCompatActivity {
         this.mAdapter = new SpeedTestAdapter(getApplicationContext(),
                 R.layout.speed_test_item_layout, mResult.getResultList());
         this.mContentListView.setAdapter(this.mAdapter);
-        Servers servers2Test = new Servers(this.getApplicationContext(), "alexa.json");
+        Servers servers2Test = new Servers(this.getApplicationContext(), "gfwlistOutput.json");
         this.mHandler = new Handler(getMainLooper());
         this.mSpeedTest = new SpeedTest(servers2Test.getServers(), this.mHandler);
         this.totalSize = servers2Test.getServers().size();

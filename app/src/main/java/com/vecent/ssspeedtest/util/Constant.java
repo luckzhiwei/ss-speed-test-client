@@ -11,7 +11,8 @@ public class Constant {
     public static final int MAX_REDIRECT_TIMES = 5;
     public static final int CONNECTION_TIME_OUT = 4000;
     public static final int READ_TIME_OUT = 4000;
-    public static final int TOTAL_TIME_OUT = READ_TIME_OUT + CONNECTION_TIME_OUT;
+    public static final int RESLOVE_DNS_TIME_OUT = 10000;
+    public static final int TOTAL_TIME_OUT = 8000;
     public static final String LOCAL_HOST = "127.0.0.1";
     public static final int SOCKS_SERVER_LOCAL_PORT_FONT = 1088;
     public static final int PRIVOXY_LOCAL_PORT_FONT = 8118;
