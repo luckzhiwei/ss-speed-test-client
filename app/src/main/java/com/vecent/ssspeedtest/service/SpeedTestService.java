@@ -104,7 +104,6 @@ public class SpeedTestService extends Service {
         return iSpeedTestInterfaceImpl;
     }
 
-
     @Override
     public void onDestroy() {
         super.onDestroy();

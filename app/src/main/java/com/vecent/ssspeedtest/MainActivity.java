@@ -26,13 +26,14 @@ import android.widget.Toast;
 import com.vecent.ssspeedtest.adpater.SSServerAdapter;
 import com.vecent.ssspeedtest.aidl.ISpeedTestInterface;
 import com.vecent.ssspeedtest.aidl.ITestFinishListener;
-import com.vecent.ssspeedtest.controller.AboutActivity;
+import com.vecent.ssspeedtest.controller.ShowWebPageActivity;
 import com.vecent.ssspeedtest.controller.AppConigActivity;
 import com.vecent.ssspeedtest.controller.SpeedTestActivity;
 import com.vecent.ssspeedtest.dao.DaoManager;
 import com.vecent.ssspeedtest.dao.SSServer;
 import com.vecent.ssspeedtest.greendao.DaoSession;
 import com.vecent.ssspeedtest.service.SpeedTestService;
+import com.vecent.ssspeedtest.util.Constant;
 import com.vecent.ssspeedtest.view.EditSSServerSettingDialog;
 
 import java.util.List;
@@ -63,7 +64,6 @@ public class MainActivity extends AppCompatActivity {
         public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
             iSpeedTestInterface = ISpeedTestInterface.Stub.asInterface(iBinder);
             try {
-                //todo 逻辑待修改
                 iSpeedTestInterface.startTest(iTestFinishListener);
                 iSpeedTestInterface.setOnTestFinishListener(iTestFinishListener);
                 if (iSpeedTestInterface.isTestRuning()) {
@@ -214,7 +214,17 @@ public class MainActivity extends AppCompatActivity {
         this.aboutLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent().setClass(getApplicationContext(), AboutActivity.class));
+                Intent intent = new Intent(getApplicationContext(), ShowWebPageActivity.class);
+                intent.putExtra("url", Constant.ABOUT_URL);
+                startActivity(intent);
+            }
+        });
+        this.helpLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), ShowWebPageActivity.class);
+                intent.putExtra("url", Constant.FAQ_URL);
+                startActivity(intent);
             }
         });
     }

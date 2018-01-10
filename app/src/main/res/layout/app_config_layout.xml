@@ -47,7 +47,8 @@
 
     <View
         style="@style/HLine"
-        android:layout_marginTop="8dp" />
+        android:layout_marginTop="8dp"
+        android:background="@color/colorGray" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -88,6 +89,11 @@
                 android:layout_centerInParent="true" />
         </RelativeLayout>
     </LinearLayout>
+
+    <View
+        style="@style/HLine"
+        android:layout_marginTop="8dp"
+        android:background="@color/colorGray" />
 
     <LinearLayout
         android:layout_width="match_parent"

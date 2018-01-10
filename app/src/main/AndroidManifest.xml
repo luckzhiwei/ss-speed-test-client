@@ -28,7 +28,7 @@
             android:name=".controller.AppConigActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".controller.AboutActivity"
+            android:name=".controller.ShowWebPageActivity"
             android:screenOrientation="portrait" />
 
         <service
