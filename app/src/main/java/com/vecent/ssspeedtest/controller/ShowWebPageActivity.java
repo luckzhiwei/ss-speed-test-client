@@ -42,9 +42,9 @@ public class ShowWebPageActivity extends AppCompatActivity {
 
         });
         String url = getIntent().getStringExtra("url");
-        if (url == null)
-            LogUtil.logDebug(getClass().getName(), "url is null");
-        url = Constant.ABOUT_URL;
+        if (url == null) {
+            url = Constant.ABOUT_URL;
+        }
         this.mWebContainer.loadUrl(url);
     }
 }
