@@ -253,11 +253,9 @@ public class GuradSpeedTester extends Thread {
     }
 
     public void setTimeInterval(long timeInterval) {
-        LogUtil.logDebug(getClass().getName(), "timeinterval " + timeInterval);
         if (this.mTimeInterval != timeInterval) {
             this.mTimeInterval = timeInterval;
             this.isChangedTimeInterval = true;
-            LogUtil.logDebug(getClass().getName(), "is running  " + isRunning);
             if (!this.isRunning) {
                 this.interrupt();
             }

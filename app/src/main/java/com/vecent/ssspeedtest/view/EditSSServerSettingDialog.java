@@ -18,7 +18,10 @@ import com.vecent.ssspeedtest.R;
 import com.vecent.ssspeedtest.dao.DaoManager;
 import com.vecent.ssspeedtest.dao.SSServer;
 import com.vecent.ssspeedtest.greendao.DaoSession;
+import com.vecent.ssspeedtest.util.Constant;
 
+import java.lang.reflect.Array;
+import java.util.Arrays;
 import java.util.regex.Pattern;
 
 /**
@@ -39,7 +42,7 @@ public class EditSSServerSettingDialog extends Dialog {
     private int position = -1;
     private boolean editIsPasswordType = true;
     private ImageView changeEditTypeImg;
-
+    private ListPopWindow mListPopWindow;
 
     public EditSSServerSettingDialog(@NonNull Context context, SSServer server) {
         super(context);
@@ -105,6 +108,13 @@ public class EditSSServerSettingDialog extends Dialog {
         this.textViewConfirm = this.findViewById(R.id.textview_confirm);
         this.textViewCacnel = this.findViewById(R.id.textview_cancel);
         this.changeEditTypeImg = this.findViewById(R.id.img_change_password_edit_type);
+        this.ssEncryptMethodEditText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mListPopWindow.show(ssServerAddrEditText, 200, 300);
+            }
+        });
+
         this.textViewConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -119,7 +129,6 @@ public class EditSSServerSettingDialog extends Dialog {
                         setServerSetting(ssServer);
                         daoSession.getSSServerDao().insert(ssServer);
                     }
-
                     if (mOnDialogChange != null) {
                         mOnDialogChange.onConfirm(position, mSSServer);
                     }
@@ -153,10 +162,20 @@ public class EditSSServerSettingDialog extends Dialog {
 
             }
         });
-
+        this.initPopUpWindow();
         this.setContent();
     }
 
+    public void initPopUpWindow() {
+        this.mListPopWindow = new ListPopWindow(mContext, Arrays.asList(Constant.ENCRYPTED_METHODS));
+        this.mListPopWindow.setOnPopItemClickListener(new ListPopWindow.OnPopItemClick() {
+            @Override
+            public void onItemSelected(String content) {
+                ssEncryptMethodEditText.setText(content);
+                mListPopWindow.dismiss();
+            }
+        });
+    }
 
     public interface OnDialogChange {
         void onConfirm(int position, SSServer server);
