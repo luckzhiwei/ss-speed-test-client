@@ -6,6 +6,7 @@ import com.vecent.ssspeedtest.util.Constant;
 import com.vecent.ssspeedtest.util.LogUtil;
 
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
@@ -35,10 +36,11 @@ public class ThreadPool {
     }
 
 
-    public void execTask(Runnable task) {
+    public void execTask(Runnable task) throws RejectedExecutionException {
         if (this.mExecutor != null) {
             this.mExecutor.execute(task);
         }
+
     }
 
     public void stopNow() {

@@ -242,7 +242,6 @@ public class SpeedTestActivity extends AppCompatActivity {
     @Override
     public void onRestoreInstanceState(Bundle bundle) {
         super.onRestoreInstanceState(bundle);
-        LogUtil.logDebug(getClass().getName(), "restore instance");
     }
 
 

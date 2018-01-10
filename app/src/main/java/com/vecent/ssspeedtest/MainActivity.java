@@ -34,6 +34,7 @@ import com.vecent.ssspeedtest.dao.SSServer;
 import com.vecent.ssspeedtest.greendao.DaoSession;
 import com.vecent.ssspeedtest.service.SpeedTestService;
 import com.vecent.ssspeedtest.util.Constant;
+import com.vecent.ssspeedtest.util.LogUtil;
 import com.vecent.ssspeedtest.view.EditSSServerSettingDialog;
 
 import java.util.List;
@@ -103,6 +104,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        LogUtil.logDebug(getClass().getName(), "oncreate");
         setContentView(R.layout.activity_main);
         initView();
         initService();
@@ -310,6 +312,24 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         moveTaskToBack(false);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        LogUtil.logDebug(getClass().getName(), "onresume");
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        LogUtil.logDebug(getClass().getName(), "onstop");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
     }
 
 }
