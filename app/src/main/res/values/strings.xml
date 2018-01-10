@@ -70,4 +70,14 @@
     <string name="auto_test_explain">如果程序在后台运行,则每隔一段时间对所有的服务器进行评分测速</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="interval_setting">测速间隔</string>
+    <string name="interval_setting_explain">设置后台测速间隔时间</string>
+    <string name="two_min">2分钟</string>
+    <string name="fifty_min">15分钟</string>
+    <string name="thirty_min">30分钟</string>
+    <string name="sixty_min">60分钟</string>
+    <string name="three_hour">3小时</string>
+    <string name="six_hour">6小时</string>
+    <string name="one_day">1天</string>
+
 </resources>

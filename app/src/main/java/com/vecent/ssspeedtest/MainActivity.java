@@ -63,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
         public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
             iSpeedTestInterface = ISpeedTestInterface.Stub.asInterface(iBinder);
             try {
+                //todo 逻辑待修改
                 iSpeedTestInterface.startTest(iTestFinishListener);
                 iSpeedTestInterface.setOnTestFinishListener(iTestFinishListener);
                 if (iSpeedTestInterface.isTestRuning()) {

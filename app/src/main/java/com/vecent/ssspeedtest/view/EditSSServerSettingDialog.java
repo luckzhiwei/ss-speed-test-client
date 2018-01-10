@@ -27,7 +27,6 @@ import java.util.regex.Pattern;
 
 public class EditSSServerSettingDialog extends Dialog {
 
-
     private EditText ssServerAddrEditText;
     private EditText ssServerRemotePortEditText;
     private EditText ssServerPasswordEditText;

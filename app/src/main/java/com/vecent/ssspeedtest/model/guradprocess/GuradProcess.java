@@ -93,11 +93,9 @@ public abstract class GuradProcess {
                         break;
                     }
                     Socket socket = new Socket("127.0.0.1", this.port);
-                    LogUtil.logDebug(getClass().getName(), "success");
                     socket.close();
                     break;
                 } catch (IOException e) {
-                    LogUtil.logDebug(getClass().getName(), "socket timeout exception");
                     e.printStackTrace();
                 }
             }
@@ -118,7 +116,6 @@ public abstract class GuradProcess {
                     Socket socket = new Socket("127.0.0.1", this.port);
                     socket.close();
                 } catch (IOException e) {
-                    LogUtil.logDebug(getClass().getName(), "close success");
                     break;
                 }
             }
