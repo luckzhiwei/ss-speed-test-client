@@ -8,6 +8,7 @@ import android.os.RemoteException;
 import com.vecent.ssspeedtest.aidl.ISpeedTestInterface;
 import com.vecent.ssspeedtest.aidl.ITestFinishListener;
 import com.vecent.ssspeedtest.model.Servers;
+import com.vecent.ssspeedtest.util.Constant;
 import com.vecent.ssspeedtest.util.LogUtil;
 
 
@@ -71,7 +72,21 @@ public class SpeedTestService extends Service {
 
         @Override
         public void setOnTestFinishListener(ITestFinishListener listener) throws RemoteException {
-            mGuradSpeedTester.setTestFinishListener(listener);
+            if (mGuradSpeedTester != null)
+                mGuradSpeedTester.setTestFinishListener(listener);
+        }
+
+        @Override
+        public void setTimeInterval(long timeInterval) throws RemoteException {
+            if (mGuradSpeedTester != null)
+                mGuradSpeedTester.setTimeInterval(timeInterval);
+        }
+
+        @Override
+        public long getTimeInterval() throws RemoteException {
+            if (mGuradSpeedTester != null)
+                return mGuradSpeedTester.getmTimeInterval();
+            return 0;
         }
 
     }
@@ -89,7 +104,6 @@ public class SpeedTestService extends Service {
         return iSpeedTestInterfaceImpl;
     }
 
-
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -101,7 +115,7 @@ public class SpeedTestService extends Service {
             servers2Test = new Servers(getApplicationContext(), "alexa.json");
         }
         if (mGuradSpeedTester == null) {
-            mGuradSpeedTester = new GuradSpeedTester(servers2Test.getServers(), getApplicationContext());
+            mGuradSpeedTester = new GuradSpeedTester(servers2Test.getServers(), getApplicationContext(), Constant.TWO_MIN);
             if (listener != null)
                 mGuradSpeedTester.setTestFinishListener(listener);
             mGuradSpeedTester.start();

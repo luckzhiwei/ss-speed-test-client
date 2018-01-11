@@ -124,10 +124,10 @@ public class SSServerAdapter extends CommonAdapter<SSServer> {
 
 
     private void setStatueByGrade(TextView textView, int grade) {
-        if (grade >= 90) {
+        if (grade >= 85) {
             textView.setText(R.string.status_good);
             textView.setTextColor(ContextCompat.getColor(mContext, R.color.colorGreen));
-        } else if (grade < 90 && grade >= 60) {
+        } else if (grade < 85 && grade >= 60) {
             textView.setText(R.string.status_normal);
             textView.setTextColor(ContextCompat.getColor(mContext, R.color.colorYellow));
         } else {

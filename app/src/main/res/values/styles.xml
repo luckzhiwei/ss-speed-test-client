@@ -49,6 +49,7 @@
     <style name="HLine">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">@dimen/line_width</item>
+        <item name="android:background">@color/colorBlack</item>
     </style>
 
     <style name="HLine.Gray">

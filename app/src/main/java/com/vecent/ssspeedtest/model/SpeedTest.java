@@ -10,6 +10,7 @@ import com.vecent.ssspeedtest.util.LogUtil;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.List;
+import java.util.concurrent.RejectedExecutionException;
 
 /**
  * Created by zhiwei on 2017/9/4.
@@ -48,25 +49,28 @@ public class SpeedTest {
      */
     public void startTest(final INet net) {
         this.startTime = System.currentTimeMillis();
-        for (final Server server : mServers2Test) {
-            mThreadPool.execTask(new Runnable() {
-                @Override
-                public void run() {
-                    final SpeedTestResult requestResult = httpSpeedTest(net, server);
-                    if (requestResult != null) {
-                        mHandler.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                mRequestCallBack.onOneRequestFinishListener(requestResult);
-                            }
-                        });
-                    }
-                }
-            });
-        }
-        mThreadPool.stopAddTask();
         try {
+            for (final Server server : mServers2Test) {
+                mThreadPool.execTask(new Runnable() {
+                    @Override
+                    public void run() {
+                        final SpeedTestResult requestResult = httpSpeedTest(net, server);
+                        if (requestResult != null) {
+                            mHandler.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    mRequestCallBack.onOneRequestFinishListener(requestResult);
+                                }
+                            });
+                        }
+                    }
+                });
+            }
+            mThreadPool.stopAddTask();
             mThreadPool.waitAllTaskComplete();
+        } catch (RejectedExecutionException e) {
+            e.printStackTrace();
+            return;
         } catch (InterruptedException e) {
             LogUtil.logInfo("Wait all task complete error", " InterruptedException");
         }

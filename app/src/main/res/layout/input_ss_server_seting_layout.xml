@@ -93,7 +93,8 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/ss_server_encrypt_method"
             android:layout_marginTop="16dp"
-            android:background="@drawable/edit_text_background" />
+            android:background="@drawable/edit_text_background"
+            android:focusable="false" />
     </RelativeLayout>
 
     <RelativeLayout

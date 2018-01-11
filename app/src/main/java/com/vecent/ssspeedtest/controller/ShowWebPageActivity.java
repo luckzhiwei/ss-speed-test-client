@@ -9,12 +9,13 @@ import android.widget.ProgressBar;
 
 import com.vecent.ssspeedtest.R;
 import com.vecent.ssspeedtest.util.Constant;
+import com.vecent.ssspeedtest.util.LogUtil;
 
 /**
  * Created by zhiwei on 2018/1/2.
  */
 
-public class AboutActivity extends AppCompatActivity {
+public class ShowWebPageActivity extends AppCompatActivity {
 
     private WebView mWebContainer;
     private ProgressBar mWebProgressBar;
@@ -40,6 +41,10 @@ public class AboutActivity extends AppCompatActivity {
             }
 
         });
-        this.mWebContainer.loadUrl(Constant.ABOUT_URL);
+        String url = getIntent().getStringExtra("url");
+        if (url == null) {
+            url = Constant.ABOUT_URL;
+        }
+        this.mWebContainer.loadUrl(url);
     }
 }

@@ -16,4 +16,6 @@ interface ISpeedTestInterface {
      void setOnlyWifiTest(in boolean flag);
      boolean getOnlyWifiTest();
      void setOnTestFinishListener(in ITestFinishListener listener);
+     void setTimeInterval(long time);
+     long getTimeInterval();
 }

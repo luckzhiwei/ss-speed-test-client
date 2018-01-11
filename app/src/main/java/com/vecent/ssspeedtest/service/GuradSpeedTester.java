@@ -58,12 +58,17 @@ public class GuradSpeedTester extends Thread {
 
     private boolean isRealRunning = true;
 
+    private long mTimeInterval;
 
-    public GuradSpeedTester(List<Server> servers2Test, Context context) {
+    private boolean isChangedTimeInterval = false;
+
+
+    public GuradSpeedTester(List<Server> servers2Test, Context context, long timeInterval) {
         this.servers2Test = servers2Test;
         this.mContext = context;
         this.results = new ArrayList<>();
         this.isRunning = false;
+        this.mTimeInterval = timeInterval;
     }
 
     @Override
@@ -139,7 +144,8 @@ public class GuradSpeedTester extends Thread {
             }).start();
         } else {
             LogUtil.logDebug(getClass().getName(), "end test");
-            finishSpeedTest();
+            finish();
+            interval();
         }
     }
 
@@ -161,22 +167,36 @@ public class GuradSpeedTester extends Thread {
         }
     }
 
-
-    private void finishSpeedTest() {
-        try {
-            if (mTestFinishListener != null) {
+    private void finish() {
+        if (mTestFinishListener != null) {
+            try {
                 mTestFinishListener.onTestFinish(isRealRunning);
+            } catch (RemoteException e) {
+                e.printStackTrace();
             }
-            this.results = new ArrayList<>();
-            this.isRunning = false;
-            Thread.sleep(Constant.SERVICE_WAIT_INTERNAL);
+        }
+        this.isRunning = false;
+        this.results = new ArrayList<>();
+    }
+
+
+    private void interval() {
+        try {
+            Thread.sleep(mTimeInterval);
             startTest();
-        } catch (RemoteException e) {
-            e.printStackTrace();
         } catch (InterruptedException e) {
             LogUtil.logDebug(getClass().getName(), "interupted");
-            startTest();
-            e.printStackTrace();
+            if (isChangedTimeInterval) {
+                isChangedTimeInterval = false;
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        interval();
+                    }
+                });
+            } else {
+                startTest();
+            }
         }
     }
 
@@ -232,6 +252,20 @@ public class GuradSpeedTester extends Thread {
         return true;
     }
 
+    public void setTimeInterval(long timeInterval) {
+        if (this.mTimeInterval != timeInterval) {
+            this.mTimeInterval = timeInterval;
+            this.isChangedTimeInterval = true;
+            LogUtil.logDebug(getClass().getName(), "is running  " + isRunning);
+            if (!this.isRunning) {
+                this.interrupt();
+            }
+        }
+    }
+
+    public long getmTimeInterval() {
+        return this.mTimeInterval;
+    }
 
 
 }
