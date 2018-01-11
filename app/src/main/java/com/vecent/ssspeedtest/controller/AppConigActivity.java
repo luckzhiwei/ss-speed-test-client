@@ -16,7 +16,6 @@ import com.vecent.ssspeedtest.R;
 import com.vecent.ssspeedtest.aidl.ISpeedTestInterface;
 import com.vecent.ssspeedtest.service.SpeedTestService;
 import com.vecent.ssspeedtest.util.Constant;
-import com.vecent.ssspeedtest.util.LogUtil;
 import com.vecent.ssspeedtest.view.ListPopWindow;
 
 import java.util.ArrayList;
@@ -172,5 +171,11 @@ public class AppConigActivity extends AppCompatActivity {
 
     private void showTimeIntervalSetting() {
         this.mListPopWindow.show(this.timeIntervalTextView, 120, 150);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        unbindService(configServerConnection);
     }
 }
