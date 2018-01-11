@@ -314,17 +314,6 @@ public class MainActivity extends AppCompatActivity {
         moveTaskToBack(false);
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        LogUtil.logDebug(getClass().getName(), "onresume");
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        LogUtil.logDebug(getClass().getName(), "onstop");
-    }
 
     @Override
     public void onDestroy() {
