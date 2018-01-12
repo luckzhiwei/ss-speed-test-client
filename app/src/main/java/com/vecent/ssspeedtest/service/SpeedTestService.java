@@ -119,9 +119,6 @@ public class SpeedTestService extends Service {
             if (listener != null)
                 mGuradSpeedTester.setTestFinishListener(listener);
             mGuradSpeedTester.start();
-        } else {
-            if (!mGuradSpeedTester.isRunning())
-                mGuradSpeedTester.interrupt();
         }
     }
 

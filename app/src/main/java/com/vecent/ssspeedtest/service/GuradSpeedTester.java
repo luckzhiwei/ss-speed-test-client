@@ -33,7 +33,6 @@ import java.util.List;
 
 public class GuradSpeedTester extends Thread {
 
-
     private Handler mHandler;
 
     private List<TotalSpeedTestResult> results;
@@ -115,6 +114,8 @@ public class GuradSpeedTester extends Thread {
                             try {
                                 if (mTestFinishListener != null) {
                                     grade = ((100 * grade) / totalReqSize);
+                                    proxySSServer.setGrade(grade);
+                                    updateDB(proxySSServer);
                                     mTestFinishListener.onOneItemFinish(proxySSServer.getId(), grade);
                                 }
                             } catch (RemoteException e) {
@@ -265,6 +266,11 @@ public class GuradSpeedTester extends Thread {
 
     public long getmTimeInterval() {
         return this.mTimeInterval;
+    }
+
+    public void updateDB(SSServer server) {
+        DaoSession daoSession = DaoManager.getInstance(mContext).getDaoSession();
+        daoSession.getSSServerDao().update(server);
     }
 
 
