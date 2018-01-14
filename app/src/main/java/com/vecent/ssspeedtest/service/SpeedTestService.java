@@ -115,10 +115,13 @@ public class SpeedTestService extends Service {
             servers2Test = new Servers(getApplicationContext(), "alexa.json");
         }
         if (mGuradSpeedTester == null) {
-            mGuradSpeedTester = new GuradSpeedTester(servers2Test.getServers(), getApplicationContext(), Constant.TWO_MIN);
+            mGuradSpeedTester = new GuradSpeedTester(servers2Test.getServers(), getApplicationContext());
             if (listener != null)
                 mGuradSpeedTester.setTestFinishListener(listener);
             mGuradSpeedTester.start();
+        } else {
+            if (!mGuradSpeedTester.isRunning())
+                mGuradSpeedTester.interrupt();
         }
     }
 

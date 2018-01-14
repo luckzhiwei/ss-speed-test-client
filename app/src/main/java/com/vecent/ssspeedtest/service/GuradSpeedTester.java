@@ -1,6 +1,7 @@
 package com.vecent.ssspeedtest.service;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
@@ -62,13 +63,12 @@ public class GuradSpeedTester extends Thread {
     private boolean isChangedTimeInterval = false;
 
 
-    public GuradSpeedTester(List<Server> servers2Test, Context context, long timeInterval) {
+    public GuradSpeedTester(List<Server> servers2Test, Context context) {
         this.servers2Test = servers2Test;
         this.mContext = context;
-        this.results = new ArrayList<>();
-        this.isRunning = false;
-        this.mTimeInterval = timeInterval;
+        this.init();
     }
+
 
     @Override
     public void run() {
@@ -85,10 +85,16 @@ public class GuradSpeedTester extends Thread {
         Looper.loop();
     }
 
+    private void init() {
+        this.results = new ArrayList<>();
+        this.isRunning = false;
+        SharedPreferences setting = mContext.getSharedPreferences("setting", 0);
+        this.mTimeInterval = setting.getLong("intervalTime", Constant.FIFEEN_MIN);
+    }
+
 
     public void runTest() {
-        this.isRealRunning = checkRunningCondition();
-        if (isRealRunning) {
+        if (checkRunningCondition()) {
             isRunning = true;
             new Thread(new Runnable() {
                 @Override
@@ -156,7 +162,14 @@ public class GuradSpeedTester extends Thread {
             @Override
             public void run() {
                 LogUtil.logDebug(getClass().getName(), "start test");
-                runTest();
+                isRealRunning = checkRunningCondition();
+                if (isRealRunning) {
+                    runTest();
+                } else {
+                    LogUtil.logDebug(getClass().getName(), "end test");
+                    finish();
+                    interval();
+                }
             }
         });
         if (mTestFinishListener != null) {
@@ -207,7 +220,6 @@ public class GuradSpeedTester extends Thread {
         mIterator = proxyServers.iterator();
     }
 
-
     public List<TotalSpeedTestResult> getResult() {
         return this.results;
     }
@@ -257,6 +269,10 @@ public class GuradSpeedTester extends Thread {
         if (this.mTimeInterval != timeInterval) {
             this.mTimeInterval = timeInterval;
             this.isChangedTimeInterval = true;
+            SharedPreferences sharedPreferences = mContext.getSharedPreferences("setting", 0);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putLong("intervalTime", timeInterval);
+            editor.commit();
             LogUtil.logDebug(getClass().getName(), "is running  " + isRunning);
             if (!this.isRunning) {
                 this.interrupt();
