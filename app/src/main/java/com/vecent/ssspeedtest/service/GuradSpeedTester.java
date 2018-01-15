@@ -23,6 +23,7 @@ import com.vecent.ssspeedtest.model.net.INetImplWithSSProxy;
 import com.vecent.ssspeedtest.util.Constant;
 import com.vecent.ssspeedtest.util.LogUtil;
 import com.vecent.ssspeedtest.util.NetWorkUtil;
+import com.vecent.ssspeedtest.util.SharedPreferencesUtil;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -52,9 +53,9 @@ public class GuradSpeedTester extends Thread {
 
     private int grade = 0;
 
-    private boolean allowRunning = true;
+    private boolean allowRunning;
 
-    private boolean onlyInWifiRunning = true;
+    private boolean onlyInWifiRunning;
 
     private boolean isRealRunning = true;
 
@@ -90,6 +91,8 @@ public class GuradSpeedTester extends Thread {
         this.isRunning = false;
         SharedPreferences setting = mContext.getSharedPreferences("setting", 0);
         this.mTimeInterval = setting.getLong("intervalTime", Constant.FIFEEN_MIN);
+        this.allowRunning = setting.getBoolean("allowRunning", true);
+        this.onlyInWifiRunning = setting.getBoolean("onlyInWifiRunning", true);
     }
 
 
@@ -238,14 +241,16 @@ public class GuradSpeedTester extends Thread {
 
     public void setAllowRunning(boolean flag) {
         this.allowRunning = flag;
+        SharedPreferencesUtil.storeBoolean(mContext, "allowRunning", flag);
     }
 
     public boolean getAllowRunning() {
         return this.allowRunning;
     }
 
-    public void setOnlyWifiTest(boolean tag) {
-        this.onlyInWifiRunning = tag;
+    public void setOnlyWifiTest(boolean flag) {
+        this.onlyInWifiRunning = flag;
+        SharedPreferencesUtil.storeBoolean(mContext, "onlyInWifiRunning", flag);
     }
 
     public boolean getOnlyWifiTest() {
@@ -288,6 +293,5 @@ public class GuradSpeedTester extends Thread {
         DaoSession daoSession = DaoManager.getInstance(mContext).getDaoSession();
         daoSession.getSSServerDao().update(server);
     }
-
 
 }
