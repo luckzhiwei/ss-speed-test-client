@@ -104,12 +104,6 @@ public class SpeedTestService extends Service {
         return iSpeedTestInterfaceImpl;
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        LogUtil.logDebug(getClass().getName(), "on destory");
-    }
-
     private void startSpeedTest(ITestFinishListener listener) {
         if (servers2Test == null) {
             servers2Test = new Servers(getApplicationContext(), "alexa.json");

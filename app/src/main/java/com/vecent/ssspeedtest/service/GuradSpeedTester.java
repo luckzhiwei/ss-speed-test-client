@@ -81,7 +81,7 @@ public class GuradSpeedTester extends Thread {
             mPrivoxyGuradProcess.start();
             mPrivoxyGuradProcess.waitFor(Constant.PRIVOXY_LOCAL_PORT_BACK);
         }
-        startTest();
+        startTest(false);
         Looper.loop();
     }
 
@@ -94,7 +94,7 @@ public class GuradSpeedTester extends Thread {
 
 
     public void runTest() {
-        if (checkRunningCondition()) {
+        if (mIterator.hasNext()) {
             isRunning = true;
             new Thread(new Runnable() {
                 @Override
@@ -156,14 +156,21 @@ public class GuradSpeedTester extends Thread {
         }
     }
 
-    private void startTest() {
+    private void startTest(final boolean isFrontTrigger) {
         readSSProxyServerFromDB();
         mHandler.post(new Runnable() {
             @Override
             public void run() {
                 LogUtil.logDebug(getClass().getName(), "start test");
-                isRealRunning = checkRunningCondition();
+                isRealRunning = checkRunningCondition(isFrontTrigger);
                 if (isRealRunning) {
+                    if (mTestFinishListener != null) {
+                        try {
+                            mTestFinishListener.onTestStart();
+                        } catch (RemoteException e) {
+                            e.printStackTrace();
+                        }
+                    }
                     runTest();
                 } else {
                     LogUtil.logDebug(getClass().getName(), "end test");
@@ -172,13 +179,6 @@ public class GuradSpeedTester extends Thread {
                 }
             }
         });
-        if (mTestFinishListener != null) {
-            try {
-                mTestFinishListener.onTestStart();
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }
-        }
     }
 
     private void finish() {
@@ -197,7 +197,7 @@ public class GuradSpeedTester extends Thread {
     private void interval() {
         try {
             Thread.sleep(mTimeInterval);
-            startTest();
+            startTest(false);
         } catch (InterruptedException e) {
             LogUtil.logDebug(getClass().getName(), "interupted");
             if (isChangedTimeInterval) {
@@ -209,7 +209,7 @@ public class GuradSpeedTester extends Thread {
                     }
                 });
             } else {
-                startTest();
+                startTest(true);
             }
         }
     }
@@ -252,9 +252,10 @@ public class GuradSpeedTester extends Thread {
         return this.onlyInWifiRunning;
     }
 
-    private boolean checkRunningCondition() {
-        if (!mIterator.hasNext())
-            return false;
+    private boolean checkRunningCondition(boolean isFrontTrigger) {
+        if (isFrontTrigger) {
+            return true;
+        }
         if (!allowRunning)
             return false;
         if (onlyInWifiRunning) {
@@ -273,7 +274,6 @@ public class GuradSpeedTester extends Thread {
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putLong("intervalTime", timeInterval);
             editor.commit();
-            LogUtil.logDebug(getClass().getName(), "is running  " + isRunning);
             if (!this.isRunning) {
                 this.interrupt();
             }

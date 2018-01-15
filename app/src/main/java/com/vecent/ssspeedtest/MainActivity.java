@@ -34,7 +34,6 @@ import com.vecent.ssspeedtest.dao.SSServer;
 import com.vecent.ssspeedtest.greendao.DaoSession;
 import com.vecent.ssspeedtest.service.SpeedTestService;
 import com.vecent.ssspeedtest.util.Constant;
-import com.vecent.ssspeedtest.util.LogUtil;
 import com.vecent.ssspeedtest.view.EditSSServerSettingDialog;
 
 import java.util.List;
@@ -104,7 +103,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        LogUtil.logDebug(getClass().getName(), "oncreate");
         setContentView(R.layout.activity_main);
         initView();
         initService();
@@ -126,7 +124,6 @@ public class MainActivity extends AppCompatActivity {
                 public void run() {
                     getGradeImg.setVisibility(View.VISIBLE);
                     progressBarBackground.setVisibility(View.GONE);
-                    LogUtil.logDebug(getClass().getName(), "isrealrunning" + isRealRunning);
                     if (isRealRunning) {
                         Toast.makeText(getApplicationContext(), R.string.back_test_finish_toast_msg, Toast.LENGTH_SHORT).show();
                     }
