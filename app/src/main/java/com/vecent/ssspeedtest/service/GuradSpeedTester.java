@@ -275,10 +275,7 @@ public class GuradSpeedTester extends Thread {
         if (this.mTimeInterval != timeInterval) {
             this.mTimeInterval = timeInterval;
             this.isChangedTimeInterval = true;
-            SharedPreferences sharedPreferences = mContext.getSharedPreferences("setting", 0);
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putLong("intervalTime", timeInterval);
-            editor.commit();
+            SharedPreferencesUtil.storeLong(mContext, "intervalTime", timeInterval);
             if (!this.isRunning) {
                 this.interrupt();
             }
