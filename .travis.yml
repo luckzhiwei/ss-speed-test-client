@@ -40,7 +40,8 @@ install:
 before_script:
 - chmod a+x ./gradlew
 script:
-- "./gradlew assembleRelease && mv app/build/outputs/apk/app-release.apk app/build/outputs/apk/ss_speed_test_$TRAVIS_TAG.apk"
+# - "./gradlew assembleRelease && mv app/build/outputs/apk/app-release.apk app/build/outputs/apk/ss_speed_test_$TRAVIS_TAG.apk"
+- "./gradlew assembleRelease && ls -alapp/build/outputs/apk/release/"
 
 deploy:
   provider: releases
