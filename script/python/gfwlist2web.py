@@ -1,4 +1,4 @@
-#!/usr/bin/python  
+#!/usr/bin/python3  
 #-*- coding: utf-8 -*-
 
 import re
@@ -291,22 +291,26 @@ class gfwlist2web:
                     return True
                 return False
         json_list=list()
-        opener = urllib.request.build_opener()
-        response = opener.open(alexaweb, timeout=6)
-        raw = response.read().decode('utf-8')
-        soup = BeautifulSoup(raw, "lxml")
-        tags = soup.find_all('div', class_="rowbox")
-        for tag in tags:
-            alla = tag.find_all('a')
-            for a in alla:
-                if 'chinaz' not in a['href']:
-                    if bypass(a['href'], type):
-                        continue 
-                    _dict = dict()
-                    _dict["type"] = type
-                    _dict["web"] = a['href']
-                    json_list.append(_dict)
-                    print(a['href'])
+        try:
+            opener = urllib.request.build_opener()
+            response = opener.open(alexaweb, timeout=20)
+            raw = response.read().decode('utf-8')
+            soup = BeautifulSoup(raw, "lxml")
+            tags = soup.find_all('div', class_="rowbox")
+            for tag in tags:
+                alla = tag.find_all('a')
+                for a in alla:
+                    if 'chinaz' not in a['href']:
+                        if bypass(a['href'], type):
+                            continue 
+                        _dict = dict()
+                        _dict["type"] = type
+                        _dict["web"] = a['href']
+                        json_list.append(_dict)
+                        print(a['href'])
+        except Exception as error:
+            pass
+        
         return json_list
 
     def writeAlexaJson(self, file = None):
