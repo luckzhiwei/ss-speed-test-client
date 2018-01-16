@@ -374,7 +374,7 @@ if __name__ == '__main__':
     g.createDatabase()
     g.readGfwlistToDatabase()
     g.directGuessFromDatabase()
-    g.testConnect(··max_count = testCount, max_thread = thread)
+    g.testConnect(max_count = testCount, max_thread = thread)
     g.setVerifyToDatabase()
     g.writeJsonFromDatabase(json_file)
 
