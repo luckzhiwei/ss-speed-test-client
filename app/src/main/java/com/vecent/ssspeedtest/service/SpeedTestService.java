@@ -104,18 +104,12 @@ public class SpeedTestService extends Service {
         return iSpeedTestInterfaceImpl;
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        LogUtil.logDebug(getClass().getName(), "on destory");
-    }
-
     private void startSpeedTest(ITestFinishListener listener) {
         if (servers2Test == null) {
             servers2Test = new Servers(getApplicationContext(), "alexa.json");
         }
         if (mGuradSpeedTester == null) {
-            mGuradSpeedTester = new GuradSpeedTester(servers2Test.getServers(), getApplicationContext(), Constant.TWO_MIN);
+            mGuradSpeedTester = new GuradSpeedTester(servers2Test.getServers(), getApplicationContext());
             if (listener != null)
                 mGuradSpeedTester.setTestFinishListener(listener);
             mGuradSpeedTester.start();

@@ -1,6 +1,7 @@
 package com.vecent.ssspeedtest.service;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
@@ -22,6 +23,7 @@ import com.vecent.ssspeedtest.model.net.INetImplWithSSProxy;
 import com.vecent.ssspeedtest.util.Constant;
 import com.vecent.ssspeedtest.util.LogUtil;
 import com.vecent.ssspeedtest.util.NetWorkUtil;
+import com.vecent.ssspeedtest.util.SharedPreferencesUtil;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -32,7 +34,6 @@ import java.util.List;
  */
 
 public class GuradSpeedTester extends Thread {
-
 
     private Handler mHandler;
 
@@ -52,9 +53,9 @@ public class GuradSpeedTester extends Thread {
 
     private int grade = 0;
 
-    private boolean allowRunning = true;
+    private boolean allowRunning;
 
-    private boolean onlyInWifiRunning = true;
+    private boolean onlyInWifiRunning;
 
     private boolean isRealRunning = true;
 
@@ -63,13 +64,12 @@ public class GuradSpeedTester extends Thread {
     private boolean isChangedTimeInterval = false;
 
 
-    public GuradSpeedTester(List<Server> servers2Test, Context context, long timeInterval) {
+    public GuradSpeedTester(List<Server> servers2Test, Context context) {
         this.servers2Test = servers2Test;
         this.mContext = context;
-        this.results = new ArrayList<>();
-        this.isRunning = false;
-        this.mTimeInterval = timeInterval;
+        this.init();
     }
+
 
     @Override
     public void run() {
@@ -82,14 +82,22 @@ public class GuradSpeedTester extends Thread {
             mPrivoxyGuradProcess.start();
             mPrivoxyGuradProcess.waitFor(Constant.PRIVOXY_LOCAL_PORT_BACK);
         }
-        startTest();
+        startTest(false);
         Looper.loop();
+    }
+
+    private void init() {
+        this.results = new ArrayList<>();
+        this.isRunning = false;
+        SharedPreferences setting = mContext.getSharedPreferences("setting", 0);
+        this.mTimeInterval = setting.getLong("intervalTime", Constant.FIFEEN_MIN);
+        this.allowRunning = setting.getBoolean("allowRunning", true);
+        this.onlyInWifiRunning = setting.getBoolean("onlyInWifiRunning", true);
     }
 
 
     public void runTest() {
-        this.isRealRunning = checkRunningCondition();
-        if (isRealRunning) {
+        if (mIterator.hasNext()) {
             isRunning = true;
             new Thread(new Runnable() {
                 @Override
@@ -115,6 +123,8 @@ public class GuradSpeedTester extends Thread {
                             try {
                                 if (mTestFinishListener != null) {
                                     grade = ((100 * grade) / totalReqSize);
+                                    proxySSServer.setGrade(grade);
+                                    updateDB(proxySSServer);
                                     mTestFinishListener.onOneItemFinish(proxySSServer.getId(), grade);
                                 }
                             } catch (RemoteException e) {
@@ -149,22 +159,29 @@ public class GuradSpeedTester extends Thread {
         }
     }
 
-    private void startTest() {
+    private void startTest(final boolean isFrontTrigger) {
         readSSProxyServerFromDB();
         mHandler.post(new Runnable() {
             @Override
             public void run() {
                 LogUtil.logDebug(getClass().getName(), "start test");
-                runTest();
+                isRealRunning = checkRunningCondition(isFrontTrigger);
+                if (isRealRunning) {
+                    if (mTestFinishListener != null) {
+                        try {
+                            mTestFinishListener.onTestStart();
+                        } catch (RemoteException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    runTest();
+                } else {
+                    LogUtil.logDebug(getClass().getName(), "end test");
+                    finish();
+                    interval();
+                }
             }
         });
-        if (mTestFinishListener != null) {
-            try {
-                mTestFinishListener.onTestStart();
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }
-        }
     }
 
     private void finish() {
@@ -183,7 +200,7 @@ public class GuradSpeedTester extends Thread {
     private void interval() {
         try {
             Thread.sleep(mTimeInterval);
-            startTest();
+            startTest(false);
         } catch (InterruptedException e) {
             LogUtil.logDebug(getClass().getName(), "interupted");
             if (isChangedTimeInterval) {
@@ -195,7 +212,7 @@ public class GuradSpeedTester extends Thread {
                     }
                 });
             } else {
-                startTest();
+                startTest(true);
             }
         }
     }
@@ -205,7 +222,6 @@ public class GuradSpeedTester extends Thread {
         List<SSServer> proxyServers = daoSession.getSSServerDao().loadAll();
         mIterator = proxyServers.iterator();
     }
-
 
     public List<TotalSpeedTestResult> getResult() {
         return this.results;
@@ -225,23 +241,26 @@ public class GuradSpeedTester extends Thread {
 
     public void setAllowRunning(boolean flag) {
         this.allowRunning = flag;
+        SharedPreferencesUtil.storeBoolean(mContext, "allowRunning", flag);
     }
 
     public boolean getAllowRunning() {
         return this.allowRunning;
     }
 
-    public void setOnlyWifiTest(boolean tag) {
-        this.onlyInWifiRunning = tag;
+    public void setOnlyWifiTest(boolean flag) {
+        this.onlyInWifiRunning = flag;
+        SharedPreferencesUtil.storeBoolean(mContext, "onlyInWifiRunning", flag);
     }
 
     public boolean getOnlyWifiTest() {
         return this.onlyInWifiRunning;
     }
 
-    private boolean checkRunningCondition() {
-        if (!mIterator.hasNext())
-            return false;
+    private boolean checkRunningCondition(boolean isFrontTrigger) {
+        if (isFrontTrigger) {
+            return true;
+        }
         if (!allowRunning)
             return false;
         if (onlyInWifiRunning) {
@@ -256,7 +275,7 @@ public class GuradSpeedTester extends Thread {
         if (this.mTimeInterval != timeInterval) {
             this.mTimeInterval = timeInterval;
             this.isChangedTimeInterval = true;
-            LogUtil.logDebug(getClass().getName(), "is running  " + isRunning);
+            SharedPreferencesUtil.storeLong(mContext, "intervalTime", timeInterval);
             if (!this.isRunning) {
                 this.interrupt();
             }
@@ -267,5 +286,9 @@ public class GuradSpeedTester extends Thread {
         return this.mTimeInterval;
     }
 
+    public void updateDB(SSServer server) {
+        DaoSession daoSession = DaoManager.getInstance(mContext).getDaoSession();
+        daoSession.getSSServerDao().update(server);
+    }
 
 }

@@ -34,7 +34,6 @@ import com.vecent.ssspeedtest.dao.SSServer;
 import com.vecent.ssspeedtest.greendao.DaoSession;
 import com.vecent.ssspeedtest.service.SpeedTestService;
 import com.vecent.ssspeedtest.util.Constant;
-import com.vecent.ssspeedtest.util.LogUtil;
 import com.vecent.ssspeedtest.view.EditSSServerSettingDialog;
 
 import java.util.List;
@@ -104,7 +103,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        LogUtil.logDebug(getClass().getName(), "oncreate");
         setContentView(R.layout.activity_main);
         initView();
         initService();
@@ -155,6 +153,7 @@ public class MainActivity extends AppCompatActivity {
             });
         }
     }
+
 
     private void initView() {
         this.contentListView = (ListView) this.findViewById(R.id.common_list_view);
@@ -239,6 +238,16 @@ public class MainActivity extends AppCompatActivity {
         toggle.syncState();
     }
 
+    private void clearAllGrade() {
+        if (ssServerList != null) {
+            for (SSServer server : this.ssServerList) {
+                server.setGrade(-1);
+            }
+            DaoSession daoSession = DaoManager.getInstance(getApplicationContext()).getDaoSession();
+            daoSession.getSSServerDao().updateInTx(this.ssServerList);
+        }
+    }
+
 
     public void loadData() {
         if (mHandler == null) mHandler = new Handler(Looper.getMainLooper());
@@ -246,6 +255,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 DaoSession daoSession = DaoManager.getInstance(getApplicationContext()).getDaoSession();
+                clearAllGrade();
                 ssServerList = daoSession.getSSServerDao().loadAll();
                 mHandler.post(new Runnable() {
                     @Override

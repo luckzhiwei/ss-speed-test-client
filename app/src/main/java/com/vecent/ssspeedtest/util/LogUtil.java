@@ -39,7 +39,6 @@ public class LogUtil {
         if (LOG_DEBUG_TAG != 0) {
             tagPostfix = preProcessTag(tagPostfix);
             Log.i(Constant.LOG_TAG + tagPostfix, msg);
-
         }
     }
 

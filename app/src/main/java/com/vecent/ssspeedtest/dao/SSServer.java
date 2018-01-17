@@ -51,7 +51,8 @@ public class SSServer implements Parcelable {
         this.grade = grade;
     }
 
-    @Transient
+    @Property(nameInDb = "grade")
+    @NotNull
     private int grade = -1;
 
     public Long getId() {
@@ -143,15 +144,16 @@ public class SSServer implements Parcelable {
         this.grade = in.readInt();
     }
 
-    @Generated(hash = 1182408304)
+    @Generated(hash = 20000939)
     public SSServer(Long id, @NotNull String serverAddr, int serverPort, @NotNull String password,
-                    @NotNull String method, int score) {
+            @NotNull String method, int score, int grade) {
         this.id = id;
         this.serverAddr = serverAddr;
         this.serverPort = serverPort;
         this.password = password;
         this.method = method;
         this.score = score;
+        this.grade = grade;
     }
 
     @Generated(hash = 1471507233)
