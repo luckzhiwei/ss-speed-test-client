@@ -11,7 +11,7 @@
         android:layout_width="72dp"
         android:layout_height="72dp"
         android:layout_centerInParent="true"
-        android:src="@mipmap/empty"
+        android:src="@drawable/empty"
         android:visibility="gone" />
 
     <TextView

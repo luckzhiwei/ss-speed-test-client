@@ -109,7 +109,6 @@ public class MainActivity extends AppCompatActivity {
         loadData();
     }
 
-
     private void initService() {
         Intent intent = new Intent().setClass(getApplicationContext(), SpeedTestService.class);
         startService(intent);
@@ -292,7 +291,7 @@ public class MainActivity extends AppCompatActivity {
         this.ssServerList.set(pos, server);
         if (pos <= contentListView.getLastVisiblePosition() && pos >= contentListView.getFirstVisiblePosition()) {
             View view = contentListView.getChildAt(pos - contentListView.getFirstVisiblePosition());
-            adapter.updatView(view, server, pos);
+            adapter.updateView(view, server, pos);
         }
     }
 
@@ -330,5 +329,6 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
         unbindService(speedTestServiceConnection);
     }
+
 
 }

@@ -30,7 +30,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_alignParentTop="true"
                 android:layout_marginRight="16dp"
-                android:src="@mipmap/edit" />
+                android:src="@drawable/edit" />
 
             <ImageView
                 android:id="@+id/img_speed_test"
@@ -39,7 +39,7 @@
                 android:layout_alignBottom="@id/img_edit"
                 android:layout_marginRight="24dp"
                 android:layout_toLeftOf="@id/img_edit"
-                android:src="@mipmap/triangle" />
+                android:src="@drawable/triangle" />
 
             <TextView
                 android:id="@+id/textview_ss_status"

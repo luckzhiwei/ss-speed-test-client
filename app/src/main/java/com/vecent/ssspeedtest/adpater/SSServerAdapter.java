@@ -39,7 +39,7 @@ public class SSServerAdapter extends CommonAdapter<SSServer> {
         setContentData(holder, server, pos);
     }
 
-    public void updatView(View view, SSServer server, int pos) {
+    public void updateView(View view, SSServer server, int pos) {
         Object viewHolder = view.getTag();
         if (viewHolder instanceof ViewHolder) {
             this.setContentData((ViewHolder) viewHolder, server, pos);

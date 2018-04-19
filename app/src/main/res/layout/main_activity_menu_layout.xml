@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="160dp"
         android:scaleType="centerCrop"
-        android:src="@mipmap/timg" />
+        android:src="@drawable/timg" />
 
     <RelativeLayout
         android:id="@+id/layout_server_config"
@@ -28,7 +28,7 @@
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:layout_marginLeft="8dp"
-            android:src="@mipmap/ss_config" />
+            android:src="@drawable/ss_config" />
 
         <TextView
             style="@style/textViewLarge"
@@ -43,7 +43,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="8dp"
-            android:src="@mipmap/arrow" />
+            android:src="@drawable/arrow" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -61,7 +61,7 @@
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:layout_marginLeft="8dp"
-            android:src="@mipmap/config" />
+            android:src="@drawable/config" />
 
         <TextView
             style="@style/textViewLarge"
@@ -76,7 +76,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="8dp"
-            android:src="@mipmap/arrow" />
+            android:src="@drawable/arrow" />
     </RelativeLayout>
 
     <android.support.v7.widget.CardView
@@ -106,7 +106,7 @@
                     android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="8dp"
-                    android:src="@mipmap/question" />
+                    android:src="@drawable/question" />
 
                 <TextView
                     style="@style/textViewLarge"
@@ -131,7 +131,7 @@
                     android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="8dp"
-                    android:src="@mipmap/about" />
+                    android:src="@drawable/about" />
 
                 <TextView
                     style="@style/textViewLarge"

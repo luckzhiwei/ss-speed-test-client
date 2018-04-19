@@ -30,7 +30,7 @@
                 android:layout_height="24dp"
                 android:layout_centerVertical="true"
                 android:layout_toRightOf="@id/textview_title_of_result"
-                android:src="@mipmap/result" />
+                android:src="@drawable/result" />
 
             <ImageView
                 android:id="@+id/img_view_close"
@@ -39,7 +39,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="8dp"
-                android:src="@mipmap/close" />
+                android:src="@drawable/close" />
         </RelativeLayout>
 
         <LinearLayout
@@ -58,7 +58,7 @@
                     android:layout_height="24dp"
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
-                    android:src="@mipmap/total" />
+                    android:src="@drawable/total" />
 
                 <TextView
                     android:id="@+id/textview_total_server_count"
@@ -89,7 +89,7 @@
                     android:layout_height="24dp"
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
-                    android:src="@mipmap/total" />
+                    android:src="@drawable/total" />
 
                 <TextView
                     android:id="@+id/textview_cur_server_count"
@@ -121,7 +121,7 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
-                    android:src="@mipmap/pass" />
+                    android:src="@drawable/pass" />
 
                 <TextView
                     android:id="@+id/textview_white_server_count"
@@ -152,7 +152,7 @@
                     android:layout_height="24dp"
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
-                    android:src="@mipmap/ratio" />
+                    android:src="@drawable/ratio" />
 
                 <TextView
                     android:id="@+id/textview_white_server_ratio"
@@ -183,7 +183,7 @@
                     android:layout_height="24dp"
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
-                    android:src="@mipmap/average" />
+                    android:src="@drawable/average" />
 
                 <TextView
                     android:id="@+id/textview_white_server_speed_avg"
@@ -214,7 +214,7 @@
                     android:layout_height="24dp"
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
-                    android:src="@mipmap/forbidden" />
+                    android:src="@drawable/forbidden" />
 
                 <TextView
                     android:id="@+id/textview_black_server_count"
@@ -247,7 +247,7 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
-                    android:src="@mipmap/ratio" />
+                    android:src="@drawable/ratio" />
 
                 <TextView
                     android:id="@+id/textview_black_server_ratio"
@@ -278,7 +278,7 @@
                     android:layout_height="24dp"
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
-                    android:src="@mipmap/average" />
+                    android:src="@drawable/average" />
 
                 <TextView
                     android:id="@+id/textview_black_add_speed_avg"
@@ -309,7 +309,7 @@
                     android:layout_height="24dp"
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
-                    android:src="@mipmap/timer1" />
+                    android:src="@drawable/timer1" />
 
                 <TextView
                     android:id="@+id/textview_total_time_used"

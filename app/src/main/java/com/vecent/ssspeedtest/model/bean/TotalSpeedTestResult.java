@@ -13,7 +13,6 @@ import org.greenrobot.greendao.annotation.Transient;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.transform.Result;
 
 import org.greenrobot.greendao.annotation.Generated;
 

@@ -152,10 +152,10 @@ public class EditSSServerSettingDialog extends Dialog {
             @Override
             public void onClick(View view) {
                 if (editIsPasswordType) {
-                    changeEditTypeImg.setImageResource(R.mipmap.ic_eye);
+                    changeEditTypeImg.setImageResource(R.drawable.ic_eye);
                     ssServerPasswordEditText.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
                 } else {
-                    changeEditTypeImg.setImageResource(R.mipmap.ic_eye_off);
+                    changeEditTypeImg.setImageResource(R.drawable.ic_eye_off);
                     ssServerPasswordEditText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
                 }
                 editIsPasswordType = !editIsPasswordType;

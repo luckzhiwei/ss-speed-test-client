@@ -63,13 +63,11 @@ public class GuradSpeedTester extends Thread {
 
     private boolean isChangedTimeInterval = false;
 
-
     public GuradSpeedTester(List<Server> servers2Test, Context context) {
         this.servers2Test = servers2Test;
         this.mContext = context;
         this.init();
     }
-
 
     @Override
     public void run() {
