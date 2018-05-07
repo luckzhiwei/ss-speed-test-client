@@ -3,14 +3,13 @@ package com.vecent.ssspeedtest;
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
 
-import com.vecent.ssspeedtest.model.Servers;
+import com.vecent.ssspeedtest.model.Servers4Test;
 import com.vecent.ssspeedtest.model.bean.Server;
 
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.InputStream;
 import java.util.List;
 
 /**
@@ -28,7 +27,7 @@ public class TestServers {
 
     @Test
     public void testReadFromAssert() {
-        Servers test = new Servers(this.appContext,"gfwlistOutput.txt");
+        Servers4Test test = new Servers4Test(this.appContext,"gfwlistOutput.txt");
         List<Server> ret = test.getServers();
         Assert.assertNotEquals(null, ret);
         Assert.assertEquals(40, ret.size());

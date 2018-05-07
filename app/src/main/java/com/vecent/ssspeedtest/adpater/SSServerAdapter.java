@@ -107,6 +107,7 @@ public class SSServerAdapter extends CommonAdapter<SSServer> {
         TextView serverGradeValue = holder.getView(R.id.textview_ss_grade_value);
         TextView serverStatus = holder.getView(R.id.textview_ss_status);
         TextView serverStatusValue = holder.getView(R.id.textview_ss_status_value);
+        LogUtil.logDebug(getClass().getName(), server.getGrade() + " in adpater");
         if (server.getGrade() == -1) {
             serverGrade.setVisibility(View.INVISIBLE);
             serverStatus.setVisibility(View.INVISIBLE);

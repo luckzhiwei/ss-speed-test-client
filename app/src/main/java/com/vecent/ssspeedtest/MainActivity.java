@@ -32,10 +32,14 @@ import com.vecent.ssspeedtest.controller.SpeedTestActivity;
 import com.vecent.ssspeedtest.dao.DaoManager;
 import com.vecent.ssspeedtest.dao.SSServer;
 import com.vecent.ssspeedtest.greendao.DaoSession;
+import com.vecent.ssspeedtest.model.SSServers;
 import com.vecent.ssspeedtest.service.SpeedTestService;
 import com.vecent.ssspeedtest.util.Constant;
 import com.vecent.ssspeedtest.view.EditSSServerSettingDialog;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 
@@ -47,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
     private SSServerAdapter adapter;
     private List<SSServer> ssServerList;
     private DrawerLayout mDrawerLayout;
+    private SSServers mSServers;
     private ImageView getGradeImg;
     private ProgressBar progressBarBackground;
     private ISpeedTestInterface iSpeedTestInterface;
@@ -95,8 +100,31 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onCacnel(int pos, SSServer server) {
             if (server != null && pos != -1) {
-                deleteServer(pos, server);
+                mSServers.remove(pos, server);
             }
+        }
+    };
+
+    private SSServers.OnDataChangedListener mSsServersDataListener = new SSServers.OnDataChangedListener() {
+        @Override
+        public void onDataInit() {
+            mHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    adapter.notifyDataSetChanged();
+                    initService();
+                }
+            });
+        }
+
+        @Override
+        public void onDataRemove(int pos) {
+            mHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    adapter.notifyDataSetChanged();
+                }
+            });
         }
     };
 
@@ -105,8 +133,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initView();
-        initService();
-        loadData();
+        initData();
     }
 
     private void initService() {
@@ -145,9 +172,9 @@ public class MainActivity extends AppCompatActivity {
             mHandler.post(new Runnable() {
                 @Override
                 public void run() {
+                    clearAllGrade();
                     getGradeImg.setVisibility(View.GONE);
                     progressBarBackground.setVisibility(View.VISIBLE);
-                    loadData();
                 }
             });
         }
@@ -155,7 +182,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void initView() {
-        this.contentListView = (ListView) this.findViewById(R.id.common_list_view);
         this.addServerImg = (ImageView) this.findViewById(R.id.add_ss_server_img);
         this.addServerImg.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -166,9 +192,21 @@ public class MainActivity extends AppCompatActivity {
                 dialog.setWindowAttr(getWindowManager());
             }
         });
+        if (mHandler == null) mHandler = new Handler(Looper.getMainLooper());
+        initListView();
         initActionBar();
         initMenuLayout();
         initDrawerLayout();
+    }
+
+    private void initListView() {
+        this.contentListView = (ListView) this.findViewById(R.id.common_list_view);
+        this.ssServerList = new ArrayList<>();
+        this.mSServers = new SSServers(this, ssServerList);
+        this.mSServers.setOnDataChangedListener(mSsServersDataListener);
+        adapter = new SSServerAdapter(MainActivity.this,
+                R.layout.ss_server_item_layout, ssServerList, mOnDialogChangeListener);
+        contentListView.setAdapter(adapter);
     }
 
 
@@ -184,7 +222,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 try {
-                    loadData();
                     iSpeedTestInterface.startTest(iTestFinishListener);
                 } catch (RemoteException e) {
                     e.printStackTrace();
@@ -238,42 +275,31 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void clearAllGrade() {
-        if (ssServerList != null) {
-            for (SSServer server : this.ssServerList) {
-                server.setGrade(-1);
-            }
-            DaoSession daoSession = DaoManager.getInstance(getApplicationContext()).getDaoSession();
-            daoSession.getSSServerDao().updateInTx(this.ssServerList);
-        }
-    }
-
-
-    public void loadData() {
-        if (mHandler == null) mHandler = new Handler(Looper.getMainLooper());
         new Thread(new Runnable() {
             @Override
             public void run() {
-                DaoSession daoSession = DaoManager.getInstance(getApplicationContext()).getDaoSession();
-                clearAllGrade();
-                ssServerList = daoSession.getSSServerDao().loadAll();
-                mHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        adapter = new SSServerAdapter(MainActivity.this,
-                                R.layout.ss_server_item_layout, ssServerList, mOnDialogChangeListener);
-                        contentListView.setAdapter(adapter);
+                if (ssServerList != null) {
+                    for (SSServer server : ssServerList) {
+                        server.setGrade(-1);
                     }
-                });
+                    DaoSession daoSession = DaoManager.getInstance(getApplicationContext()).getDaoSession();
+                    daoSession.getSSServerDao().updateInTx(ssServerList);
+                    mHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            adapter.notifyDataSetChanged();
+                        }
+                    });
+                }
             }
         }).start();
     }
 
-    private void deleteServer(int pos, SSServer server) {
-        DaoSession daoSession = DaoManager.getInstance(getApplicationContext()).getDaoSession();
-        daoSession.getSSServerDao().delete(server);
-        this.ssServerList.remove(pos);
-        this.adapter.notifyDataSetChanged();
+
+    public void initData() {
+        mSServers.init();
     }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -296,27 +322,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateSSServerGrade(long id, int grade) {
-        int pos = searchPoistion(id);
+        SSServer target = new SSServer();
+        target.setId(id);
+        int pos = Collections.binarySearch(this.ssServerList, target, new Comparator<SSServer>() {
+            @Override
+            public int compare(SSServer ssServer, SSServer t1) {
+                return ssServer.getId().compareTo(t1.getId());
+            }
+        });
         if (pos == -1) return;
         this.ssServerList.get(pos).setGrade(grade);
         this.updateSSServerItem(pos, this.ssServerList.get(pos));
     }
 
-    private int searchPoistion(long targetId) {
-        int start = 0;
-        int end = this.ssServerList.size() - 1;
-        while (start <= end) {
-            int mid = start + (end - start) / 2;
-            long id = this.ssServerList.get(mid).getId();
-            if (id > targetId)
-                end = mid - 1;
-            else if (id < targetId)
-                start = mid + 1;
-            else
-                return mid;
-        }
-        return -1;
-    }
 
     @Override
     public void onBackPressed() {

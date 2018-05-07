@@ -20,14 +20,13 @@ import com.vecent.ssspeedtest.greendao.DaoSession;
 import com.vecent.ssspeedtest.model.guradprocess.PrivoxyGuradProcess;
 import com.vecent.ssspeedtest.model.guradprocess.SSProxyGuradProcess;
 import com.vecent.ssspeedtest.model.net.INetImplDefault;
-import com.vecent.ssspeedtest.model.Servers;
+import com.vecent.ssspeedtest.model.Servers4Test;
 import com.vecent.ssspeedtest.model.SpeedTest;
 import com.vecent.ssspeedtest.model.bean.SpeedTestResult;
 import com.vecent.ssspeedtest.model.bean.TotalSpeedTestResult;
 import com.vecent.ssspeedtest.model.net.INetImplWithPrivoxy;
 import com.vecent.ssspeedtest.model.net.INetImplWithSSProxy;
 import com.vecent.ssspeedtest.util.Constant;
-import com.vecent.ssspeedtest.util.LogUtil;
 import com.vecent.ssspeedtest.view.ResultLayout;
 
 /**
@@ -161,7 +160,7 @@ public class SpeedTestActivity extends AppCompatActivity {
         this.mAdapter = new SpeedTestAdapter(getApplicationContext(),
                 R.layout.speed_test_item_layout, mResult.getResultList());
         this.mContentListView.setAdapter(this.mAdapter);
-        Servers servers2Test = new Servers(this.getApplicationContext(), "gfwlistOutput.json");
+        Servers4Test servers2Test = new Servers4Test(this.getApplicationContext(), "gfwlistOutput.json");
         this.mHandler = new Handler(getMainLooper());
         this.mSpeedTest = new SpeedTest(servers2Test.getServers(), this.mHandler);
         this.totalSize = servers2Test.getServers().size();
