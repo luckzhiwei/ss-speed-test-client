@@ -57,7 +57,7 @@ public class SpeedTestActivity extends AppCompatActivity {
         @Override
         public void onAllRequestFinishListener(float timeUsed, int totalReqSize) {
             setResultView(timeUsed);
-            updateSSserverScore();
+            mProxyServer.setScore(score);
             if (!mProxyServer.isSystemProxy())
                 mSSProxyProcess.destory();
             if (mPrivoxyProcess != null)
@@ -229,7 +229,7 @@ public class SpeedTestActivity extends AppCompatActivity {
                 mSSProxyProcess.destory();
             if (mPrivoxyProcess != null)
                 mPrivoxyProcess.destory();
-            updateSSserverScore();
+            this.mProxyServer.setScore(score);
         }
         Intent dataBack = new Intent();
         dataBack.putExtra("pos", getIntent().getIntExtra("pos", -1));
@@ -258,12 +258,6 @@ public class SpeedTestActivity extends AppCompatActivity {
         holder.mSavedProxyServer = mProxyServer;
         holder.score = score;
         return holder;
-    }
-
-    private void updateSSserverScore() {
-        DaoSession daoSession = DaoManager.getInstance(getApplicationContext()).getDaoSession();
-        this.mProxyServer.setScore(score);
-        daoSession.getSSServerDao().update(mProxyServer);
     }
 
 
