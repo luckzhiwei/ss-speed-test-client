@@ -6,9 +6,17 @@ import com.vecent.ssspeedtest.dao.DaoManager;
 import com.vecent.ssspeedtest.dao.SSServer;
 import com.vecent.ssspeedtest.greendao.DaoSession;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+
+import rx.Scheduler;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action0;
+import rx.functions.Action1;
+import rx.functions.Func1;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by zhiwei on 2018/5/7.
@@ -16,7 +24,7 @@ import java.util.List;
 
 public class SSServers {
 
-    private Context context;
+    private DaoSession mDaoSession;
     private List<SSServer> mData;
     private OnDataChangedListener mListener;
 
@@ -32,38 +40,56 @@ public class SSServers {
         void onAllDataUpdate();
     }
 
-    public SSServers(Context context, List<SSServer> data) {
-        this.context = context;
-        this.mData = data;
+    public SSServers(Context context) {
+        this.mData = new ArrayList<>();
+        this.mDaoSession = DaoManager.getInstance(context).getDaoSession();
     }
 
     public void init() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                DaoSession daoSession = DaoManager.getInstance(context).getDaoSession();
-                for (SSServer server : daoSession.getSSServerDao().loadAll()) {
-                    mData.add(server);
-                }
-                if (mListener != null) {
-                    mListener.onDataInit();
-                }
-            }
-        }).start();
+        mDaoSession.getSSServerDao().
+                rx().
+                loadAll().
+                observeOn(Schedulers.newThread()).
+                doOnNext(new Action1<List<SSServer>>() {
+                    @Override
+                    public void call(List<SSServer> ssServers) {
+                        mData.clear();
+                        mData.addAll(ssServers);
+                    }
+                }).
+                subscribeOn(AndroidSchedulers.mainThread()).
+                subscribe(new Action1<List<SSServer>>() {
+                    @Override
+                    public void call(List<SSServer> ssServers) {
+                        if (mListener != null) {
+                            mListener.onDataInit();
+                        }
+                    }
+                });
     }
 
+
     public void remove(final int pos, final SSServer server) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                DaoSession daoSession = DaoManager.getInstance(context).getDaoSession();
-                daoSession.getSSServerDao().delete(server);
-                mData.remove(pos);
-                if (mListener != null) {
-                    mListener.onDataRemove(pos);
-                }
-            }
-        }).start();
+        mDaoSession.getSSServerDao().
+                rx().
+                delete(server).
+                observeOn(Schedulers.newThread()).
+                subscribeOn(AndroidSchedulers.mainThread()).
+                doOnNext(new Action1<Void>() {
+                    @Override
+                    public void call(Void aVoid) {
+                        mData.remove(pos);
+                    }
+                }).
+                subscribe(new Action1<Void>() {
+                    @Override
+                    public void call(Void aVoid) {
+                        if (mListener != null) {
+                            mListener.onDataRemove(pos);
+                        }
+                    }
+                });
+
     }
 
     public void setOnDataChangedListener(OnDataChangedListener listener) {
@@ -71,32 +97,49 @@ public class SSServers {
     }
 
     public void add(final SSServer serverAdd) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                DaoSession daoSession = DaoManager.getInstance(context).getDaoSession();
-                daoSession.getSSServerDao().insert(serverAdd);
-                mData.add(serverAdd);
-                if (mListener != null) {
-                    mListener.onDataAdd();
-                }
-            }
-        }).start();
+        mDaoSession.getSSServerDao().
+                rx().
+                insert(serverAdd).
+                observeOn(Schedulers.newThread()).
+                subscribeOn(AndroidSchedulers.mainThread()).
+                doOnNext(new Action1<SSServer>() {
+                    @Override
+                    public void call(SSServer server) {
+                        mData.add(server);
+                    }
+                }).
+                subscribe(new Action1<SSServer>() {
+                    @Override
+                    public void call(SSServer server) {
+                        if (mListener != null) {
+                            mListener.onDataAdd();
+                        }
+                    }
+                });
     }
 
     public void update(final int pos, final SSServer server) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                DaoSession daoSession = DaoManager.getInstance(context).getDaoSession();
-                daoSession.getSSServerDao().update(server);
-                mData.set(pos, server);
-                if (mListener != null) {
-                    mListener.onDataUpdate(pos, server);
-                }
-            }
-        }).start();
+        mDaoSession.getSSServerDao().
+                rx().
+                update(server).
+                observeOn(Schedulers.newThread()).
+                subscribeOn(AndroidSchedulers.mainThread()).
+                doOnNext(new Action1<SSServer>() {
+                    @Override
+                    public void call(SSServer server) {
+                        mData.set(pos, server);
+                    }
+                }).
+                subscribe(new Action1<SSServer>() {
+                    @Override
+                    public void call(SSServer server) {
+                        if (mListener != null) {
+                            mListener.onDataUpdate(pos, server);
+                        }
+                    }
+                });
     }
+
 
     //更新测评分数(黑白名单)
     public void updateServerGrade(final long id, final int grade) {
@@ -113,8 +156,7 @@ public class SSServers {
                 });
                 if (pos == -1) return;
                 mData.get(pos).setGrade(grade);
-                DaoSession daoSession = DaoManager.getInstance(context).getDaoSession();
-                daoSession.getSSServerDao().update(mData.get(pos));
+                mDaoSession.getSSServerDao().update(mData.get(pos));
                 if (mListener != null) {
                     mListener.onDataUpdate(pos, mData.get(pos));
                 }
@@ -128,8 +170,7 @@ public class SSServers {
             @Override
             public void run() {
                 mData.get(pos).setScore(score);
-                DaoSession daoSession = DaoManager.getInstance(context).getDaoSession();
-                daoSession.getSSServerDao().update(mData.get(pos));
+                mDaoSession.getSSServerDao().update(mData.get(pos));
                 if (mListener != null) {
                     mListener.onDataUpdate(pos, mData.get(pos));
                 }
@@ -145,8 +186,7 @@ public class SSServers {
                     for (SSServer server : mData) {
                         server.setGrade(-1);
                     }
-                    DaoSession daoSession = DaoManager.getInstance(context).getDaoSession();
-                    daoSession.getSSServerDao().updateInTx(mData);
+                    mDaoSession.getSSServerDao().updateInTx(mData);
                     if (mListener != null) {
                         mListener.onAllDataUpdate();
                     }

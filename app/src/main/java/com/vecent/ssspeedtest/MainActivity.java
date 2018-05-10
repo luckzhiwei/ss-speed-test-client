@@ -35,13 +35,7 @@ import com.vecent.ssspeedtest.greendao.DaoSession;
 import com.vecent.ssspeedtest.model.SSServers;
 import com.vecent.ssspeedtest.service.SpeedTestService;
 import com.vecent.ssspeedtest.util.Constant;
-import com.vecent.ssspeedtest.util.LogUtil;
 import com.vecent.ssspeedtest.view.EditSSServerSettingDialog;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -50,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
     private Handler mHandler;
     private ImageView addServerImg;
     private SSServerAdapter adapter;
-    private List<SSServer> ssServerList;
     private DrawerLayout mDrawerLayout;
     private SSServers mSServers;
     private ImageView getGradeImg;
@@ -215,12 +208,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initListView() {
+        
         this.contentListView = (ListView) this.findViewById(R.id.common_list_view);
-        this.ssServerList = new ArrayList<>();
-        this.mSServers = new SSServers(this, ssServerList);
+        this.mSServers = new SSServers(this);
         this.mSServers.setOnDataChangedListener(mSsServersDataListener);
         adapter = new SSServerAdapter(MainActivity.this,
-                R.layout.ss_server_item_layout, ssServerList, mOnDialogChangeListener);
+                R.layout.ss_server_item_layout, mSServers.getData(), mOnDialogChangeListener);
         contentListView.setAdapter(adapter);
     }
 
