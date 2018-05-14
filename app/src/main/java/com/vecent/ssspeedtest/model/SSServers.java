@@ -11,9 +11,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import rx.Scheduler;
+import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action0;
 import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
@@ -143,56 +142,75 @@ public class SSServers {
 
     //更新测评分数(黑白名单)
     public void updateServerGrade(final long id, final int grade) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                SSServer target = new SSServer();
-                target.setId(id);
-                int pos = Collections.binarySearch(mData, target, new Comparator<SSServer>() {
+        SSServer target = new SSServer();
+        target.setId(id);
+        Observable.
+                just(target).
+                map(new Func1<SSServer, Integer>() {
                     @Override
-                    public int compare(SSServer ssServer, SSServer t1) {
-                        return ssServer.getId().compareTo(t1.getId());
+                    public Integer call(SSServer target) {
+                        target.setId(id);
+                        return Collections.binarySearch(mData, target, new Comparator<SSServer>() {
+                            @Override
+                            public int compare(SSServer ssServer, SSServer t1) {
+                                return ssServer.getId().compareTo(t1.getId());
+                            }
+                        });
+
+                    }
+                }).doOnNext(new Action1<Integer>() {
+            @Override
+            public void call(Integer pos) {
+                SSServer target = mData.get(pos);
+                target.setGrade(grade);
+                mDaoSession.getSSServerDao().update(mData.get(pos));
+            }
+        }).observeOn(Schedulers.newThread()).
+                subscribeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<Integer>() {
+                    @Override
+                    public void call(Integer pos) {
+                        if (mListener != null) {
+                            mListener.onDataUpdate(pos, mData.get(pos));
+                        }
                     }
                 });
-                if (pos == -1) return;
-                mData.get(pos).setGrade(grade);
-                mDaoSession.getSSServerDao().update(mData.get(pos));
-                if (mListener != null) {
-                    mListener.onDataUpdate(pos, mData.get(pos));
-                }
-            }
-        }).start();
     }
 
     //更新跑分
     public void updateServerScore(final int pos, final int score) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                mData.get(pos).setScore(score);
-                mDaoSession.getSSServerDao().update(mData.get(pos));
-                if (mListener != null) {
-                    mListener.onDataUpdate(pos, mData.get(pos));
-                }
-            }
-        }).start();
+        mData.get(pos).setScore(score);
+        mDaoSession.getSSServerDao().
+                rx().
+                update(mData.get(pos)).
+                observeOn(Schedulers.newThread()).
+                subscribeOn(AndroidSchedulers.mainThread()).
+                subscribe(new Action1<SSServer>() {
+                    @Override
+                    public void call(SSServer server) {
+                        if (mListener != null) {
+                            mListener.onDataUpdate(pos, mData.get(pos));
+                        }
+                    }
+                });
     }
 
     public void clearAllGrade() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                if (mData != null) {
-                    for (SSServer server : mData) {
-                        server.setGrade(-1);
+        for (SSServer server : mData) {
+            server.setGrade(-1);
+        }
+        mDaoSession.getSSServerDao().rx().updateInTx(mData)
+                .observeOn(Schedulers.newThread()).
+                subscribeOn(AndroidSchedulers.mainThread()).
+                subscribe(new Action1<Iterable<SSServer>>() {
+                    @Override
+                    public void call(Iterable<SSServer> ssServers) {
+                        if (mListener != null) {
+                            mListener.onAllDataUpdate();
+                        }
                     }
-                    mDaoSession.getSSServerDao().updateInTx(mData);
-                    if (mListener != null) {
-                        mListener.onAllDataUpdate();
-                    }
-                }
-            }
-        }).start();
+                });
+
     }
 
 
