@@ -21,6 +21,7 @@ import rx.schedulers.Schedulers;
  * Created by zhiwei on 2018/5/7.
  */
 
+//todo unit test
 public class SSServers {
 
     private DaoSession mDaoSession;

@@ -15,7 +15,7 @@ import java.util.concurrent.RejectedExecutionException;
 /**
  * Created by zhiwei on 2017/9/4.
  */
-
+//todo unit test
 public class SpeedTest {
 
     private List<Server> mServers2Test;

@@ -60,7 +60,6 @@ public class TestINetImpl {
         Assert.assertEquals(false, result.isUrlWrong());
 
         Assert.assertEquals(0, result.getTotalSize());
-        Assert.assertEquals(0, result.getTimeUsed());
         Assert.assertEquals(0, result.getDownLoadSpeed(), 0.00f);
         Assert.assertEquals(0, result.getStatusCode());
     }
@@ -75,7 +74,6 @@ public class TestINetImpl {
         SpeedTestResult result = iNetForTest.getHttpTestResult(test);
 
         Assert.assertEquals(false, result.isExceptionOccured());
-        Assert.assertEquals(true, result.isRedirect());
         Assert.assertEquals(false, result.isTimedOut());
         Assert.assertEquals(false, result.isUrlWrong());
 
