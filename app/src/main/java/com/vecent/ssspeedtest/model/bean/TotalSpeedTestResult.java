@@ -19,7 +19,6 @@ import org.greenrobot.greendao.annotation.Generated;
 /**
  * Created by lzw on 17-10-1.
  */
-//todo unit test
 @Entity
 public class TotalSpeedTestResult implements Parcelable {
 
