@@ -1,5 +1,6 @@
 package com.vecent.ssspeedtest;
 
+import android.app.Instrumentation;
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
 

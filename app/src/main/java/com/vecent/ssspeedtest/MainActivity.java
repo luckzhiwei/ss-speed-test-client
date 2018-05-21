@@ -14,6 +14,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -35,6 +36,7 @@ import com.vecent.ssspeedtest.greendao.DaoSession;
 import com.vecent.ssspeedtest.model.SSServers;
 import com.vecent.ssspeedtest.service.SpeedTestService;
 import com.vecent.ssspeedtest.util.Constant;
+import com.vecent.ssspeedtest.util.LogUtil;
 import com.vecent.ssspeedtest.view.EditSSServerSettingDialog;
 
 
@@ -134,6 +136,11 @@ public class MainActivity extends AppCompatActivity {
         public void onAllDataUpdate() {
             updateListView();
         }
+
+        @Override
+        public void onFininshForUnitTest() {
+
+        }
     };
 
     @Override
@@ -208,7 +215,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initListView() {
-        
+
         this.contentListView = (ListView) this.findViewById(R.id.common_list_view);
         this.mSServers = new SSServers(this);
         this.mSServers.setOnDataChangedListener(mSsServersDataListener);

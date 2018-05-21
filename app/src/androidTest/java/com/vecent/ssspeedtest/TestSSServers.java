@@ -10,6 +10,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.concurrent.locks.LockSupport;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
@@ -20,7 +21,7 @@ public class TestSSServers {
 
     private Context appContext = InstrumentationRegistry.getTargetContext();
     SSServers test = new SSServers(this.appContext);
-    private ReentrantLock lock = new ReentrantLock(true);
+    private Object lock = new Object();
 
     private SSServers.OnDataChangedListener listener = new SSServers.OnDataChangedListener() {
         @Override
@@ -35,8 +36,7 @@ public class TestSSServers {
 
         @Override
         public void onDataAdd() {
-            lock.unlock();
-            Assert.assertEquals(1, test.getData().size());
+
         }
 
         @Override
@@ -48,6 +48,13 @@ public class TestSSServers {
         public void onAllDataUpdate() {
 
         }
+
+        @Override
+        public void onFininshForUnitTest() {
+            synchronized (lock) {
+                lock.notifyAll();
+            }
+        }
     };
 
     @Before
@@ -55,14 +62,76 @@ public class TestSSServers {
         test.setOnDataChangedListener(listener);
     }
 
-    @Test
-    public void testSSServerAdd() {
+    private void addServer() throws InterruptedException {
         SSServer serverAdd = new SSServer();
         serverAdd.setMethod("aes-256-cfb");
         serverAdd.setPassword("esecb1307");
         serverAdd.setServerAddr("118.184.57.38");
         serverAdd.setServerPort(47066);
         test.add(serverAdd);
-        lock.lock();
+        synchronized (lock) {
+            lock.wait();
+        }
+        Assert.assertEquals(1, test.getData().size());
     }
+
+    @Test
+    public void testSSServerAddAndRemove() throws InterruptedException {
+        addServer();
+        test.remove(0, test.getData().get(0));
+        synchronized (lock) {
+            lock.wait();
+        }
+        Assert.assertEquals(0, test.getData().size());
+    }
+
+    @Test
+    public void testSSServerAddAndUpdate() throws InterruptedException {
+        addServer();
+        SSServer server2Update = test.getData().get(0);
+        server2Update.setServerPort(47067);
+        server2Update.setServerAddr("uestc.edu.cn");
+        server2Update.setMethod("aes-128-cfb");
+        server2Update.setPassword("123");
+        test.update(0, server2Update);
+        synchronized (lock) {
+            lock.wait();
+        }
+        Assert.assertEquals(47067, test.getData().get(0).getServerPort());
+        Assert.assertEquals("123", test.getData().get(0).getPassword());
+        Assert.assertEquals("aes-128-cfb", test.getData().get(0).getMethod());
+        Assert.assertEquals("uestc.edu.cn", test.getData().get(0).getServerAddr());
+    }
+
+    @Test
+    public void testClearAllServerGrade() throws InterruptedException {
+        addServer();
+        test.clearAllGrade();
+        synchronized (lock) {
+            lock.wait();
+        }
+        Assert.assertEquals(-1, test.getData().get(0).getGrade());
+    }
+
+    @Test
+    public void testUpdateGrade() throws InterruptedException {
+        addServer();
+        test.updateServerGrade(test.getData().get(0).getId(), 92);
+        synchronized (lock) {
+            lock.wait();
+        }
+        Assert.assertEquals(92, test.getData().get(0).getGrade());
+    }
+
+    @Test
+    public void testUpdateScore() throws InterruptedException {
+        addServer();
+        test.updateServerScore(0, 211);
+        synchronized (lock) {
+            lock.wait();
+        }
+        Assert.assertEquals(211, test.getData().get(0).getScore());
+    }
+
+
 }

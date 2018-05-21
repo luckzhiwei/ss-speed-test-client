@@ -1,6 +1,7 @@
 package com.vecent.ssspeedtest.model;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.vecent.ssspeedtest.dao.DaoManager;
 import com.vecent.ssspeedtest.dao.SSServer;
@@ -12,6 +13,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import rx.Observable;
+import rx.Scheduler;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.functions.Func1;
@@ -21,7 +23,6 @@ import rx.schedulers.Schedulers;
  * Created by zhiwei on 2018/5/7.
  */
 
-//todo unit test
 public class SSServers {
 
     private DaoSession mDaoSession;
@@ -38,6 +39,8 @@ public class SSServers {
         void onDataUpdate(int pos, SSServer server);
 
         void onAllDataUpdate();
+
+        void onFininshForUnitTest();
     }
 
     public SSServers(Context context) {
@@ -79,6 +82,9 @@ public class SSServers {
                     @Override
                     public void call(Void aVoid) {
                         mData.remove(pos);
+                        if (mListener != null) {
+                            mListener.onFininshForUnitTest();
+                        }
                     }
                 }).
                 subscribe(new Action1<Void>() {
@@ -106,6 +112,9 @@ public class SSServers {
                     @Override
                     public void call(SSServer server) {
                         mData.add(server);
+                        if (mListener != null) {
+                            mListener.onFininshForUnitTest();
+                        }
                     }
                 }).
                 subscribe(new Action1<SSServer>() {
@@ -118,6 +127,7 @@ public class SSServers {
                 });
     }
 
+    //更新信息
     public void update(final int pos, final SSServer server) {
         mDaoSession.getSSServerDao().
                 rx().
@@ -128,6 +138,9 @@ public class SSServers {
                     @Override
                     public void call(SSServer server) {
                         mData.set(pos, server);
+                        if (mListener != null) {
+                            mListener.onFininshForUnitTest();
+                        }
                     }
                 }).
                 subscribe(new Action1<SSServer>() {
@@ -165,6 +178,9 @@ public class SSServers {
                 SSServer target = mData.get(pos);
                 target.setGrade(grade);
                 mDaoSession.getSSServerDao().update(mData.get(pos));
+                if (mListener != null) {
+                    mListener.onFininshForUnitTest();
+                }
             }
         }).observeOn(Schedulers.newThread()).
                 subscribeOn(AndroidSchedulers.mainThread())
@@ -186,6 +202,14 @@ public class SSServers {
                 update(mData.get(pos)).
                 observeOn(Schedulers.newThread()).
                 subscribeOn(AndroidSchedulers.mainThread()).
+                doOnNext(new Action1<SSServer>() {
+                    @Override
+                    public void call(SSServer ssServer) {
+                        if (mListener != null) {
+                            mListener.onFininshForUnitTest();
+                        }
+                    }
+                }).
                 subscribe(new Action1<SSServer>() {
                     @Override
                     public void call(SSServer server) {
@@ -203,6 +227,14 @@ public class SSServers {
         mDaoSession.getSSServerDao().rx().updateInTx(mData)
                 .observeOn(Schedulers.newThread()).
                 subscribeOn(AndroidSchedulers.mainThread()).
+                doOnNext(new Action1<Iterable<SSServer>>() {
+                    @Override
+                    public void call(Iterable<SSServer> ssServers) {
+                        if (mListener != null) {
+                            mListener.onFininshForUnitTest();
+                        }
+                    }
+                }).
                 subscribe(new Action1<Iterable<SSServer>>() {
                     @Override
                     public void call(Iterable<SSServer> ssServers) {
@@ -213,7 +245,6 @@ public class SSServers {
                 });
 
     }
-
 
     public List<SSServer> getData() {
         return mData;
