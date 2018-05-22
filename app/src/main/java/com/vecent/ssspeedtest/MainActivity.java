@@ -14,6 +14,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -32,11 +33,11 @@ import com.vecent.ssspeedtest.controller.SpeedTestActivity;
 import com.vecent.ssspeedtest.dao.DaoManager;
 import com.vecent.ssspeedtest.dao.SSServer;
 import com.vecent.ssspeedtest.greendao.DaoSession;
+import com.vecent.ssspeedtest.model.SSServers;
 import com.vecent.ssspeedtest.service.SpeedTestService;
 import com.vecent.ssspeedtest.util.Constant;
+import com.vecent.ssspeedtest.util.LogUtil;
 import com.vecent.ssspeedtest.view.EditSSServerSettingDialog;
-
-import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -45,8 +46,8 @@ public class MainActivity extends AppCompatActivity {
     private Handler mHandler;
     private ImageView addServerImg;
     private SSServerAdapter adapter;
-    private List<SSServer> ssServerList;
     private DrawerLayout mDrawerLayout;
+    private SSServers mSServers;
     private ImageView getGradeImg;
     private ProgressBar progressBarBackground;
     private ISpeedTestInterface iSpeedTestInterface;
@@ -85,18 +86,60 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onConfirm(int pos, SSServer server) {
             if (pos == -1) {
-                ssServerList.add(server);
-                adapter.notifyDataSetChanged();
+                mSServers.add(server);
             } else {
-                updateSSServerItem(pos, server);
+                mSServers.update(pos, server);
             }
         }
 
         @Override
         public void onCacnel(int pos, SSServer server) {
             if (server != null && pos != -1) {
-                deleteServer(pos, server);
+                mSServers.remove(pos, server);
             }
+        }
+    };
+
+    private SSServers.OnDataChangedListener mSsServersDataListener = new SSServers.OnDataChangedListener() {
+        @Override
+        public void onDataInit() {
+            updateListView();
+            mHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    initService();
+                }
+            });
+        }
+
+        @Override
+        public void onDataRemove(int pos) {
+            updateListView();
+        }
+
+        @Override
+        public void onDataAdd() {
+            updateListView();
+        }
+
+        @Override
+        public void onDataUpdate(final int pos, final SSServer server) {
+            mHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    updateSSServerItem(pos, server);
+                }
+            });
+        }
+
+        @Override
+        public void onAllDataUpdate() {
+            updateListView();
+        }
+
+        @Override
+        public void onFininshForUnitTest() {
+
         }
     };
 
@@ -105,8 +148,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initView();
-        initService();
-        loadData();
+        mSServers.init();
     }
 
     private void initService() {
@@ -135,7 +177,7 @@ public class MainActivity extends AppCompatActivity {
             mHandler.post(new Runnable() {
                 @Override
                 public void run() {
-                    updateSSServerGrade(id, grade);
+                    mSServers.updateServerGrade(id, grade);
                 }
             });
         }
@@ -145,9 +187,9 @@ public class MainActivity extends AppCompatActivity {
             mHandler.post(new Runnable() {
                 @Override
                 public void run() {
+                    mSServers.clearAllGrade();
                     getGradeImg.setVisibility(View.GONE);
                     progressBarBackground.setVisibility(View.VISIBLE);
-                    loadData();
                 }
             });
         }
@@ -155,7 +197,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void initView() {
-        this.contentListView = (ListView) this.findViewById(R.id.common_list_view);
         this.addServerImg = (ImageView) this.findViewById(R.id.add_ss_server_img);
         this.addServerImg.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -166,9 +207,21 @@ public class MainActivity extends AppCompatActivity {
                 dialog.setWindowAttr(getWindowManager());
             }
         });
+        if (mHandler == null) mHandler = new Handler(Looper.getMainLooper());
+        initListView();
         initActionBar();
         initMenuLayout();
         initDrawerLayout();
+    }
+
+    private void initListView() {
+
+        this.contentListView = (ListView) this.findViewById(R.id.common_list_view);
+        this.mSServers = new SSServers(this);
+        this.mSServers.setOnDataChangedListener(mSsServersDataListener);
+        adapter = new SSServerAdapter(MainActivity.this,
+                R.layout.ss_server_item_layout, mSServers.getData(), mOnDialogChangeListener);
+        contentListView.setAdapter(adapter);
     }
 
 
@@ -184,7 +237,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 try {
-                    loadData();
                     iSpeedTestInterface.startTest(iTestFinishListener);
                 } catch (RemoteException e) {
                     e.printStackTrace();
@@ -237,85 +289,23 @@ public class MainActivity extends AppCompatActivity {
         toggle.syncState();
     }
 
-    private void clearAllGrade() {
-        if (ssServerList != null) {
-            for (SSServer server : this.ssServerList) {
-                server.setGrade(-1);
-            }
-            DaoSession daoSession = DaoManager.getInstance(getApplicationContext()).getDaoSession();
-            daoSession.getSSServerDao().updateInTx(this.ssServerList);
-        }
-    }
-
-
-    public void loadData() {
-        if (mHandler == null) mHandler = new Handler(Looper.getMainLooper());
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                DaoSession daoSession = DaoManager.getInstance(getApplicationContext()).getDaoSession();
-                clearAllGrade();
-                ssServerList = daoSession.getSSServerDao().loadAll();
-                mHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        adapter = new SSServerAdapter(MainActivity.this,
-                                R.layout.ss_server_item_layout, ssServerList, mOnDialogChangeListener);
-                        contentListView.setAdapter(adapter);
-                    }
-                });
-            }
-        }).start();
-    }
-
-    private void deleteServer(int pos, SSServer server) {
-        DaoSession daoSession = DaoManager.getInstance(getApplicationContext()).getDaoSession();
-        daoSession.getSSServerDao().delete(server);
-        this.ssServerList.remove(pos);
-        this.adapter.notifyDataSetChanged();
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == SpeedTestActivity.TEST_FINISHED) {
             int pos = data.getIntExtra("pos", -1);
             SSServer server = data.getParcelableExtra("ssServer");
-            server.setGrade(this.ssServerList.get(pos).getGrade());
             if (pos != -1 && server != null) {
-                updateSSServerItem(pos, server);
+                mSServers.updateServerScore(pos, server.getScore());
             }
         }
     }
 
     private void updateSSServerItem(int pos, SSServer server) {
-        this.ssServerList.set(pos, server);
         if (pos <= contentListView.getLastVisiblePosition() && pos >= contentListView.getFirstVisiblePosition()) {
             View view = contentListView.getChildAt(pos - contentListView.getFirstVisiblePosition());
             adapter.updateView(view, server, pos);
         }
-    }
-
-    private void updateSSServerGrade(long id, int grade) {
-        int pos = searchPoistion(id);
-        if (pos == -1) return;
-        this.ssServerList.get(pos).setGrade(grade);
-        this.updateSSServerItem(pos, this.ssServerList.get(pos));
-    }
-
-    private int searchPoistion(long targetId) {
-        int start = 0;
-        int end = this.ssServerList.size() - 1;
-        while (start <= end) {
-            int mid = start + (end - start) / 2;
-            long id = this.ssServerList.get(mid).getId();
-            if (id > targetId)
-                end = mid - 1;
-            else if (id < targetId)
-                start = mid + 1;
-            else
-                return mid;
-        }
-        return -1;
     }
 
     @Override
@@ -323,6 +313,15 @@ public class MainActivity extends AppCompatActivity {
         moveTaskToBack(false);
     }
 
+
+    private void updateListView() {
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                adapter.notifyDataSetChanged();
+            }
+        });
+    }
 
     @Override
     public void onDestroy() {

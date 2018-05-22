@@ -7,9 +7,7 @@ import android.os.RemoteException;
 
 import com.vecent.ssspeedtest.aidl.ISpeedTestInterface;
 import com.vecent.ssspeedtest.aidl.ITestFinishListener;
-import com.vecent.ssspeedtest.model.Servers;
-import com.vecent.ssspeedtest.util.Constant;
-import com.vecent.ssspeedtest.util.LogUtil;
+import com.vecent.ssspeedtest.model.Servers4Test;
 
 
 /**
@@ -20,7 +18,7 @@ public class SpeedTestService extends Service {
 
 
     private ISpeedTestInterfaceImpl iSpeedTestInterfaceImpl;
-    private Servers servers2Test;
+    private Servers4Test servers2Test;
     private GuradSpeedTester mGuradSpeedTester;
 
     public class ISpeedTestInterfaceImpl extends ISpeedTestInterface.Stub {
@@ -106,7 +104,7 @@ public class SpeedTestService extends Service {
 
     private void startSpeedTest(ITestFinishListener listener) {
         if (servers2Test == null) {
-            servers2Test = new Servers(getApplicationContext(), "alexa.json");
+            servers2Test = new Servers4Test(getApplicationContext(), "alexa.json");
         }
         if (mGuradSpeedTester == null) {
             mGuradSpeedTester = new GuradSpeedTester(servers2Test.getServers(), getApplicationContext());

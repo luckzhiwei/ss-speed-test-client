@@ -17,11 +17,11 @@ import com.alibaba.fastjson.JSON;
  * Created by lzw on 17-9-22.
  */
 
-public class Servers {
+public class Servers4Test {
 
     private List<Server> mServers;
 
-    public Servers(Context context, String configFilePath) {
+    public Servers4Test(Context context, String configFilePath) {
         byte[] content = getContentFromResFile(context, configFilePath);
         if (content != null) {
             mServers = JSON.parseArray(new String(content), Server.class);

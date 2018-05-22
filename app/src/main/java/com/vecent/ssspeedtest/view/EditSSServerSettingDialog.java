@@ -15,12 +15,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.vecent.ssspeedtest.R;
-import com.vecent.ssspeedtest.dao.DaoManager;
 import com.vecent.ssspeedtest.dao.SSServer;
-import com.vecent.ssspeedtest.greendao.DaoSession;
 import com.vecent.ssspeedtest.util.Constant;
 
-import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
@@ -119,16 +116,10 @@ public class EditSSServerSettingDialog extends Dialog {
             @Override
             public void onClick(View view) {
                 if (vaildation()) {
-                    DaoSession daoSession = DaoManager.getInstance(mContext).getDaoSession();
-                    if (mSSServer != null) {
-                        setServerSetting(mSSServer);
-                        daoSession.getSSServerDao().update(mSSServer);
-                    } else {
-                        SSServer ssServer = new SSServer();
-                        mSSServer = ssServer;
-                        setServerSetting(ssServer);
-                        daoSession.getSSServerDao().insert(ssServer);
+                    if (mSSServer == null) {
+                        mSSServer = new SSServer();
                     }
+                    getServerSetting(mSSServer);
                     if (mOnDialogChange != null) {
                         mOnDialogChange.onConfirm(position, mSSServer);
                     }
@@ -192,7 +183,7 @@ public class EditSSServerSettingDialog extends Dialog {
         this.getWindow().setAttributes(p);
     }
 
-    private void setServerSetting(SSServer ssServer) {
+    private void getServerSetting(SSServer ssServer) {
         ssServer.setServerAddr(ssServerAddrEditText.getText().toString());
         ssServer.setServerPort(Integer.parseInt(ssServerRemotePortEditText.getText().toString()));
         ssServer.setPassword(ssServerPasswordEditText.getText().toString());

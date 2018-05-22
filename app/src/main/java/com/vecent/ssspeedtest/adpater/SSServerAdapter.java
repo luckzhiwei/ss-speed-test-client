@@ -13,7 +13,6 @@ import com.vecent.ssspeedtest.R;
 
 import com.vecent.ssspeedtest.controller.SpeedTestActivity;
 import com.vecent.ssspeedtest.dao.SSServer;
-import com.vecent.ssspeedtest.util.LogUtil;
 import com.vecent.ssspeedtest.view.EditSSServerSettingDialog;
 import com.zhy.adapter.abslistview.CommonAdapter;
 import com.zhy.adapter.abslistview.ViewHolder;
@@ -52,7 +51,7 @@ public class SSServerAdapter extends CommonAdapter<SSServer> {
         imgViewSpeedText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                goSpeedTest(server, pos);
+                goToSpeedTest(server, pos);
             }
         });
         if (server.isSystemProxy()) {
@@ -72,7 +71,7 @@ public class SSServerAdapter extends CommonAdapter<SSServer> {
     }
 
 
-    private void goSpeedTest(SSServer server, int pos) {
+    private void goToSpeedTest(SSServer server, int pos) {
         Intent intent = new Intent();
         if (server != null) {
             intent.putExtra("ssServer", server);

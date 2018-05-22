@@ -18,10 +18,9 @@ import java.util.List;
  * Created by lzw on 17-9-25.
  */
 
-public class TestSpeetTest {
+public class TestTotalSpeedTestResult {
 
     private static List<SpeedTestResult> mockResult;
-    private static List<Server> mockServer = new ArrayList<>();
 
     @BeforeClass
     public static void beforeClass() {
@@ -42,20 +41,20 @@ public class TestSpeetTest {
         mockResult.add(whiteLisAddrForTest);
     }
 
-//    @Test
-//    public void testSpeedTestCount() {
-//        Handler handlerMock = new Handler();
-//        SpeedTest test = new SpeedTest(mockServer,handlerMock);
-//        TotalSpeedTestResult result = new TotalSpeedTestResult();
-//        test(result, mockResult);
-//        Assert.assertEquals(2, result.getWhiteAddrServerCount());
-//        Assert.assertEquals(0.5f, result.getWhiteAddrConnectSuccesRate(), 0.002f);
-//        Assert.assertEquals(1, result.getBlackAddrServerCount());
-//        Assert.assertEquals(1.0f, result.getBlackAddrServerCount(), 0.002f);
-//        Assert.assertEquals(10.0f, result.getSpeedWhiteAddrDownLoadAvg(), 0.002f);
-//        Assert.assertEquals(30.0f, result.getSpeedBlackAddrDownLoadAvg(), 0.002f);
-//        Assert.assertEquals(3, result.getTotalServerSize());
-//    }
+    @Test
+    public void testStatResult() {
+        TotalSpeedTestResult resultTotal = new TotalSpeedTestResult();
+        for (SpeedTestResult result : mockResult) {
+            resultTotal.addResult2List(result);
+        }
+        Assert.assertEquals(3, resultTotal.getCurServerCount());
+        Assert.assertEquals(1, resultTotal.getBlackAddrServerCount());
+        Assert.assertEquals(2, resultTotal.getWhiteAddrServerCount());
+        Assert.assertEquals(1.0f, resultTotal.getBlackAddrConnectSuccesRate(), 0.002f);
+        Assert.assertEquals(0.5f, resultTotal.getWhiteAddrConnectSuccesRate(), 0.002f);
+        Assert.assertEquals(10.0f, resultTotal.getSpeedWhiteAddrDownLoadAvg(), 0.002f);
+        Assert.assertEquals(30.0f, resultTotal.getSpeedBlackAddrDownLoadAvg(), 0.002f);
+    }
 
 
 }
