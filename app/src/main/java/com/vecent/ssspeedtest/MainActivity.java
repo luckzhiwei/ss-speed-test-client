@@ -38,13 +38,14 @@ import com.vecent.ssspeedtest.service.SpeedTestService;
 import com.vecent.ssspeedtest.util.Constant;
 import com.vecent.ssspeedtest.util.LogUtil;
 import com.vecent.ssspeedtest.view.EditSSServerSettingDialog;
+import com.vecent.ssspeedtest.view.MoveWithFingerImageView;
 
 
 public class MainActivity extends AppCompatActivity {
 
     private ListView contentListView;
     private Handler mHandler;
-    private ImageView addServerImg;
+    private MoveWithFingerImageView addServerImg;
     private SSServerAdapter adapter;
     private DrawerLayout mDrawerLayout;
     private SSServers mSServers;
@@ -197,7 +198,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void initView() {
-        this.addServerImg = (ImageView) this.findViewById(R.id.add_ss_server_img);
+        this.addServerImg = (MoveWithFingerImageView) this.findViewById(R.id.add_ss_server_img);
         this.addServerImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

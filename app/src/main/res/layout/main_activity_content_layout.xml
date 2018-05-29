@@ -8,7 +8,7 @@
     <include layout="@layout/listview_common" />
 
 
-    <ImageView
+    <com.vecent.ssspeedtest.view.MoveWithFingerImageView
         android:id="@+id/add_ss_server_img"
         android:layout_width="64dp"
         android:layout_height="64dp"
