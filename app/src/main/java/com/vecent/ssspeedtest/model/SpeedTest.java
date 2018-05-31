@@ -7,15 +7,12 @@ import com.vecent.ssspeedtest.model.bean.SpeedTestResult;
 import com.vecent.ssspeedtest.model.net.INet;
 import com.vecent.ssspeedtest.util.LogUtil;
 
-import java.io.IOException;
-import java.net.Socket;
 import java.util.List;
 import java.util.concurrent.RejectedExecutionException;
 
 /**
  * Created by zhiwei on 2017/9/4.
  */
-//todo unit test
 public class SpeedTest {
 
     private List<Server> mServers2Test;
