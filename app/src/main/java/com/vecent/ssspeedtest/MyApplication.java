@@ -8,7 +8,10 @@ import com.vecent.ssspeedtest.dao.SSServer;
 import com.vecent.ssspeedtest.greendao.DaoSession;
 import com.vecent.ssspeedtest.model.privoxy.PrivoxySetting;
 import com.vecent.ssspeedtest.util.Constant;
+import com.vecent.ssspeedtest.util.LogUtil;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import java.util.List;
 
 /**
@@ -24,6 +27,7 @@ public class MyApplication extends Application {
         super.onCreate();
         initPrivoxySetting();
         initSSList();
+        initExceptionHandler();
     }
 
 
@@ -45,6 +49,29 @@ public class MyApplication extends Application {
             server.setMethod(Constant.SYSTEM_PROXY);
             server.setPassword(Constant.SYSTEM_PROXY);
             daoSession.getSSServerDao().insert(server);
+        }
+    }
+
+    private void initExceptionHandler() {
+        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
+    }
+
+    private class ExceptionHandler implements Thread.UncaughtExceptionHandler {
+
+        @Override
+        public void uncaughtException(Thread thread, Throwable throwable) {
+            recordException(throwable);
+            android.os.Process.killProcess(android.os.Process.myPid());
+            System.exit(-1);
+        }
+
+        private void recordException(Throwable ex) {
+            if (ex == null) return;
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            PrintStream printStream = new PrintStream(baos);
+            ex.printStackTrace(printStream);
+            byte content[] = baos.toByteArray();
+            LogUtil.logError(getClass().getName(), new String(content));
         }
     }
 
