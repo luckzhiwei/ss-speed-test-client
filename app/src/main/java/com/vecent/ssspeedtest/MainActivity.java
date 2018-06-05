@@ -14,7 +14,6 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -30,15 +29,16 @@ import com.vecent.ssspeedtest.aidl.ITestFinishListener;
 import com.vecent.ssspeedtest.controller.ShowWebPageActivity;
 import com.vecent.ssspeedtest.controller.AppConigActivity;
 import com.vecent.ssspeedtest.controller.SpeedTestActivity;
-import com.vecent.ssspeedtest.dao.DaoManager;
 import com.vecent.ssspeedtest.dao.SSServer;
-import com.vecent.ssspeedtest.greendao.DaoSession;
 import com.vecent.ssspeedtest.model.SSServers;
 import com.vecent.ssspeedtest.service.SpeedTestService;
 import com.vecent.ssspeedtest.util.Constant;
 import com.vecent.ssspeedtest.util.LogUtil;
 import com.vecent.ssspeedtest.view.EditSSServerSettingDialog;
 import com.vecent.ssspeedtest.view.MoveWithFingerImageView;
+
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 
 
 public class MainActivity extends AppCompatActivity {
