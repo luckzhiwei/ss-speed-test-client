@@ -6,6 +6,7 @@ import com.vecent.ssspeedtest.model.SpeedTest;
 import com.vecent.ssspeedtest.model.bean.Server;
 import com.vecent.ssspeedtest.model.bean.SpeedTestResult;
 import com.vecent.ssspeedtest.model.bean.TotalSpeedTestResult;
+import com.vecent.ssspeedtest.model.evaluter.Evaluter4Score;
 
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -48,7 +49,7 @@ public class TestTotalSpeedTestResult {
 
     @Test
     public void testStatResult() {
-        TotalSpeedTestResult resultTotal = new TotalSpeedTestResult();
+        TotalSpeedTestResult resultTotal = new TotalSpeedTestResult(new Evaluter4Score());
         Assert.assertEquals(0, resultTotal.getSpeedWhiteAddrDownLoadAvg(), 0.002);
         Assert.assertEquals(0, resultTotal.getWhiteAddrConnectSuccesRate(), 0.002);
         Assert.assertEquals(0, resultTotal.getBlackAddrConnectSuccesRate(), 0.002f);

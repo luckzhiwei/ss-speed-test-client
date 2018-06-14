@@ -11,6 +11,7 @@ import com.vecent.ssspeedtest.aidl.ITestFinishListener;
 import com.vecent.ssspeedtest.dao.DaoManager;
 import com.vecent.ssspeedtest.dao.SSServer;
 import com.vecent.ssspeedtest.greendao.DaoSession;
+import com.vecent.ssspeedtest.model.evaluter.Evaluter4Score;
 import com.vecent.ssspeedtest.model.guradprocess.PrivoxyGuradProcess;
 import com.vecent.ssspeedtest.model.guradprocess.SSProxyGuradProcess;
 import com.vecent.ssspeedtest.model.SpeedTest;
@@ -101,7 +102,7 @@ public class GuradSpeedTester extends Thread {
                 @Override
                 public void run() {
                     grade = 0;
-                    final TotalSpeedTestResult curResult = new TotalSpeedTestResult();
+                    final TotalSpeedTestResult curResult = new TotalSpeedTestResult(new Evaluter4Score());
                     final SSServer proxySSServer = mIterator.next();
                     final SSProxyGuradProcess proxyGuradProcess = new SSProxyGuradProcess(proxySSServer, mContext, Constant.SOCKS_SERVER_LOCAL_PORT_BACK);
                     if (!proxySSServer.isSystemProxy()) {

@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.vecent.ssspeedtest.model.SpeedTest;
+import com.vecent.ssspeedtest.model.evaluter.Evaluter;
 
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;
@@ -56,9 +57,14 @@ public class TotalSpeedTestResult implements Parcelable {
 
     private List<SpeedTestResult> mResults;
 
+    private int mResultScore = 0;
 
-    public TotalSpeedTestResult() {
+    private Evaluter mEvaluter;
+
+
+    public TotalSpeedTestResult(Evaluter evaluter) {
         this.mResults = new ArrayList<>();
+        this.mEvaluter = evaluter;
     }
 
     protected TotalSpeedTestResult(Parcel in) {
@@ -165,6 +171,9 @@ public class TotalSpeedTestResult implements Parcelable {
         return blackAddrServerCount;
     }
 
+    public int getResultScore() {
+        return mResultScore;
+    }
 
     public float getWhiteAddrConnectSuccesRate() {
         if (whiteAddrServerCount == 0 || whiteAddrServerConnectedCount == 0)
@@ -212,6 +221,8 @@ public class TotalSpeedTestResult implements Parcelable {
                 speedBlackAddrSum += newResult.getDownLoadSpeed();
             }
         }
+        this.mResultScore += mEvaluter.evaluate(mResults.get(mResults.size() - 1),
+                this.getSpeedWhiteAddrDownLoadAvg(), this.getSpeedBlackAddrDownLoadAvg());
     }
 
     public Long getId() {
