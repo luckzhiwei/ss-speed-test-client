@@ -1,5 +1,5 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
-
+//插件的依赖
 buildscript {
     repositories {
         google()
@@ -13,9 +13,11 @@ buildscript {
     }
 }
 
+//run整个项目所需要的依赖
 allprojects {
     repositories {
         jcenter()
+        google()
     }
 }
 
