@@ -1,6 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'org.greenrobot.greendao'
-import org.gradle.internal.os.OperatingSystem;
+import org.gradle.internal.os.OperatingSystem
 
 android {
     compileSdkVersion 27
@@ -40,7 +40,6 @@ android {
         }
     }
 
-
     tasks.withType(JavaCompile) {
         compileTask -> compileTask.dependsOn ndkBuild
     }
@@ -72,11 +71,9 @@ dependencies {
 }
 
 greendao {
-
     schemaVersion 1
 
     daoPackage 'com.vecent.ssspeedtest.greendao'
 
     targetGenDir 'src/main/java'//设置DaoMaster、DaoSession、Dao目录
-
 }

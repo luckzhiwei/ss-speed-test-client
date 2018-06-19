@@ -57,6 +57,7 @@ public class TestTotalSpeedTestResult {
         Assert.assertEquals(0, resultTotal.getWhiteAddrServerCount());
         Assert.assertEquals(0, resultTotal.getBlackAddrServerCount());
         Assert.assertEquals(0, resultTotal.getCurServerCount());
+        Assert.assertEquals(0, resultTotal.getResultScore());
         resultTotal.addResult2List(mockResult.get(0));
         Assert.assertEquals(0, resultTotal.getSpeedWhiteAddrDownLoadAvg(), 0.002);
         Assert.assertEquals(0, resultTotal.getWhiteAddrConnectSuccesRate(), 0.002);
@@ -65,6 +66,7 @@ public class TestTotalSpeedTestResult {
         Assert.assertEquals(1, resultTotal.getWhiteAddrServerCount());
         Assert.assertEquals(0, resultTotal.getBlackAddrServerCount());
         Assert.assertEquals(1, resultTotal.getCurServerCount());
+        Assert.assertEquals(0, resultTotal.getResultScore());
         resultTotal.addResult2List(mockResult.get(1));
         Assert.assertEquals(10.0f, resultTotal.getSpeedWhiteAddrDownLoadAvg(), 0.002);
         Assert.assertEquals(0.5, resultTotal.getWhiteAddrConnectSuccesRate(), 0.002);
@@ -73,6 +75,7 @@ public class TestTotalSpeedTestResult {
         Assert.assertEquals(2, resultTotal.getWhiteAddrServerCount());
         Assert.assertEquals(0, resultTotal.getBlackAddrServerCount());
         Assert.assertEquals(2, resultTotal.getCurServerCount());
+        Assert.assertEquals(1, resultTotal.getResultScore());
         resultTotal.addResult2List(mockResult.get(2));
         Assert.assertEquals(10.0f, resultTotal.getSpeedWhiteAddrDownLoadAvg(), 0.002);
         Assert.assertEquals(0.33333334, resultTotal.getWhiteAddrConnectSuccesRate(), 0.002);
@@ -81,6 +84,7 @@ public class TestTotalSpeedTestResult {
         Assert.assertEquals(3, resultTotal.getWhiteAddrServerCount());
         Assert.assertEquals(0, resultTotal.getBlackAddrServerCount());
         Assert.assertEquals(3, resultTotal.getCurServerCount());
+        Assert.assertEquals(1, resultTotal.getResultScore());
         resultTotal.addResult2List(mockResult.get(3));
         Assert.assertEquals(10.0f, resultTotal.getSpeedWhiteAddrDownLoadAvg(), 0.002);
         Assert.assertEquals(0.33333334, resultTotal.getWhiteAddrConnectSuccesRate(), 0.002);
@@ -89,7 +93,7 @@ public class TestTotalSpeedTestResult {
         Assert.assertEquals(3, resultTotal.getWhiteAddrServerCount());
         Assert.assertEquals(1, resultTotal.getBlackAddrServerCount());
         Assert.assertEquals(4, resultTotal.getCurServerCount());
-
+        Assert.assertEquals(2, resultTotal.getResultScore());
     }
 
 

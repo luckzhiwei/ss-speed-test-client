@@ -52,8 +52,6 @@ public class GuradSpeedTester extends Thread {
 
     private boolean isRunning;
 
-    private int grade = 0;
-
     private boolean allowRunning;
 
     private boolean onlyInWifiRunning;
@@ -101,7 +99,6 @@ public class GuradSpeedTester extends Thread {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    grade = 0;
                     final TotalSpeedTestResult curResult = new TotalSpeedTestResult(new Evaluter4Score());
                     final SSServer proxySSServer = mIterator.next();
                     final SSProxyGuradProcess proxyGuradProcess = new SSProxyGuradProcess(proxySSServer, mContext, Constant.SOCKS_SERVER_LOCAL_PORT_BACK);
@@ -121,7 +118,7 @@ public class GuradSpeedTester extends Thread {
                             }
                             try {
                                 if (mTestFinishListener != null) {
-                                    grade = ((100 * grade) / totalReqSize);
+                                    int grade = ((100 * curResult.getResultScore()) / totalReqSize);
                                     proxySSServer.setGrade(grade);
                                     updateDB(proxySSServer);
                                     mTestFinishListener.onOneItemFinish(proxySSServer.getId(), grade);
@@ -135,8 +132,6 @@ public class GuradSpeedTester extends Thread {
                         @Override
                         public void onOneRequestFinishListener(SpeedTestResult result) {
                             curResult.addResult2List(result);
-                            if (!result.isExceptionOccured())
-                                grade++;
                         }
                     });
                     if (proxySSServer.isSystemProxy()) {
