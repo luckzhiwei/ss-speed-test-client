@@ -4,7 +4,7 @@ import com.vecent.ssspeedtest.model.bean.SpeedTestResult;
 
 public class Evaluter4Score implements Evaluter {
     @Override
-    public int evaluate(SpeedTestResult oneResult, float whiteSpeedDownLoadAvg, float blackSpeedDownLoadAvg) {
+    public float evaluate(SpeedTestResult oneResult, float whiteSpeedDownLoadAvg, float blackSpeedDownLoadAvg) {
         return oneResult.isExceptionOccured() ? 0 : 1;
     }
 }

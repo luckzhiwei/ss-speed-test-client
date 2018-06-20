@@ -14,7 +14,7 @@ public class Evaluter4ScoreTest {
         Evaluter4Score evaluter4Score = new Evaluter4Score();
         SpeedTestResult mockResult = new SpeedTestResult();
         mockResult.setExceptionOccured(false);
-        Assert.assertEquals(1, evaluter4Score.evaluate(mockResult, 0.0f, 0.0f));
+        Assert.assertEquals(1, evaluter4Score.evaluate(mockResult, 0.0f, 0.0f), 0.002f);
     }
 
     @Test
@@ -22,6 +22,6 @@ public class Evaluter4ScoreTest {
         Evaluter4Score evaluter4Score = new Evaluter4Score();
         SpeedTestResult mockResult = new SpeedTestResult();
         mockResult.setExceptionOccured(true);
-        Assert.assertEquals(0, evaluter4Score.evaluate(mockResult, 0.0f, 0.0f));
+        Assert.assertEquals(0, evaluter4Score.evaluate(mockResult, 0.0f, 0.0f), 0.002f);
     }
 }

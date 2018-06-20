@@ -57,7 +57,7 @@ public class TotalSpeedTestResult implements Parcelable {
 
     private List<SpeedTestResult> mResults;
 
-    private int mResultScore = 0;
+    private float mResultScore = 0;
 
     private Evaluter mEvaluter;
 
@@ -172,7 +172,7 @@ public class TotalSpeedTestResult implements Parcelable {
     }
 
     public int getResultScore() {
-        return mResultScore;
+        return (int) mResultScore;
     }
 
     public float getWhiteAddrConnectSuccesRate() {
