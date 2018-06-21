@@ -17,6 +17,7 @@ import com.vecent.ssspeedtest.adpater.SpeedTestAdapter;
 import com.vecent.ssspeedtest.dao.DaoManager;
 import com.vecent.ssspeedtest.dao.SSServer;
 import com.vecent.ssspeedtest.greendao.DaoSession;
+import com.vecent.ssspeedtest.model.evaluter.Evaluter4Score;
 import com.vecent.ssspeedtest.model.guradprocess.PrivoxyGuradProcess;
 import com.vecent.ssspeedtest.model.guradprocess.SSProxyGuradProcess;
 import com.vecent.ssspeedtest.model.net.INetImplDefault;
@@ -48,7 +49,7 @@ public class SpeedTestActivity extends AppCompatActivity {
     private SSServer mProxyServer;
     private SSProxyGuradProcess mSSProxyProcess;
     private PrivoxyGuradProcess mPrivoxyProcess;
-    private int score;
+    //    private int score;
     private boolean isTestFinished = false;
 
     public static final int TEST_FINISHED = 1;
@@ -57,7 +58,7 @@ public class SpeedTestActivity extends AppCompatActivity {
         @Override
         public void onAllRequestFinishListener(float timeUsed, int totalReqSize) {
             setResultView(timeUsed);
-            mProxyServer.setScore(score);
+            mProxyServer.setScore(mResult.getResultScore());
             if (!mProxyServer.isSystemProxy())
                 mSSProxyProcess.destory();
             if (mPrivoxyProcess != null)
@@ -67,9 +68,6 @@ public class SpeedTestActivity extends AppCompatActivity {
 
         @Override
         public void onOneRequestFinishListener(SpeedTestResult result) {
-            if (!result.isExceptionOccured()) {
-                score++;
-            }
             mResult.addResult2List(result);
             updateView();
         }
@@ -112,7 +110,6 @@ public class SpeedTestActivity extends AppCompatActivity {
         this.mResult = hodler.mSaveResult;
         this.totalSize = hodler.mSavedTotalSize;
         this.mProxyServer = hodler.mSavedProxyServer;
-        this.score = hodler.score;
         this.mContentListView.setAdapter(this.mAdapter);
         this.mSpeedTest.setRequestCallBack(callBack);
         this.updateView();
@@ -155,8 +152,7 @@ public class SpeedTestActivity extends AppCompatActivity {
     }
 
     private void initModel() {
-        mResult = new TotalSpeedTestResult();
-        score = 0;
+        mResult = new TotalSpeedTestResult(new Evaluter4Score());
         this.mAdapter = new SpeedTestAdapter(getApplicationContext(),
                 R.layout.speed_test_item_layout, mResult.getResultList());
         this.mContentListView.setAdapter(this.mAdapter);
@@ -211,7 +207,7 @@ public class SpeedTestActivity extends AppCompatActivity {
 
     private void updateView() {
         mAdapter.notifyDataSetChanged();
-        scoreContent.setText(score + "");
+        scoreContent.setText(mResult.getResultScore() + "");
         mProgressBar.setProgress((int) (100.0f * mResult.getCurServerCount() / totalSize));
         setResultView((System.currentTimeMillis() - mSpeedTest.getTimeStart()) / 1000.0f);
     }
@@ -229,7 +225,7 @@ public class SpeedTestActivity extends AppCompatActivity {
                 mSSProxyProcess.destory();
             if (mPrivoxyProcess != null)
                 mPrivoxyProcess.destory();
-            this.mProxyServer.setScore(score);
+            this.mProxyServer.setScore(mResult.getResultScore());
         }
         Intent dataBack = new Intent();
         dataBack.putExtra("pos", getIntent().getIntExtra("pos", -1));
@@ -256,7 +252,6 @@ public class SpeedTestActivity extends AppCompatActivity {
         holder.mSaveHandler = mHandler;
         holder.mSavedSSGuradProcess = mSSProxyProcess;
         holder.mSavedProxyServer = mProxyServer;
-        holder.score = score;
         return holder;
     }
 

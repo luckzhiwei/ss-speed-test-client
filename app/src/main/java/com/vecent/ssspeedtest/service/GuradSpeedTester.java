@@ -6,11 +6,14 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.RemoteException;
+import android.util.Log;
 
 import com.vecent.ssspeedtest.aidl.ITestFinishListener;
 import com.vecent.ssspeedtest.dao.DaoManager;
 import com.vecent.ssspeedtest.dao.SSServer;
 import com.vecent.ssspeedtest.greendao.DaoSession;
+import com.vecent.ssspeedtest.model.evaluter.Evaluter4Grade;
+import com.vecent.ssspeedtest.model.evaluter.Evaluter4Score;
 import com.vecent.ssspeedtest.model.guradprocess.PrivoxyGuradProcess;
 import com.vecent.ssspeedtest.model.guradprocess.SSProxyGuradProcess;
 import com.vecent.ssspeedtest.model.SpeedTest;
@@ -50,8 +53,6 @@ public class GuradSpeedTester extends Thread {
     private PrivoxyGuradProcess mPrivoxyGuradProcess;
 
     private boolean isRunning;
-
-    private int grade = 0;
 
     private boolean allowRunning;
 
@@ -100,8 +101,7 @@ public class GuradSpeedTester extends Thread {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    grade = 0;
-                    final TotalSpeedTestResult curResult = new TotalSpeedTestResult();
+                    final TotalSpeedTestResult curResult = new TotalSpeedTestResult(new Evaluter4Grade());
                     final SSServer proxySSServer = mIterator.next();
                     final SSProxyGuradProcess proxyGuradProcess = new SSProxyGuradProcess(proxySSServer, mContext, Constant.SOCKS_SERVER_LOCAL_PORT_BACK);
                     if (!proxySSServer.isSystemProxy()) {
@@ -120,7 +120,7 @@ public class GuradSpeedTester extends Thread {
                             }
                             try {
                                 if (mTestFinishListener != null) {
-                                    grade = ((100 * grade) / totalReqSize);
+                                    int grade = (int) (100 * (curResult.getResultScore() * 1.0f / (2 * totalReqSize)));
                                     proxySSServer.setGrade(grade);
                                     updateDB(proxySSServer);
                                     mTestFinishListener.onOneItemFinish(proxySSServer.getId(), grade);
@@ -134,8 +134,6 @@ public class GuradSpeedTester extends Thread {
                         @Override
                         public void onOneRequestFinishListener(SpeedTestResult result) {
                             curResult.addResult2List(result);
-                            if (!result.isExceptionOccured())
-                                grade++;
                         }
                     });
                     if (proxySSServer.isSystemProxy()) {
@@ -146,7 +144,6 @@ public class GuradSpeedTester extends Thread {
                         } else {
                             speedTest.startTest(new INetImplWithSSProxy(Constant.SOCKS_SERVER_LOCAL_PORT_BACK));
                         }
-
                     }
                 }
             }).start();

@@ -19,6 +19,8 @@ public class SpeedTestResult {
     private String redirectServer;
     private boolean isExceptionOccured = false;
     private boolean isWhiteAddr;
+    private boolean is2ManyTimeRelocation = false;
+    private float downLoadSpeed;
 
     public long getStartTime() {
         return startTime;
@@ -55,8 +57,6 @@ public class SpeedTestResult {
         this.is2ManyTimeRelocation = is2ManyTimeRelocation;
     }
 
-    private boolean is2ManyTimeRelocation = false;
-    private float downLoadSpeed;
 
     public float getDownLoadSpeed() {
         return downLoadSpeed;

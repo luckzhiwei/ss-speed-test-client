@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.vecent.ssspeedtest.model.SpeedTest;
+import com.vecent.ssspeedtest.model.evaluter.Evaluter;
 
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;
@@ -19,52 +20,51 @@ import org.greenrobot.greendao.annotation.Generated;
 /**
  * Created by lzw on 17-10-1.
  */
-@Entity
 public class TotalSpeedTestResult implements Parcelable {
 
 
-    @Id(autoincrement = true)
     private Long id;
 
-    @Property(nameInDb = "totalTimeUsed")
     private float totalTimeUsed;
 
-    @Property(nameInDb = "whiteAddrServerCount")
     private int whiteAddrServerCount;
 
-    @Property(nameInDb = "blackAddrServerCount")
     private int blackAddrServerCount;
 
-    @Property(nameInDb = "whiteAddrConnectSuccesRate")
+    private int whiteAddrServerConnectedCount;
+
+    private int blackAddrServerConnectedCount;
+
     private float whiteAddrConnectSuccesRate;
 
-    @Property(nameInDb = "blackAddrConnectSuccesRate")
     private float blackAddrConnectSuccesRate;
 
-    @Transient
     private int curServerCount;
 
-    @Property(nameInDb = "totalServerSize")
     private int totalServerSize;
 
-    @Property(nameInDb = "totalByteSize")
     private int totalByteSize = 0;
 
-    @Property(nameInDb = "speedWhiteAddrDownLoadAvg")
+    private float speedWhiteAddrSum;
+
+    private float speedBlackAddrSum;
+
     private float speedWhiteAddrDownLoadAvg = 0;
 
-    @Property(nameInDb = "speedBlackAddrDownLoadAvg")
     private float speedBlackAddrDownLoadAvg = 0;
 
-    @Property(nameInDb = "server2TestAddr")
     private String server2TestAddr;
 
-    @Transient
     private List<SpeedTestResult> mResults;
 
+    private float mResultScore = 0;
 
-    public TotalSpeedTestResult() {
+    private Evaluter mEvaluter;
+
+
+    public TotalSpeedTestResult(Evaluter evaluter) {
         this.mResults = new ArrayList<>();
+        this.mEvaluter = evaluter;
     }
 
     protected TotalSpeedTestResult(Parcel in) {
@@ -79,24 +79,6 @@ public class TotalSpeedTestResult implements Parcelable {
         speedWhiteAddrDownLoadAvg = in.readFloat();
         speedBlackAddrDownLoadAvg = in.readFloat();
         server2TestAddr = in.readString();
-    }
-
-    @Generated(hash = 552862759)
-    public TotalSpeedTestResult(Long id, float totalTimeUsed, int whiteAddrServerCount,
-                                int blackAddrServerCount, float whiteAddrConnectSuccesRate,
-                                float blackAddrConnectSuccesRate, int totalServerSize, int totalByteSize,
-                                float speedWhiteAddrDownLoadAvg, float speedBlackAddrDownLoadAvg, String server2TestAddr) {
-        this.id = id;
-        this.totalTimeUsed = totalTimeUsed;
-        this.whiteAddrServerCount = whiteAddrServerCount;
-        this.blackAddrServerCount = blackAddrServerCount;
-        this.whiteAddrConnectSuccesRate = whiteAddrConnectSuccesRate;
-        this.blackAddrConnectSuccesRate = blackAddrConnectSuccesRate;
-        this.totalServerSize = totalServerSize;
-        this.totalByteSize = totalByteSize;
-        this.speedWhiteAddrDownLoadAvg = speedWhiteAddrDownLoadAvg;
-        this.speedBlackAddrDownLoadAvg = speedBlackAddrDownLoadAvg;
-        this.server2TestAddr = server2TestAddr;
     }
 
 
@@ -133,20 +115,21 @@ public class TotalSpeedTestResult implements Parcelable {
     };
 
     public float getSpeedBlackAddrDownLoadAvg() {
-        return speedBlackAddrDownLoadAvg;
-    }
-
-    public void setSpeedBlackAddrDownLoadAvg(float speedBlackAddrDownLoadAvg) {
-        this.speedBlackAddrDownLoadAvg = speedBlackAddrDownLoadAvg;
+        if (blackAddrServerCount == 0 || blackAddrServerConnectedCount == 0)
+            this.speedBlackAddrDownLoadAvg = 0;
+        else
+            this.speedBlackAddrDownLoadAvg = (1.0f * speedBlackAddrSum / blackAddrServerConnectedCount);
+        return this.speedBlackAddrDownLoadAvg;
     }
 
     public float getSpeedWhiteAddrDownLoadAvg() {
-        return speedWhiteAddrDownLoadAvg;
+        if (whiteAddrServerCount == 0 || whiteAddrServerConnectedCount == 0)
+            this.speedWhiteAddrDownLoadAvg = 0;
+        else
+            this.speedWhiteAddrDownLoadAvg = (1.0f * speedWhiteAddrSum / whiteAddrServerConnectedCount);
+        return this.speedWhiteAddrDownLoadAvg;
     }
 
-    public void setSpeedWhiteAddrDownLoadAvg(float speedWhiteAddrDownLoadAvg) {
-        this.speedWhiteAddrDownLoadAvg = speedWhiteAddrDownLoadAvg;
-    }
 
     public int getCurServerCount() {
         return curServerCount;
@@ -184,33 +167,32 @@ public class TotalSpeedTestResult implements Parcelable {
         return whiteAddrServerCount;
     }
 
-    public void setWhiteAddrServerCount(int whiteAddrServerCount) {
-        this.whiteAddrServerCount = whiteAddrServerCount;
-    }
-
     public int getBlackAddrServerCount() {
         return blackAddrServerCount;
     }
 
-    public void setBlackAddrServerCount(int blackAddrServerCount) {
-        this.blackAddrServerCount = blackAddrServerCount;
+    public int getResultScore() {
+        return (int) mResultScore;
     }
 
     public float getWhiteAddrConnectSuccesRate() {
-        return whiteAddrConnectSuccesRate;
+        if (whiteAddrServerCount == 0 || whiteAddrServerConnectedCount == 0)
+            this.whiteAddrConnectSuccesRate = 0;
+        else
+            this.whiteAddrConnectSuccesRate = (1.0f * whiteAddrServerConnectedCount / whiteAddrServerCount);
+
+        return this.whiteAddrConnectSuccesRate;
     }
 
-    public void setWhiteAddrConnectSuccesRate(float whiteAddrConnectSuccesRate) {
-        this.whiteAddrConnectSuccesRate = whiteAddrConnectSuccesRate;
-    }
 
     public float getBlackAddrConnectSuccesRate() {
-        return blackAddrConnectSuccesRate;
+        if (blackAddrServerCount == 0 || blackAddrServerConnectedCount == 0)
+            this.blackAddrConnectSuccesRate = 0;
+        else
+            this.blackAddrConnectSuccesRate = (1.0f * blackAddrServerConnectedCount / blackAddrServerCount);
+        return this.blackAddrConnectSuccesRate;
     }
 
-    public void setBlackAddrConnectSuccesRate(float blackAddrConnectSuccesRate) {
-        this.blackAddrConnectSuccesRate = blackAddrConnectSuccesRate;
-    }
 
     public void addResult2List(SpeedTestResult result) {
         this.mResults.add(result);
@@ -223,58 +205,29 @@ public class TotalSpeedTestResult implements Parcelable {
 
 
     private void statResult() {
-        int whiteAddrSize = 0, connectWhiteAddrSize = 0,
-                blackAddrSize = 0, connectBlackAddrSize = 0,
-                whiteAddrSpeedAvgSum = 0, blackAddrSpeedAvgSum = 0;
-        for (SpeedTestResult oneRet : this.mResults) {
-            if (oneRet.isWhiteAddr()) {
-                whiteAddrSize++;
-                if (!oneRet.isExceptionOccured()) {
-                    connectWhiteAddrSize++;
-                    whiteAddrSpeedAvgSum += oneRet.getDownLoadSpeed();
+        curServerCount++;
+        SpeedTestResult newResult = mResults.get(mResults.size() - 1);
+        if (newResult.isWhiteAddr()) {
+            whiteAddrServerCount++;
+            if (!newResult.isExceptionOccured()) {
+                whiteAddrServerConnectedCount++;
+                speedWhiteAddrSum += newResult.getDownLoadSpeed();
+            }
 
-                }
-            } else {
-                blackAddrSize++;
-                if (!oneRet.isExceptionOccured()) {
-                    connectBlackAddrSize++;
-                    blackAddrSpeedAvgSum += oneRet.getDownLoadSpeed();
-                }
-            }
-        }
-        if (whiteAddrSize == 0) {
-            this.setWhiteAddrServerCount(0);
-            this.setWhiteAddrConnectSuccesRate(0);
-            this.setSpeedWhiteAddrDownLoadAvg(0.0f);
         } else {
-            this.setWhiteAddrServerCount(whiteAddrSize);
-            this.setWhiteAddrConnectSuccesRate(1.0f * connectWhiteAddrSize / whiteAddrSize);
-            if (connectWhiteAddrSize == 0) {
-                this.setSpeedWhiteAddrDownLoadAvg(0.0f);
-            } else {
-                this.setSpeedWhiteAddrDownLoadAvg(whiteAddrSpeedAvgSum * 1.0f / connectWhiteAddrSize);
+            blackAddrServerCount++;
+            if (!newResult.isExceptionOccured()) {
+                blackAddrServerConnectedCount++;
+                speedBlackAddrSum += newResult.getDownLoadSpeed();
             }
         }
-        if (blackAddrSize == 0) {
-            this.setBlackAddrServerCount(0);
-            this.setBlackAddrConnectSuccesRate(0);
-            this.setSpeedBlackAddrDownLoadAvg(0.0f);
-        } else {
-            this.setBlackAddrServerCount(blackAddrSize);
-            this.setBlackAddrConnectSuccesRate(1.0f * connectBlackAddrSize / blackAddrSize);
-            if (connectBlackAddrSize == 0) {
-                this.setSpeedBlackAddrDownLoadAvg(0);
-            } else {
-                this.setSpeedBlackAddrDownLoadAvg(1.0f * blackAddrSpeedAvgSum / connectBlackAddrSize);
-            }
-        }
-        this.setCurServerCount(whiteAddrSize + blackAddrSize);
+        this.mResultScore += mEvaluter.evaluate(mResults.get(mResults.size() - 1),
+                this.getSpeedWhiteAddrDownLoadAvg(), this.getSpeedBlackAddrDownLoadAvg());
     }
 
     public Long getId() {
         return this.id;
     }
-
 
     public void setId(Long id) {
         this.id = id;
