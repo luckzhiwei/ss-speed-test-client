@@ -144,7 +144,6 @@ public class GuradSpeedTester extends Thread {
                         } else {
                             speedTest.startTest(new INetImplWithSSProxy(Constant.SOCKS_SERVER_LOCAL_PORT_BACK));
                         }
-
                     }
                 }
             }).start();
