@@ -28,6 +28,7 @@ public class INetImplDefault implements INet {
     public static final String TOO_MANY_TIMES_TO_REDIRECT = "too many times to redriect";
 
 
+    @Override
     public SpeedTestResult getHttpTestResult(Server server) {
         SpeedTestResult result = new SpeedTestResult();
         result.setRequestServer(server.getWeb());

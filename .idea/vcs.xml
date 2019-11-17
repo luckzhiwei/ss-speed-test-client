@@ -2,5 +2,14 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/jni/libancillary" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/jni/libev" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/jni/libsodium" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/jni/mbedtls" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/jni/pcre" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/jni/shadowsocks-libev" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/jni/shadowsocks-libev/libbloom" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/jni/shadowsocks-libev/libcork" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/jni/shadowsocks-libev/libipset" vcs="Git" />
   </component>
 </project>
