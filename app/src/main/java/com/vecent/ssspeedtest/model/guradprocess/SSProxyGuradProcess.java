@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.vecent.ssspeedtest.dao.SSServer;
 import com.vecent.ssspeedtest.util.Constant;
+import com.vecent.ssspeedtest.util.LogUtil;
 
 import java.util.ArrayList;
 import java.util.List;
