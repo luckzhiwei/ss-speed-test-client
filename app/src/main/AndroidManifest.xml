@@ -30,6 +30,10 @@
         <activity
             android:name=".controller.ShowWebPageActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.CaptureActivityPortrait"
+            android:theme="@style/zxing_CaptureTheme"
+            android:screenOrientation="portrait"/>
 
         <service
             android:name=".service.SpeedTestService"

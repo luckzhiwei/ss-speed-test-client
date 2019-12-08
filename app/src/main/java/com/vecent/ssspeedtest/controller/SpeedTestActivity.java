@@ -54,6 +54,8 @@ public class SpeedTestActivity extends AppCompatActivity {
 
     public static final int TEST_FINISHED = 1;
 
+    public static final int REQUSET_CODE = 0x00020;
+
     private SpeedTest.RequestCallBack callBack = new SpeedTest.RequestCallBack() {
         @Override
         public void onAllRequestFinishListener(float timeUsed, int totalReqSize) {

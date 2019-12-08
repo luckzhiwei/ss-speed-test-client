@@ -14,6 +14,8 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -23,6 +25,8 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 import com.vecent.ssspeedtest.adpater.SSServerAdapter;
 import com.vecent.ssspeedtest.aidl.ISpeedTestInterface;
 import com.vecent.ssspeedtest.aidl.ITestFinishListener;
@@ -33,12 +37,9 @@ import com.vecent.ssspeedtest.dao.SSServer;
 import com.vecent.ssspeedtest.model.SSServers;
 import com.vecent.ssspeedtest.service.SpeedTestService;
 import com.vecent.ssspeedtest.util.Constant;
-import com.vecent.ssspeedtest.util.LogUtil;
+import com.vecent.ssspeedtest.view.CaptureActivityPortrait;
 import com.vecent.ssspeedtest.view.EditSSServerSettingDialog;
 import com.vecent.ssspeedtest.view.MoveWithFingerImageView;
-
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -206,6 +207,8 @@ public class MainActivity extends AppCompatActivity {
                 dialog.setOnDialogChange(mOnDialogChangeListener);
                 dialog.show();
                 dialog.setWindowAttr(getWindowManager());
+                jumpToScanCode();
+
             }
         });
         if (mHandler == null) mHandler = new Handler(Looper.getMainLooper());
@@ -213,6 +216,18 @@ public class MainActivity extends AppCompatActivity {
         initActionBar();
         initMenuLayout();
         initDrawerLayout();
+    }
+
+
+    private void jumpToScanCode() {
+        IntentIntegrator integrator = new IntentIntegrator(this);
+        integrator.setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES);
+        integrator.setPrompt("Scan");
+        integrator.setCameraId(0);
+        integrator.setCaptureActivity(CaptureActivityPortrait.class);
+        integrator.setBeepEnabled(false);
+        integrator.setBarcodeImageEnabled(false);
+        integrator.initiateScan();
     }
 
     private void initListView() {
@@ -293,11 +308,32 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == SpeedTestActivity.TEST_FINISHED) {
-            int pos = data.getIntExtra("pos", -1);
-            SSServer server = data.getParcelableExtra("ssServer");
-            if (pos != -1 && server != null) {
-                mSServers.updateServerScore(pos, server.getScore());
+        if (resultCode == SpeedTestActivity.REQUSET_CODE) {
+            if (resultCode == SpeedTestActivity.TEST_FINISHED) {
+                int pos = data.getIntExtra("pos", -1);
+                SSServer server = data.getParcelableExtra("ssServer");
+                if (pos != -1 && server != null) {
+                    mSServers.updateServerScore(pos, server.getScore());
+                }
+            }
+        } else if (requestCode == IntentIntegrator.REQUEST_CODE) {
+            IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+            if (result != null) {
+                String content = result.getContents();
+                if (content.startsWith("ss://")) {
+                    int start = 5, end = 0;
+                    for (int i = start; i < content.length(); i++) {
+                        if (content.charAt(i) == '#') {
+                            end = i;
+                            break;
+                        }
+                    }
+                    String info = content.substring(start, end);
+                    Log.i(Constant.LOG_TAG, info);
+                    Log.i(Constant.LOG_TAG, "unwrapper " + new String(Base64.decode(info, Base64.DEFAULT)));
+                } else {
+
+                }
             }
         }
     }
