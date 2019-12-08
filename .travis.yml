@@ -28,7 +28,6 @@ cache:
 before_install:
   - cd ./script && docker build -t gfwlist_img . && cd ..
   - ./script/downloadndk.sh
-  - ls -al 
   - export ANDROID_NDK_HOME=$PWD/android-ndk-r16b/
   - export PATH=$ANDROID_NDK_HOME:$PATH
  
