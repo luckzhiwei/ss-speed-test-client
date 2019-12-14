@@ -22,22 +22,31 @@ class ScannerUtil {
             integrator.initiateScan()
         }
 
-        fun parseScannerResult(requestCode: Int, resultCode: Int, data: Intent): SSServer? {
+        fun parseScannerResult(requestCode: Int, resultCode: Int, data: Intent?): SSServer? {
             val result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
-            if (result != null) {
+            result?.let {
                 val content: String? = result.contents
-                if (content != null && content.startsWith("ss://")) {
-                    val start = 5
-                    var end = 0
-                    for (i in start until content.length) {
-                        if (content[i] == '#') {
-                            end = i
-                            break
+                if (content == null) {
+                    LogUtil.logInfo(Constant.LOG_TAG, "contents is null");
+                }
+                val b = content?.startsWith("ss://")
+                when (b) {
+                    true -> {
+                        val start = 5
+                        var end = 0
+                        for (i in start until content.length) {
+                            if (content[i] == '#') {
+                                end = i
+                                break
+                            }
                         }
+                        var info = content.substring(start, end)
+                        info = String(Base64.decode(info, Base64.DEFAULT))
+                        return genSSServer(info)
                     }
-                    var info = content.substring(start, end)
-                    info = String(Base64.decode(info, Base64.DEFAULT))
-                    return genSSServer(info)
+                    else -> {
+                        return null
+                    }
                 }
             }
             return null
@@ -49,7 +58,7 @@ class ScannerUtil {
                 return null
             val ret = SSServer()
             for (i in 0 until arr.size) {
-                val tmp = arr.get(i).split(":")
+                val tmp = arr[i].split(":")
                 if (tmp.size != 2)
                     return null
                 if (i == 0) {
