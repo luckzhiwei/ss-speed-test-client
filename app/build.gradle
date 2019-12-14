@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'org.greenrobot.greendao'
+apply plugin: 'kotlin-android'
 import org.gradle.internal.os.OperatingSystem
 
 android {
@@ -70,6 +71,7 @@ dependencies {
     compile 'io.reactivex:rxjava:1.2.9'
     compile 'com.journeyapps:zxing-android-embedded:3.2.0@aar'
     compile 'com.google.zxing:core:3.2.1'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 }
 
 greendao {

@@ -32,7 +32,6 @@ public class MyApplication extends Application {
     }
 
 
-
     private void initPrivoxySetting() {
         if (Build.VERSION.SDK_INT >= 24) {
             return;

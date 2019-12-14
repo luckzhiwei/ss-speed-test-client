@@ -1,5 +1,6 @@
 package com.vecent.ssspeedtest;
 
+import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
@@ -40,6 +41,7 @@ import com.vecent.ssspeedtest.util.Constant;
 import com.vecent.ssspeedtest.view.CaptureActivityPortrait;
 import com.vecent.ssspeedtest.view.EditSSServerSettingDialog;
 import com.vecent.ssspeedtest.view.MoveWithFingerImageView;
+import com.vecent.ssspeedtest.util.ScannerUtil;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -203,11 +205,12 @@ public class MainActivity extends AppCompatActivity {
         this.addServerImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EditSSServerSettingDialog dialog = new EditSSServerSettingDialog(MainActivity.this, null);
-                dialog.setOnDialogChange(mOnDialogChangeListener);
-                dialog.show();
-                dialog.setWindowAttr(getWindowManager());
-                jumpToScanCode();
+                //jumptoscancode
+                ScannerUtil.Companion.JumpToScanAcivity(MainActivity.this);
+//                EditSSServerSettingDialog dialog = new EditSSServerSettingDialog(MainActivity.this, null);
+//                dialog.setOnDialogChange(mOnDialogChangeListener);
+//                dialog.show();
+//                dialog.setWindowAttr(getWindowManager());
 
             }
         });
@@ -218,17 +221,6 @@ public class MainActivity extends AppCompatActivity {
         initDrawerLayout();
     }
 
-
-    private void jumpToScanCode() {
-        IntentIntegrator integrator = new IntentIntegrator(this);
-        integrator.setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES);
-        integrator.setPrompt("Scan");
-        integrator.setCameraId(0);
-        integrator.setCaptureActivity(CaptureActivityPortrait.class);
-        integrator.setBeepEnabled(false);
-        integrator.setBarcodeImageEnabled(false);
-        integrator.initiateScan();
-    }
 
     private void initListView() {
 
@@ -308,7 +300,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == SpeedTestActivity.REQUSET_CODE) {
+        if (requestCode == SpeedTestActivity.REQUSET_CODE) {
             if (resultCode == SpeedTestActivity.TEST_FINISHED) {
                 int pos = data.getIntExtra("pos", -1);
                 SSServer server = data.getParcelableExtra("ssServer");
@@ -317,26 +309,18 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         } else if (requestCode == IntentIntegrator.REQUEST_CODE) {
-            IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
-            if (result != null) {
-                String content = result.getContents();
-                if (content.startsWith("ss://")) {
-                    int start = 5, end = 0;
-                    for (int i = start; i < content.length(); i++) {
-                        if (content.charAt(i) == '#') {
-                            end = i;
-                            break;
-                        }
-                    }
-                    String info = content.substring(start, end);
-                    Log.i(Constant.LOG_TAG, info);
-                    Log.i(Constant.LOG_TAG, "unwrapper " + new String(Base64.decode(info, Base64.DEFAULT)));
-                } else {
-
-                }
+            SSServer ssServer2Add = ScannerUtil.Companion.parseScannerResult(requestCode, resultCode, data);
+            if (ssServer2Add != null) {
+                EditSSServerSettingDialog dialog = new EditSSServerSettingDialog(this, ssServer2Add);
+                dialog.setOnDialogChange(mOnDialogChangeListener);
+                dialog.show();
+                dialog.setWindowAttr(this.getWindowManager());
+            } else {
+                Toast.makeText(getApplicationContext(), "code is invaild", Toast.LENGTH_SHORT).show();
             }
         }
     }
+
 
     private void updateSSServerItem(int pos, SSServer server) {
         if (pos <= contentListView.getLastVisiblePosition() && pos >= contentListView.getFirstVisiblePosition()) {
