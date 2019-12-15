@@ -1,6 +1,5 @@
 package com.vecent.ssspeedtest;
 
-import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
@@ -15,8 +14,6 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 
 import android.support.v7.widget.Toolbar;
-import android.util.Base64;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -27,7 +24,6 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.google.zxing.integration.android.IntentIntegrator;
-import com.google.zxing.integration.android.IntentResult;
 import com.vecent.ssspeedtest.adpater.SSServerAdapter;
 import com.vecent.ssspeedtest.aidl.ISpeedTestInterface;
 import com.vecent.ssspeedtest.aidl.ITestFinishListener;
@@ -38,7 +34,6 @@ import com.vecent.ssspeedtest.dao.SSServer;
 import com.vecent.ssspeedtest.model.SSServers;
 import com.vecent.ssspeedtest.service.SpeedTestService;
 import com.vecent.ssspeedtest.util.Constant;
-import com.vecent.ssspeedtest.view.CaptureActivityPortrait;
 import com.vecent.ssspeedtest.view.EditSSServerSettingDialog;
 import com.vecent.ssspeedtest.view.MoveWithFingerImageView;
 import com.vecent.ssspeedtest.util.ScannerUtil;
@@ -206,7 +201,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //jumptoscancode
-                ScannerUtil.Companion.JumpToScanAcivity(MainActivity.this);
+                ScannerUtil.Companion.jumpToScanAcivity(MainActivity.this);
 //                EditSSServerSettingDialog dialog = new EditSSServerSettingDialog(MainActivity.this, null);
 //                dialog.setOnDialogChange(mOnDialogChangeListener);
 //                dialog.show();

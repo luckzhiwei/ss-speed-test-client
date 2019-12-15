@@ -3,15 +3,15 @@ package com.vecent.ssspeedtest.util
 import android.app.Activity
 import android.content.Intent
 import android.util.Base64
-import android.util.Log
 import com.google.zxing.integration.android.IntentIntegrator
 import com.vecent.ssspeedtest.dao.SSServer
 import com.vecent.ssspeedtest.view.CaptureActivityPortrait
 
+
 class ScannerUtil {
 
     companion object {
-        fun JumpToScanAcivity(activity: Activity) {
+        fun jumpToScanAcivity(activity: Activity) {
             val integrator = IntentIntegrator(activity)
             integrator.setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES)
             integrator.setPrompt("Scan")
@@ -27,21 +27,16 @@ class ScannerUtil {
             result?.let {
                 val content: String? = result.contents
                 if (content == null) {
-                    LogUtil.logInfo(Constant.LOG_TAG, "contents is null");
+                    LogUtil.logInfo(Constant.LOG_TAG, "contents is null")
+                } else {
+                    LogUtil.logInfo(Constant.LOG_TAG, "content is $content")
                 }
-                val b = content?.startsWith("ss://")
-                when (b) {
+                when (content?.startsWith("ss://")) {
                     true -> {
-                        val start = 5
-                        var end = 0
-                        for (i in start until content.length) {
-                            if (content[i] == '#') {
-                                end = i
-                                break
-                            }
+                        val info = parseSSinfo(content)
+                        if (info.isEmpty()) {
+                            return null
                         }
-                        var info = content.substring(start, end)
-                        info = String(Base64.decode(info, Base64.DEFAULT))
                         return genSSServer(info)
                     }
                     else -> {
@@ -52,7 +47,30 @@ class ScannerUtil {
             return null
         }
 
+        private fun parseSSinfo(content: String): String {
+            val start = 5
+            var end = 0
+            var hasUnwrapper = false
+            for (i in start until content.length) {
+                if (content[i] == '#' || content[i] == '?' || content[i] == '/') {
+                    end = i
+                    break
+                }
+                if (content[i] == '@') hasUnwrapper = true
+            }
+            if (end == content.length)
+                return ""
+
+            var info = content.substring(start, end)
+            if (hasUnwrapper) {
+                var arr = info.split("@")
+                return String(Base64.decode(arr[0], Base64.DEFAULT)) + "@" + arr[1]
+            }
+            return String(Base64.decode(info, Base64.DEFAULT))
+        }
+
         private fun genSSServer(info: String): SSServer? {
+            LogUtil.logInfo(Constant.LOG_TAG, "the info is $info")
             val arr = info.split("@")
             if (arr.size != 2)
                 return null
