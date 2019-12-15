@@ -33,11 +33,11 @@ class ScannerUtil {
                 }
                 when (content?.startsWith("ss://")) {
                     true -> {
-                        val info = parseSSinfo(content)
+                        val info = parseSSinfoFromScanCodeResult(content)
                         if (info.isEmpty()) {
                             return null
                         }
-                        return genSSServer(info)
+                        return genSSServerFromScannCodeResult(info)
                     }
                     else -> {
                         return null
@@ -47,7 +47,7 @@ class ScannerUtil {
             return null
         }
 
-        private fun parseSSinfo(content: String): String {
+        fun parseSSinfoFromScanCodeResult(content: String): String {
             val start = 5
             var end = 0
             var hasUnwrapper = false
@@ -69,7 +69,7 @@ class ScannerUtil {
             return String(Base64.decode(info, Base64.DEFAULT))
         }
 
-        private fun genSSServer(info: String): SSServer? {
+        fun genSSServerFromScannCodeResult(info: String): SSServer? {
             LogUtil.logInfo(Constant.LOG_TAG, "the info is $info")
             val arr = info.split("@")
             if (arr.size != 2)
