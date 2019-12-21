@@ -33,11 +33,11 @@ class ScannerUtil {
                 }
                 when (content?.startsWith("ss://")) {
                     true -> {
-                        val info = parseSSinfoFromScanCodeResult(content)
+                        val info = parseSSinfo(content)
                         if (info.isEmpty()) {
                             return null
                         }
-                        return genSSServerFromScannCodeResult(info)
+                        return genSSServer(info)
                     }
                     else -> {
                         return null
@@ -47,9 +47,12 @@ class ScannerUtil {
             return null
         }
 
-        fun parseSSinfoFromScanCodeResult(content: String): String {
+        fun parseSSinfo(content: String): String {
+            if (!content.startsWith("ss://"))
+                return ""
             val start = 5
             var end = 0
+            //macos client shadowsocks 明文夹带base64编码的密文的
             var hasUnwrapper = false
             for (i in start until content.length) {
                 if (content[i] == '#' || content[i] == '?' || content[i] == '/') {
@@ -58,7 +61,8 @@ class ScannerUtil {
                 }
                 if (content[i] == '@') hasUnwrapper = true
             }
-            if (end == content.length)
+            //end==0 代表没有搜索到对应字符串
+            if (end == content.length || end == 0)
                 return ""
 
             var info = content.substring(start, end)
@@ -66,10 +70,11 @@ class ScannerUtil {
                 var arr = info.split("@")
                 return String(Base64.decode(arr[0], Base64.DEFAULT)) + "@" + arr[1]
             }
+
             return String(Base64.decode(info, Base64.DEFAULT))
         }
 
-        fun genSSServerFromScannCodeResult(info: String): SSServer? {
+        fun genSSServer(info: String): SSServer? {
             LogUtil.logInfo(Constant.LOG_TAG, "the info is $info")
             val arr = info.split("@")
             if (arr.size != 2)
