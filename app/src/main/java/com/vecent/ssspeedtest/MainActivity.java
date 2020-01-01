@@ -196,16 +196,12 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void initView() {
-        this.addServerImg = (MoveWithFingerImageView) this.findViewById(R.id.add_ss_server_img);
+        this.addServerImg = this.findViewById(R.id.add_ss_server_img);
         this.addServerImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //jumptoscancode
                 ScannerUtil.Companion.jumpToScanAcivity(MainActivity.this);
-//                EditSSServerSettingDialog dialog = new EditSSServerSettingDialog(MainActivity.this, null);
-//                dialog.setOnDialogChange(mOnDialogChangeListener);
-//                dialog.show();
-//                dialog.setWindowAttr(getWindowManager());
 
             }
         });
