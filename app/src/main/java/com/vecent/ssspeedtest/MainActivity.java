@@ -23,6 +23,7 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.google.zxing.integration.android.IntentIntegrator;
 import com.vecent.ssspeedtest.adpater.SSServerAdapter;
 import com.vecent.ssspeedtest.aidl.ISpeedTestInterface;
 import com.vecent.ssspeedtest.aidl.ITestFinishListener;
@@ -33,12 +34,9 @@ import com.vecent.ssspeedtest.dao.SSServer;
 import com.vecent.ssspeedtest.model.SSServers;
 import com.vecent.ssspeedtest.service.SpeedTestService;
 import com.vecent.ssspeedtest.util.Constant;
-import com.vecent.ssspeedtest.util.LogUtil;
 import com.vecent.ssspeedtest.view.EditSSServerSettingDialog;
 import com.vecent.ssspeedtest.view.MoveWithFingerImageView;
-
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
+import com.vecent.ssspeedtest.util.ScannerUtil;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -198,14 +196,13 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void initView() {
-        this.addServerImg = (MoveWithFingerImageView) this.findViewById(R.id.add_ss_server_img);
+        this.addServerImg = this.findViewById(R.id.add_ss_server_img);
         this.addServerImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EditSSServerSettingDialog dialog = new EditSSServerSettingDialog(MainActivity.this, null);
-                dialog.setOnDialogChange(mOnDialogChangeListener);
-                dialog.show();
-                dialog.setWindowAttr(getWindowManager());
+                //jumptoscancode
+                ScannerUtil.Companion.jumpToScanAcivity(MainActivity.this);
+
             }
         });
         if (mHandler == null) mHandler = new Handler(Looper.getMainLooper());
@@ -214,6 +211,7 @@ public class MainActivity extends AppCompatActivity {
         initMenuLayout();
         initDrawerLayout();
     }
+
 
     private void initListView() {
 
@@ -293,14 +291,27 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == SpeedTestActivity.TEST_FINISHED) {
-            int pos = data.getIntExtra("pos", -1);
-            SSServer server = data.getParcelableExtra("ssServer");
-            if (pos != -1 && server != null) {
-                mSServers.updateServerScore(pos, server.getScore());
+        if (requestCode == SpeedTestActivity.REQUSET_CODE) {
+            if (resultCode == SpeedTestActivity.TEST_FINISHED) {
+                int pos = data.getIntExtra("pos", -1);
+                SSServer server = data.getParcelableExtra("ssServer");
+                if (pos != -1 && server != null) {
+                    mSServers.updateServerScore(pos, server.getScore());
+                }
+            }
+        } else if (requestCode == IntentIntegrator.REQUEST_CODE) {
+            SSServer ssServer2Add = ScannerUtil.Companion.parseScannerResult(requestCode, resultCode, data);
+            if (ssServer2Add != null) {
+                EditSSServerSettingDialog dialog = new EditSSServerSettingDialog(this, ssServer2Add);
+                dialog.setOnDialogChange(mOnDialogChangeListener);
+                dialog.show();
+                dialog.setWindowAttr(this.getWindowManager());
+            } else {
+                Toast.makeText(getApplicationContext(), "code is invaild", Toast.LENGTH_SHORT).show();
             }
         }
     }
+
 
     private void updateSSServerItem(int pos, SSServer server) {
         if (pos <= contentListView.getLastVisiblePosition() && pos >= contentListView.getFirstVisiblePosition()) {

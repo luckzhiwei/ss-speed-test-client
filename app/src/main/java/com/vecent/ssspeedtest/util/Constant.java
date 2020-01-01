@@ -6,7 +6,7 @@ package com.vecent.ssspeedtest.util;
  */
 public class Constant {
 
-    public static final String LOG_TAG = "speedTest";
+    public static final String LOG_TAG = "speedTestLog";
     public static final int TIME_TO_KEPP_ALIVE = 1;
     public static final int MAX_REDIRECT_TIMES = 5;
     public static final int CONNECTION_TIME_OUT = 4000;

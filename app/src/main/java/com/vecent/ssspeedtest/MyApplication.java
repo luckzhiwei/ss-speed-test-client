@@ -3,6 +3,7 @@ package com.vecent.ssspeedtest;
 import android.app.Application;
 import android.os.Build;
 
+import com.google.zxing.integration.android.IntentIntegrator;
 import com.vecent.ssspeedtest.dao.DaoManager;
 import com.vecent.ssspeedtest.dao.SSServer;
 import com.vecent.ssspeedtest.greendao.DaoSession;

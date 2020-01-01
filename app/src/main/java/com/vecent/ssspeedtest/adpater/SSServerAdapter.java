@@ -80,7 +80,7 @@ public class SSServerAdapter extends CommonAdapter<SSServer> {
         intent.setClass(mContext, SpeedTestActivity.class);
         if (mContext instanceof MainActivity) {
             MainActivity activity = (MainActivity) mContext;
-            activity.startActivityForResult(intent, MainActivity.REQUEST_CODE);
+            activity.startActivityForResult(intent, SpeedTestActivity.REQUSET_CODE);
         }
     }
 
