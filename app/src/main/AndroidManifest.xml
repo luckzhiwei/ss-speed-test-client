@@ -15,6 +15,12 @@
         android:roundIcon="@drawable/logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <!-- 全面屏适配 -->
+        <meta-data
+            android:name="android.max_aspect"
+            android:value="2.1" />
+
         <activity
             android:name=".MainActivity"
             android:screenOrientation="portrait">
@@ -32,8 +38,8 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.CaptureActivityPortrait"
-            android:theme="@style/zxing_CaptureTheme"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/zxing_CaptureTheme" />
 
         <service
             android:name=".service.SpeedTestService"

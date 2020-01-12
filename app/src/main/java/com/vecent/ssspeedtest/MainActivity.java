@@ -313,6 +313,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * local refresh
+     */
     private void updateSSServerItem(int pos, SSServer server) {
         if (pos <= contentListView.getLastVisiblePosition() && pos >= contentListView.getFirstVisiblePosition()) {
             View view = contentListView.getChildAt(pos - contentListView.getFirstVisiblePosition());
