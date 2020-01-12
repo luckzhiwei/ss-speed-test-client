@@ -15,6 +15,7 @@
         android:roundIcon="@drawable/logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <!-- 全面屏适配 -->
         <meta-data
             android:name="android.max_aspect"
