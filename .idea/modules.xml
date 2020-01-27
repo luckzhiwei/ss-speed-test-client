@@ -5,6 +5,8 @@
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/ss-speed-test-client.iml" filepath="$PROJECT_DIR$/ss-speed-test-client.iml" />
       <module fileurl="file://$PROJECT_DIR$/ss-speed-test-client-android.iml" filepath="$PROJECT_DIR$/ss-speed-test-client-android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/ss-speed-test-client-app.iml" filepath="$PROJECT_DIR$/app/ss-speed-test-client-app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/zhiwei-ss-speed-test-client.iml" filepath="$PROJECT_DIR$/zhiwei-ss-speed-test-client.iml" />
     </modules>
   </component>
 </project>
