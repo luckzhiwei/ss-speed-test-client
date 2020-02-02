@@ -9,9 +9,9 @@ import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
-import android.widget.ImageView;
 
-public class MoveWithFingerImageView extends ImageView {
+
+public class MoveWithFingerImageView extends android.support.v7.widget.AppCompatImageView {
 
     private int totalX;
     private int totalY;
@@ -70,6 +70,7 @@ public class MoveWithFingerImageView extends ImageView {
                     layout(getLeft() + delatX, getTop() + delatY, getRight() + delatX, getBottom() + delatY);
                     break;
                 case MotionEvent.ACTION_UP:
+                    view.performClick();
                     return totalX > touchSlop || totalY > touchSlop;
             }
             return false;

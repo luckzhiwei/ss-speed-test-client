@@ -10,6 +10,7 @@
         android:id="@+id/img_nagvation"
         android:layout_width="match_parent"
         android:layout_height="160dp"
+        android:contentDescription="@string/img_description_nagvation"
         android:scaleType="centerCrop"
         android:src="@drawable/timg" />
 
@@ -17,8 +18,8 @@
         android:id="@+id/layout_server_config"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?android:attr/selectableItemBackground"
         android:layout_below="@id/img_nagvation"
+        android:background="?android:attr/selectableItemBackground"
         android:padding="8dp">
 
         <ImageView
@@ -28,6 +29,7 @@
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:layout_marginLeft="8dp"
+            android:contentDescription="@string/img_description_server_config"
             android:src="@drawable/ss_config" />
 
         <TextView
@@ -49,9 +51,9 @@
     <RelativeLayout
         android:id="@+id/layout_app_config"
         android:layout_width="match_parent"
-        android:background="?android:attr/selectableItemBackground"
         android:layout_height="wrap_content"
         android:layout_below="@id/layout_server_config"
+        android:background="?android:attr/selectableItemBackground"
         android:padding="8dp">
 
         <ImageView
@@ -120,7 +122,6 @@
                 android:id="@+id/layout_about"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
                 android:background="?android:attr/selectableItemBackground"
                 android:padding="8dp">
 

@@ -171,6 +171,7 @@ public class ResultLayout extends LinearLayout {
                 } else if (delta >= 0 && this.showAll) {
                     this.startAnimation(this.mTranslateAnimationDown);
                 }
+                performClick();
                 break;
         }
         return true;

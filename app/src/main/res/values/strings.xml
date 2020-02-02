@@ -79,5 +79,10 @@
     <string name="three_hour">3小时</string>
     <string name="six_hour">6小时</string>
     <string name="one_day">1天</string>
+    <string name="img_description_nagvation">导航图标</string>
+    <string name="img_description_back">返回</string>
+    <string name="img_description_server_config">测试服务器列表配置</string>
+    <string name="img_description_password_edit_type">密码编辑模式</string>
+    <string name="img_description_get_grade">开始测速</string>
 
 </resources>

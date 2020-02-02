@@ -13,6 +13,7 @@
         <ImageView
             android:id="@+id/img_back"
             android:layout_width="24dp"
+            android:contentDescription="@string/img_description_back"
             android:layout_height="24dp"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"

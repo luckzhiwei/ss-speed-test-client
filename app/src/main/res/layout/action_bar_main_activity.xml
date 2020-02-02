@@ -16,6 +16,7 @@
 
         <ImageView
             android:id="@+id/img_get_grade"
+            android:contentDescription="@string/img_description_get_grade"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_alignParentRight="true"
